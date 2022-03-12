@@ -41,8 +41,8 @@ class Item {
         friend istream& operator>>(istream&, Item&); // console input stream
         friend ostream& operator<<(ostream&, const Item&); // console output stream
 
-        virtual void input(istream&); // console input method (delegated from stream)
-        virtual void output(ostream&) const; // console output method (delegated from stream)
+        virtual void input(istream&) = 0; // console input method (delegated from stream)
+        virtual void output(ostream&) const = 0; // console output method (delegated from stream)
 };
 
 #endif
