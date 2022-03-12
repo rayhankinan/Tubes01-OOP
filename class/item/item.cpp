@@ -109,9 +109,13 @@ ostream& operator<<(ostream& os, const Item& I) {
 }
 
 void Item::input(istream& is) {
-    is >> this->ID >> this->name >> this->type >> this->quantity;
+    is >> this->ID >> this->name;
+
+    /* FILL SESUAI TYPE ITEM */
 }
 
 void Item::output(ostream& os) const {
-    os << this->ID << " " << this->name << " " << this->type << " " << this->quantity;
+    os << this->ID << " " << this->name;
+
+    /* PRINT SESUAI TYPE ITEM */
 }
