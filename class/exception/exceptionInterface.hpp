@@ -11,7 +11,7 @@ class Exception {
         const int ID;
 
     public:
-        // tidak memerlukan default ctor (tidak ada list of exception), cctor (tidak ada assignment), dan dtor (perlunya perhitungan jumlah object Exception setelah dihapus)
+        // tidak memerlukan default ctor (tidak ada list of exception), assignment operator (tidak ada assignment), dan dtor (perlunya perhitungan jumlah object Exception setelah dihapus)
         Exception(int); // user-defined ctor
         Exception(const Exception&); // cctor
 
