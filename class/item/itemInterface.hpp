@@ -38,11 +38,11 @@ class Item {
 
         static int getNumOfItem(); // numOfItem getter
 
-        friend istream& operator>>(istream&, Item&); // console input stream
-        friend ostream& operator<<(ostream&, const Item&); // console output stream
+        friend istream& operator>>(istream&, Item&); // input stream
+        friend ostream& operator<<(ostream&, const Item&); // output stream
 
-        virtual void input(istream&) = 0; // console input method (delegated from stream)
-        virtual void output(ostream&) const = 0; // console output method (delegated from stream)
+        virtual void input(istream&) = 0; // input method (delegated from stream)
+        virtual void output(ostream&) const = 0; // output method (delegated from stream)
 };
 
 #endif
