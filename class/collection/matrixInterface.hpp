@@ -1,6 +1,10 @@
 #ifndef MATRIX_INTERFACE_HPP
 #define MATRIX_INTERFACE_HPP
 
+#include "../exception/matrixExceptionInterface.hpp"
+#include <string>
+using namespace std;
+
 template<class T>
 class Matrix {
     private:
@@ -15,7 +19,8 @@ class Matrix {
 
         int getLength() const; // N getter
         int getWidth() const; // M getter
-        T& operator()(int i, int j) const; // element getter
+        T& operator()(int, int) const; // element getter
+        T& operator[](string) const; // element getter with slotID
 };
 
 template<class T>
@@ -51,7 +56,17 @@ int Matrix<T>::getWidth() const {
 
 template<class T>
 T& Matrix<T>::operator()(int i, int j) const {
-    return this->buffer[i][j];
+    if (i >= this->N || j >= this->M) {
+        throw MatrixException(0);
+        
+    } else {
+        return this->buffer[i][j];
+    }
+}
+
+template<class T>
+T& Matrix<T>::operator[](string slotID) const {
+    /* IMPLEMENT THIS */
 }
 
 #endif

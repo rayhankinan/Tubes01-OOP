@@ -6,7 +6,10 @@
 
 class Inventory {
     private:
-        Matrix<Item> table = Matrix<Item>(3, 9);
+        static const int length = 3;
+        static const int width = 9;
+
+        Matrix<Item> table = Matrix<Item>(length, width);
 
     public:
         Inventory(); // default ctor
