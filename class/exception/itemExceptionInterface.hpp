@@ -1,5 +1,5 @@
-#ifndef ITEM_EXCEPTION_HPP
-#define ITEM_EXCEPTION_HPP
+#ifndef ITEM_EXCEPTION_INTERFACE_HPP
+#define ITEM_EXCEPTION_INTERFACE_HPP
 
 #include "exceptionInterface.hpp"
 
@@ -8,7 +8,6 @@ class ItemException : public Exception {
         static int numOfItemException;
 
     public:
-        // tidak memerlukan default ctor (tidak ada list of exception), cctor (tidak ada assignment), dan dtor (perlunya perhitungan jumlah object Exception setelah dihapus)
         ItemException(int); // user-defined ctor
         ItemException(const ItemException&); // cctor
 

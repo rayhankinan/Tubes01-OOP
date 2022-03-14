@@ -8,8 +8,6 @@ using namespace std;
 class Exception {
     protected:
         static int numOfException;
-        static string *message;
-
         const int ID;
 
     public:
