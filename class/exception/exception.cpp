@@ -13,3 +13,7 @@ Exception::Exception(const Exception& E) : ID(E.ID) {
 int Exception::getNumOfException() {
     return Exception::numOfException;
 }
+
+int Exception::getID() const {
+    return this->ID;
+}

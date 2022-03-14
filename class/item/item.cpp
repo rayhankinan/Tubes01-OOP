@@ -6,16 +6,14 @@ Item::Item() {
     this->ID = 0;
     this->name = "-";
     this->type = "-";
-    this->quantity = 0;
 
     Item::numOfItem++;
 }
 
-Item::Item(int ID, string name, string type, int quantity) {
+Item::Item(int ID, string name, string type) {
     this->ID = ID;
     this->name = name;
     this->type = type;
-    this->quantity = quantity;
 
     Item::numOfItem++;
 }
@@ -24,7 +22,6 @@ Item::Item(const Item& I) {
     this->ID = I.ID;
     this->name = I.name;
     this->type = I.type;
-    this->quantity = quantity;
 
     Item::numOfItem++;
 }
@@ -37,7 +34,6 @@ Item& Item::operator=(const Item& I) {
     this->ID = I.ID;
     this->name = I.name;
     this->type = I.type;
-    this->quantity = quantity;
 
     return *this;
 }
@@ -64,10 +60,6 @@ string Item::getType() const {
 
 void Item::setType(string type) {
     this->type = type;
-}
-
-int Item::getQuantity() const {
-    return this->quantity;
 }
 
 int Item::getNumOfItem() {

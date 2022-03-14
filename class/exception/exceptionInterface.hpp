@@ -16,6 +16,7 @@ class Exception {
         Exception(const Exception&); // cctor
 
         static int getNumOfException(); // numOfException getter
+        int getID() const; // ID getter
 
         virtual void displayMessage() const = 0; // message display
 };

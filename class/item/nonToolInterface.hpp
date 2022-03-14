@@ -2,10 +2,13 @@
 #define NONTOOL_INTERFACE_HPP
 
 #include "itemInterface.hpp"
+#include "../exception/nonToolExceptionInterface.hpp"
 
 class NonTool : public Item {
     private:
         static int numOfNonTool;
+
+        int quantity;
 
     public:
         NonTool(); // default ctor
@@ -15,20 +18,20 @@ class NonTool : public Item {
         
         NonTool& operator=(const NonTool&); // assignment operator
 
+        int getQuantity() const; // quantity getter
+
         static int getNumOfNonTool(); // numOfNonTool getter
 
-        Item& operator+=(int); // quantity sum and assignment with integer argument
-        Item& operator-=(int); // quantity subtraction and assignment with integer argument
-        Item operator+(int) const; // quantity sum with integer argument
-        Item operator-(int) const; // quantity subtraction with integer argument
+        NonTool& operator+=(int); // quantity sum and assignment with integer argument
+        NonTool& operator-=(int); // quantity subtraction and assignment with integer argument
 
-        Item& operator+=(const Item&); // quantity sum and assignment with Item argument
-        Item& operator-=(const Item&); // quantity subtraction and assignment with Item argument
-        Item operator+(const Item&) const; // quantity sum with Item argument
-        Item operator-(const Item&) const; // quantity subtraction with Item argument
+        NonTool& operator+=(const NonTool&); // quantity sum and assignment with Item argument
+        NonTool& operator-=(const NonTool&); // quantity subtraction and assignment with Item argument
 
         void input(istream&); // input method (delegated from stream)
         void output(ostream&) const; // output method (delegated from stream)
+
+        void use(); // use item
 };
 
 #endif
