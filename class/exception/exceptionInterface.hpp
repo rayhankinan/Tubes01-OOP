@@ -6,7 +6,7 @@
 using namespace std;
 
 class Exception {
-    private:
+    protected:
         static int numOfException;
         static string *message;
 

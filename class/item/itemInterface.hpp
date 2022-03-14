@@ -3,10 +3,11 @@
 
 #include <iostream>
 #include <string>
+#include "../exception/itemException.hpp"
 using namespace std;
 
 class Item {
-    private:
+    protected:
         static int numOfItem;
 
         int ID;
@@ -18,7 +19,8 @@ class Item {
         Item(); // default ctor
         Item(int, string, string, int); // user-defined ctor
         Item(const Item&); // cctor
-        ~Item(); // dtor
+        virtual ~Item(); // virtual dtor
+        
         Item& operator=(const Item&); // assignment operator
 
         int getID() const; // ID getter
@@ -31,15 +33,21 @@ class Item {
         void setType(string); // type setter
 
         int getQuantity() const; // quantity getter
-        Item& operator++(); // quantity prefix increment
-        Item& operator--(); // quantity prefix decrement
-        Item operator++(int); // quantity postfix increment
-        Item operator--(int); // quantity postfix decrement
 
         static int getNumOfItem(); // numOfItem getter
 
         friend istream& operator>>(istream&, Item&); // input stream
         friend ostream& operator<<(ostream&, const Item&); // output stream
+
+        virtual Item& operator+=(int) = 0; // quantity sum and assignment with integer argument
+        virtual Item& operator-=(int) = 0; // quantity subtraction and assignment with integer argument
+        virtual Item operator+(int) const = 0; // quantity sum with integer argument
+        virtual Item operator-(int) const = 0; // quantity subtraction with integer argument
+
+        virtual Item& operator+=(const Item&) = 0; // quantity sum and assignment with Item argument
+        virtual Item& operator-=(const Item&) = 0; // quantity subtraction and assignment with Item argument
+        virtual Item operator+(const Item&) const = 0; // quantity sum with Item argument
+        virtual Item operator-(const Item&) const = 0; // quantity subtraction with Item argument
 
         virtual void input(istream&) = 0; // input method (delegated from stream)
         virtual void output(ostream&) const = 0; // output method (delegated from stream)

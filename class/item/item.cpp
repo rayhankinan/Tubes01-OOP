@@ -4,8 +4,8 @@ int Item::numOfItem = 0;
 
 Item::Item() {
     this->ID = 0;
-    this->name = "";
-    this->type = "";
+    this->name = "-";
+    this->type = "-";
     this->quantity = 0;
 
     Item::numOfItem++;
@@ -68,28 +68,6 @@ void Item::setType(string type) {
 
 int Item::getQuantity() const {
     return this->quantity;
-}
-
-Item& Item::operator++() {
-    ++this->quantity;
-    return *this;
-}
-
-Item& Item::operator--() {
-    --this->quantity;
-    return *this;
-}
-
-Item Item::operator++(int) {
-    this->quantity++;
-
-    return *this;
-}
-
-Item Item::operator--(int) {
-    this->quantity--;
-
-    return *this;
 }
 
 int Item::getNumOfItem() {
