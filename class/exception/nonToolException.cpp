@@ -2,7 +2,7 @@
 
 int NonToolException::numOfNonToolException = 0;
 
-string NonToolException::message[] = {"Quantity item tidak bisa melebihi 64!", "Quantity item tidak mencukupi!", "ID item tidak sama!", "Nontool item tidak bisa digunakan!"};
+string NonToolException::message[] = {"Quantity item tidak bisa melebihi 64!", "Quantity item tidak mencukupi!", "ID item tidak sama!", "Nontool item tidak bisa digunakan!", "Nontool tidak mempunyai atribut durability!"};
 
 NonToolException::NonToolException(int ID) : ItemException(ID) {
     NonToolException::numOfNonToolException++;

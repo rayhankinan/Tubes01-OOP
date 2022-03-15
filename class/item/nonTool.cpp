@@ -36,6 +36,10 @@ int NonTool::getQuantity() const {
     return this->quantity;
 }
 
+int NonTool::getDurability() const {
+    throw NonToolException(4);
+}
+
 int NonTool::getNumOfNonTool() {
     return NonTool::numOfNonTool;
 }

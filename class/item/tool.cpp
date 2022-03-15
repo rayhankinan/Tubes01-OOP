@@ -32,6 +32,10 @@ Tool& Tool::operator=(const Tool& T) {
     return *this;
 }
 
+int Tool::getQuantity() const {
+    throw ToolException(4);
+}
+
 int Tool::getDurability() const {
     return this->durability;
 }

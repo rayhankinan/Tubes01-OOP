@@ -2,7 +2,7 @@
 
 int ToolException::numOfToolException = 0;
 
-string ToolException::message[] = {"Durability item tidak boleh melebihi 10!", "Durability item tidak boleh kurang dari 0!", "ID item tidak sama!", "Item tidak bisa digunakan! Durability item 0."};
+string ToolException::message[] = {"Durability tool tidak boleh melebihi 10!", "Durability tool tidak boleh kurang dari 0!", "ID item tidak sama!", "Tool tidak bisa digunakan! Durability item 0.", "Tool tidak mempunyai atribut quantity!"};
 
 ToolException::ToolException(int ID) : ItemException(ID) {
     ToolException::numOfToolException++;

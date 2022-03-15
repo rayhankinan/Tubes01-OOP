@@ -19,6 +19,7 @@ class NonTool : public Item {
         NonTool& operator=(const NonTool&); // assignment operator
 
         int getQuantity() const; // quantity getter
+        int getDurability() const; // durability getter
 
         static int getNumOfNonTool(); // numOfNonTool getter
 

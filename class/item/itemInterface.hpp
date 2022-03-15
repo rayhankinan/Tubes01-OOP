@@ -30,6 +30,9 @@ class Item {
         string getType() const; // type getter
         void setType(string); // type setter
 
+        virtual int getQuantity() const = 0; // quantity getter
+        virtual int getDurability() const = 0; // durability getter 
+
         static int getNumOfItem(); // numOfItem getter
 
         friend istream& operator>>(istream&, Item&); // input stream

@@ -18,6 +18,7 @@ class Tool : public Item {
 
         Tool& operator=(const Tool&); // operator assignment
 
+        int getQuantity() const; // quantity getter
         int getDurability() const; // durability getter
 
         static int getNumOfTool(); // numOfTool getter
