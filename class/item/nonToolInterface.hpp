@@ -23,11 +23,11 @@ class NonTool : public Item {
 
         static int getNumOfNonTool(); // numOfNonTool getter
 
-        NonTool& operator+=(int); // quantity sum and assignment with integer argument
-        NonTool& operator-=(int); // quantity subtraction and assignment with integer argument
+        Item& operator+=(int); // quantity sum and assignment with integer argument
+        Item& operator-=(int); // quantity subtraction and assignment with integer argument
 
-        NonTool& operator+=(const NonTool&); // quantity sum and assignment with Item argument
-        NonTool& operator-=(const NonTool&); // quantity subtraction and assignment with Item argument
+        Item& operator+=(const Item&); // quantity sum and assignment with Item argument
+        Item& operator-=(const Item&); // quantity subtraction and assignment with Item argument
 
         void input(istream&); // input method (delegated from stream)
         void output(ostream&) const; // output method (delegated from stream)

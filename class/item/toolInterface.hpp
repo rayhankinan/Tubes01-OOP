@@ -23,11 +23,11 @@ class Tool : public Item {
 
         static int getNumOfTool(); // numOfTool getter
 
-        Tool& operator+=(int); // durability sum and assignment with integer argument
-        Tool& operator-=(int); // durability subtraction and assignment with integer argument
+        Item& operator+=(int); // durability sum and assignment with integer argument
+        Item& operator-=(int); // durability subtraction and assignment with integer argument
 
-        Tool& operator+=(const Tool&); // durability sum and assignment with Item argument
-        Tool& operator-=(const Tool&); // durability subtraction and assignment with Item argument
+        Item& operator+=(const Item&); // durability sum and assignment with Item argument
+        Item& operator-=(const Item&); // durability subtraction and assignment with Item argument
 
         void input(istream&); // input method (delegated from stream)
         void output(ostream&) const; // output method (delegated from stream)

@@ -44,7 +44,7 @@ int Tool::getNumOfTool() {
     return Tool::numOfTool;
 }
 
-Tool& Tool::operator+=(int N) {
+Item& Tool::operator+=(int N) {
     if (this->durability + N > 10) {
         throw ToolException(0);
 
@@ -58,7 +58,7 @@ Tool& Tool::operator+=(int N) {
     }
 }
 
-Tool& Tool::operator-=(int N) {
+Item& Tool::operator-=(int N) {
     if (this->durability - N > 10) {
         throw ToolException(0);
 
@@ -72,42 +72,43 @@ Tool& Tool::operator-=(int N) {
     }
 }
 
-Tool& Tool::operator+=(const Tool& T) {
-    if (this->ID != T.getID()) {
+Item& Tool::operator+=(const Item& I) {
+    if (this->ID != I.getID()) {
         throw ToolException(2);
 
-    } else if (this->durability + T.getDurability() > 10) {
+    } else if (this->durability + I.getDurability() > 10) {
         throw ToolException(0);
 
-    } else if (this->durability + T.getDurability() < 0) {
+    } else if (this->durability + I.getDurability() < 0) {
         throw ToolException(1);
 
     } else {
-        this->durability += T.getDurability();
+        this->durability += I.getDurability();
 
         return *this;
     }
 }
 
-Tool& Tool::operator-=(const Tool& T) {
-    if (this->ID != T.getID()) {
+Item& Tool::operator-=(const Item& I) {
+    if (this->ID != I.getID()) {
         throw ToolException(2);
 
-    } else if (this->durability - T.getDurability() > 10) {
+    } else if (this->durability - I.getDurability() > 10) {
         throw ToolException(0);
 
-    } else if (this->durability - T.getDurability() < 0) {
+    } else if (this->durability - I.getDurability() < 0) {
         throw ToolException(1);
 
     } else {
-        this->durability -= T.getDurability();
+        this->durability -= I.getDurability();
 
         return *this;
     }
 }
 
 void Tool::input(istream& is) {
-    is >> this->ID >> this->name >> this->type >> this->durability;
+    is >> this->ID >> this->name >> this->type;
+    this->durability = 10;
 }
 
 void Tool::output(ostream& os) const {

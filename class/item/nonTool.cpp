@@ -44,7 +44,7 @@ int NonTool::getNumOfNonTool() {
     return NonTool::numOfNonTool;
 }
 
-NonTool& NonTool::operator+=(int N) {
+Item& NonTool::operator+=(int N) {
     if (this->quantity + N > 64) {
         throw NonToolException(0);
 
@@ -58,7 +58,7 @@ NonTool& NonTool::operator+=(int N) {
     }
 }
 
-NonTool& NonTool::operator-=(int N) {
+Item& NonTool::operator-=(int N) {
     if (this->quantity - N > 64) {
         throw NonToolException(0);
         
@@ -72,42 +72,43 @@ NonTool& NonTool::operator-=(int N) {
     }
 }
 
-NonTool& NonTool::operator+=(const NonTool &NT) {
-    if (this->ID != NT.getID()) {
+Item& NonTool::operator+=(const Item &I) {
+    if (this->ID != I.getID()) {
         throw NonToolException(2);
 
-    } else if (this->quantity + NT.getQuantity() > 64) {
+    } else if (this->quantity + I.getQuantity() > 64) {
         throw NonToolException(0);
 
-    } else if (this->quantity + NT.getQuantity() < 0) {
+    } else if (this->quantity + I.getQuantity() < 0) {
         throw NonToolException(1);
 
     } else {
-        this->quantity += NT.getQuantity();
+        this->quantity += I.getQuantity();
 
         return *this;
     }
 }
 
-NonTool& NonTool::operator-=(const NonTool& NT) {
-    if (this->ID != NT.getID()) {
+Item& NonTool::operator-=(const Item& I) {
+    if (this->ID != I.getID()) {
         throw NonToolException(2);
 
-    } else if (this->quantity - NT.getQuantity() > 64) {
+    } else if (this->quantity - I.getQuantity() > 64) {
         throw NonToolException(0);
 
-    } else if (this->quantity - NT.getQuantity() < 0) {
+    } else if (this->quantity - I.getQuantity() < 0) {
         throw NonToolException(1);
 
     } else {
-        this->quantity -= NT.getQuantity();
+        this->quantity -= I.getQuantity();
 
         return *this;
     }
 }
 
 void NonTool::input(istream& is) {
-    is >> this->ID >> this->name >> this->type >> this->quantity;
+    is >> this->ID >> this->name >> this->type;
+    this->quantity = 0;
 }
 
 void NonTool::output(ostream& os) const {
