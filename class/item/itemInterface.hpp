@@ -31,7 +31,7 @@ class Item {
         void setType(string); // type setter
 
         virtual int getQuantity() const = 0; // quantity getter
-        virtual int getDurability() const = 0; // durability getter 
+        virtual int getDurability() const = 0; // durability getter
 
         static int getNumOfItem(); // numOfItem getter
 
