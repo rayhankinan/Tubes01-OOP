@@ -20,7 +20,7 @@ class Matrix {
         int getLength() const; // N getter
         int getWidth() const; // M getter
         T& operator()(int, int) const; // element getter
-        T& operator[](string) const; // element getter with slotID
+        T& virtual void operator[](string) const = 0; // element getter with slotID
 };
 
 template<class T>
@@ -62,11 +62,6 @@ T& Matrix<T>::operator()(int i, int j) const {
     } else {
         return this->buffer[i][j];
     }
-}
-
-template<class T>
-T& Matrix<T>::operator[](string slotID) const {
-    /* IMPLEMENT THIS */
 }
 
 #endif
