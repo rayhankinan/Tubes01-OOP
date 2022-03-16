@@ -8,7 +8,7 @@ NonTool::NonTool() : Item() {
     NonTool::numOfNonTool++;
 }
 
-NonTool::NonTool(int ID, string name, string type, int durability) : Item(ID, name, type) {
+NonTool::NonTool(int ID, string name, string type, int quantity) : Item(ID, name, type) {
     this->quantity = quantity;
 
     NonTool::numOfNonTool++;
