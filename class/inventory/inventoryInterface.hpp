@@ -7,6 +7,7 @@
 #include "../item/toolInterface.hpp"
 #include "../exception/exceptionInterface.hpp"
 #include "../exception/matrixExceptionInterface.hpp"
+#include "../collection/extractNumber.hpp"
 
 class Inventory {
     private:
@@ -20,11 +21,17 @@ class Inventory {
         Inventory(); // default ctor
         Inventory(const Inventory&); // cctor
         ~Inventory(); // dtor
-        // show inventory
+        template<class T>
+        // get element from slotID
+        T& operator[](string) const;
+        
         void show() const;
         // menambahkan item ke inventory sebanyak qty
         void give(Item*, const int qty);
-        
+        // menghapus item dari inventory sebanyak qty
+        void discard(Item*, const int qty);
+        // menggunakan item tool dari inventory
+        void use(const string slotID);
 
 };
 

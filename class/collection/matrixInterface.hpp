@@ -20,9 +20,6 @@ class Matrix {
 
         int getLength() const; // N getter
         int getWidth() const; // M getter
-        T& getElement(int, int) const; // element getter
-        T& getSlot(string slotID) const; // slot getter
-        void setElement(int, int, T); // element setter
         T& operator()(int, int) const; // element getter
         T& virtual void operator[](string) const = 0; // element getter with slotID
 };
@@ -56,41 +53,6 @@ int Matrix<T>::getLength() const {
 template<class T>
 int Matrix<T>::getWidth() const {
     return this->M;
-}
-
-//getter element matrix
-template<class T>
-T& Matrix<T>::getElement(int i, int j) const {
-    if (i < 0 || i >= this->N || j < 0 || j >= this->M) {
-        throw MatrixIndexOutOfBoundsException(i, j);
-    }
-    else{
-        return this->buffer[i][j];
-    }
-}
-template<class T>
-T& Matrix<T>::getSlot(string slotID) const {
-    int slot = getNumberFromString(slotID);
-    int i = slotID/9;
-    int j = slotID%9;
-
-    if (i >= this->N || j >= this->M) {
-        throw MatrixException(0);
-        
-    } else {
-        return this->buffer[i][j];
-    }
-}
-
-//setter element matrix row i col j
-template<class T>
-void Matrix<T>::setElement(int i, int j, T value) {
-    if (i < 0 || i >= this->N || j < 0 || j >= this->M) {
-        throw MatrixIndexOutOfBoundsException(i, j);
-    }
-    else{
-        this->buffer[i][j] = value;
-    }
 }
 
 template<class T>
