@@ -21,6 +21,7 @@ class Matrix {
         int getLength() const; // N getter
         int getWidth() const; // M getter
         T& operator()(int, int) const; // element getter
+        Matrix<T>& operator=(const Matrix<T>&);
         T& virtual void operator[](string) const = 0; // element getter with slotID
 };
 
@@ -63,6 +64,20 @@ T& Matrix<T>::operator()(int i, int j) const {
     } else {
         return this->buffer[i][j];
     }
+}
+
+template<class T>
+Matrix<T>& Matrix<T>::operator=(const Matrix<T>& m) {
+    this->~Matrix();
+    this->N = m.N;
+    this->M = m.M;
+    this->buffer = new T[this->N][this->M];
+    for (int i = 0; i < m.N; i++) {
+        for (int j = 0; j < m.M; j++) {
+            this->buffer[i][j] = m.buffer[i][j];
+        }
+    }
+    return *this;
 }
 
 #endif
