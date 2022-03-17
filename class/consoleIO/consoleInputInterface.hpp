@@ -2,15 +2,27 @@
 #define CONSOLE_INPUT_INTERFACE_HPP
 
 #include <string>
+#include <iostream>
+using namespace std;
 
-class consoleInput
+class ConsoleInput
 {
 private:
-  std::string command;
+  string command;
 
 public:
-  // setter
+  //default ctor
+  ConsoleInput();
+  // user defined ctor
+  ConsoleInput(string);
+  // cctor
+  ConsoleInput(const ConsoleInput& CI);
   // getter
+  string getCommand();
+  // setter
+  void setCommand(string);
+  // override function for CLI-based command
+  void setCommand();
 };
 
 #endif

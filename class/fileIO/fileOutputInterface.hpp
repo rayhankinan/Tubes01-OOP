@@ -9,7 +9,7 @@
 class FileOutput
 {
 private:
-  std::string outputPath = "../../tests";
+  std::string outputPath = "./tests";
 
 public:
   // ofstream to some file
