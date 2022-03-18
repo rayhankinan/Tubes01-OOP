@@ -6,6 +6,8 @@
 #include "./class/fileIO/fileInput.cpp"
 #include "./class/crafting/recipeInterface.hpp"
 #include "./class/collection/matrixInterface.hpp"
+#include "./class/consoleIO/commandInterface.hpp"
+#include "./class/consoleIO/consoleInputInterface.hpp"
 // BIAR GAUSAH PAKE MAKE FILE TESTNYA
 #include "./class/item/item.cpp"
 #include "./class/item/nonTool.cpp"
@@ -15,28 +17,22 @@
 #include "./class/exception/nonToolException.cpp"
 #include "./class/exception/toolException.cpp"
 #include "./class/crafting/recipe.cpp"
+#include "./class/consoleIO/command.cpp"
+#include "./class/consoleIO/consoleInput.cpp"
 
 using namespace std;
 
-int main(){
+int main()
+{
   FileInput FI;
-  vector<Tool> tools = FI.listOfTool();
-  vector<NonTool> nonTools = FI.listOfNonTool();
+  ConsoleInput CI;
 
-  // for (int i = 0; i < tools.size(); i++){
-  //   cout << tools[i] << endl;
-  // }
+  // display item
+  FI.displayNonTool();
+  FI.displayTool();
+  // display recipe
+  FI.displayRecipe();
 
-  // for (int i = 0; i < nonTools.size(); i++){
-  //   cout << nonTools[i] << endl;
-  // }
-  
-
-  vector<Recipe> recipes = FI.listOfRecipe();
-  // cout << recipes.size();
-
-  for (int i = 0; i < recipes.size(); i++){
-    recipes[i].printRecipe();
-  }
-
+  //  start program
+  CI.start();
 }

@@ -29,6 +29,12 @@ public:
   vector<NonTool> listOfNonTool();
   // vector of recipe
   vector<Recipe> listOfRecipe();
+  // display tool
+  void displayTool();
+  // display non tool
+  void displayNonTool();
+  // display recipe
+  void displayRecipe();
 };
 
 #endif

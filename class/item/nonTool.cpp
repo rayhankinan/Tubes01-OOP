@@ -118,3 +118,8 @@ void NonTool::output(ostream& os) const {
 void NonTool::use() {
     throw NonToolException(3);
 }
+
+void NonTool::display() {
+    this->Item::display();
+    cout << "Quantity   :" << this->getQuantity() << endl;
+}

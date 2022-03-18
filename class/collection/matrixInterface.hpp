@@ -2,7 +2,7 @@
 #define MATRIX_INTERFACE_HPP
 
 #include "../exception/matrixExceptionInterface.hpp"
-#include "extractNumber.hpp"
+// #include "extractNumber.hpp"
 #include <string>
 using namespace std;
 

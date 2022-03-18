@@ -48,6 +48,7 @@ class Item {
         virtual void output(ostream&) const = 0; // output method (delegated from stream)
 
         virtual void use() = 0; // use item
+        virtual void display(); // display item
 };
 
 #endif

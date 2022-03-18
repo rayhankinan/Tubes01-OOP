@@ -33,6 +33,7 @@ class NonTool : public Item {
         void output(ostream&) const; // output method (delegated from stream)
 
         void use(); // use item
+        void display(); // display
 };
 
 #endif

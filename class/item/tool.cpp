@@ -122,3 +122,8 @@ void Tool::use() {
         this->durability--;
     }
 }
+
+void Tool::display(){
+    this->Item::display();
+    cout << "Durability : " << this-> getDurability() << endl;
+}
