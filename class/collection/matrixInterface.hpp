@@ -47,6 +47,10 @@ Matrix<T>::Matrix(const Matrix& MT) : N(MT.N), M(MT.M) {
 
 template<class T>
 Matrix<T>::~Matrix() {
+    for (int i = 0; i < this->N; i++) {
+        delete[] this->buffer[i];
+    }
+
     delete[] this->buffer;
 }
 
