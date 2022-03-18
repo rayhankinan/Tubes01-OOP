@@ -7,7 +7,6 @@
 #include "../item/toolInterface.hpp"
 #include "../exception/exceptionInterface.hpp"
 #include "../exception/matrixExceptionInterface.hpp"
-#include "../collection/extractNumber.hpp"
 
 class Inventory {
     private:
@@ -22,8 +21,6 @@ class Inventory {
         Inventory(const Inventory&); // cctor
         ~Inventory(); // dtor
         template<class T>
-        // get element from slotID
-        T& operator[](string) const;
         
         void show() const;
         // menambahkan item ke inventory sebanyak qty

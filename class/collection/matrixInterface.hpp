@@ -2,7 +2,6 @@
 #define MATRIX_INTERFACE_HPP
 
 #include "../exception/matrixExceptionInterface.hpp"
-// #include "extractNumber.hpp"
 #include <string>
 using namespace std;
 
@@ -20,10 +19,10 @@ class Matrix {
 
         int getLength() const; // N getter
         int getWidth() const; // M getter
-        void setELmt(int row, int col, T elmt); // set ELMT
-        T& operator()(int, int) const; // element getter
-        Matrix<T>& operator=(const Matrix<T>&);
-        // T& virtual void operator[](string) const = 0; // element getter with slotID
+        T& operator()(int, int) const; // index-based element getter
+        T& operator[](string) const; // slotID-based element getter
+        void setELmt(int row, int col, T elmt); // element setter
+        Matrix<T>& operator=(const Matrix<T>&); // assignment operator
 };
 
 template<class T>
@@ -73,18 +72,39 @@ int Matrix<T>::getWidth() const {
 }
 
 template<class T>
-void Matrix<T>::setELmt(int row, int col, T elmt){
-    this->buffer[row][col] = elmt;
+T& Matrix<T>::operator()(int i, int j) const {
+    if (i >= this->N || j >= this->M) {
+        throw MatrixException(0);
+    } else {
+        return this->buffer[i][j];
+    }
 }
 
 template<class T>
-T& Matrix<T>::operator()(int i, int j) const {
-    if (i >= this->N || j >= this->M) {
-        // throw MatrixException(0);
-        return this->buffer[i][j];
-        
+T& Matrix<T>::operator[](string slotID) const {
+    char type = slotID[0];
+    int num = stoi(slotID.erase(0,1)) - 1;
+    if (type == 'C') {
+        int row = num / 3;
+        int col = num % 3;
+        return this->buffer[row][col];
+    }
+    else if (type == 'I') {
+        int row = num / 3;
+        int col = num % 9;
+        return this->buffer[row][col];
+    }
+    else {
+        throw MatrixException(0);
+    }
+}
+
+template<class T>
+void Matrix<T>::setELmt(int row, int col, T elmt){
+    if (row >= this->N || col >= this->M) {
+        throw MatrixException(0);
     } else {
-        return this->buffer[i][j];
+        this->buffer[row][col] = elmt;
     }
 }
 

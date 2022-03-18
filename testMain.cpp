@@ -16,6 +16,7 @@
 #include "./class/exception/itemException.cpp"
 #include "./class/exception/nonToolException.cpp"
 #include "./class/exception/toolException.cpp"
+#include "./class/exception/matrixException.cpp"
 #include "./class/crafting/recipe.cpp"
 #include "./class/consoleIO/command.cpp"
 #include "./class/consoleIO/consoleInput.cpp"
