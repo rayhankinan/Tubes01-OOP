@@ -34,6 +34,8 @@ public:
     void setProductName(string);
     void setConfigElmt(int, int, string);
 
+    void printRecipe() const; // for testing
+
 };
 
 

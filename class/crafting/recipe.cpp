@@ -83,3 +83,18 @@ void Recipe::setConfigElmt(int row, int col, string elmt) {
         this->configRecipe(row, col) = elmt;
     }
 }
+
+// for testing
+void Recipe::printRecipe() const {
+    cout << "Row: " << this->row << endl;
+    cout << "Col: " << this->col << endl;
+    cout << "Product Name: " << this->productName << endl;
+    cout << "Product Qty: " << this->productQty << endl;
+    cout << "Configuration:" << endl;
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->col; j++) {
+            cout << this->configRecipe(i, j) << " ";
+        }
+        cout << endl;
+    }
+}
