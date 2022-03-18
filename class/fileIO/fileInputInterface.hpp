@@ -4,6 +4,8 @@
 #include "../item/itemInterface.hpp"
 #include "../item/nonToolInterface.hpp"
 #include "../item/toolInterface.hpp"
+#include "../crafting/recipeInterface.hpp"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -20,10 +22,13 @@ public:
   // split words from sentences to a vector of string
   vector<string> wordsFromSentence(string);
   // read each words from file
-  vector<vector<string>> vectorOfWords();
+  vector<vector<string>> vectorOfWords(string);
+  // vector of tools
   vector<Tool> listOfTool();
+  // vector of non tools
   vector<NonTool> listOfNonTool();
-  // listOfRecipe
+  // vector of recipe
+  vector<Recipe> listOfRecipe();
 };
 
 #endif

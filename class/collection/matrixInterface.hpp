@@ -9,7 +9,7 @@ using namespace std;
 template<class T>
 class Matrix {
     private:
-        const int N, M;
+        int N, M;
         T **buffer;
 
     public:
@@ -20,9 +20,10 @@ class Matrix {
 
         int getLength() const; // N getter
         int getWidth() const; // M getter
+        void setELmt(int row, int col, T elmt); // set ELMT
         T& operator()(int, int) const; // element getter
         Matrix<T>& operator=(const Matrix<T>&);
-        T& virtual void operator[](string) const = 0; // element getter with slotID
+        // T& virtual void operator[](string) const = 0; // element getter with slotID
 };
 
 template<class T>
@@ -36,7 +37,7 @@ Matrix<T>::Matrix(int N, int M) : N(N), M(M) {
 
 template<class T>
 Matrix<T>::Matrix(const Matrix& MT) : N(MT.N), M(MT.M) {
-    this->buffer = new T[this->N][this->M];
+    this->buffer = new T*[this->N];
 
     for (int i = 0; i < this->N; i++) {
         for (int j = 0; j < this->M; j++) {
@@ -65,9 +66,15 @@ int Matrix<T>::getWidth() const {
 }
 
 template<class T>
+void Matrix<T>::setELmt(int row, int col, T elmt){
+    this->buffer[row][col] = elmt;
+}
+
+template<class T>
 T& Matrix<T>::operator()(int i, int j) const {
     if (i >= this->N || j >= this->M) {
-        throw MatrixException(0);
+        // throw MatrixException(0);
+        return this->buffer[i][j];
         
     } else {
         return this->buffer[i][j];
@@ -79,7 +86,7 @@ Matrix<T>& Matrix<T>::operator=(const Matrix<T>& m) {
     this->~Matrix();
     this->N = m.N;
     this->M = m.M;
-    this->buffer = new T[this->N][this->M];
+    this->buffer = new T*[this->N];
     for (int i = 0; i < m.N; i++) {
         for (int j = 0; j < m.M; j++) {
             this->buffer[i][j] = m.buffer[i][j];
