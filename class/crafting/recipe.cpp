@@ -31,11 +31,11 @@ Recipe::Recipe(const Recipe& r) {
 }
 
 // parameterized ctor (configRecipe contents not initialized)
-Recipe::Recipe(int row, int col, int productQty, string productName) {
+Recipe::Recipe(int row, int col) {
     this->row = row;
     this->col = col;
-    this->productQty = productQty;
-    this->productName = productName;
+    this->productQty = 0;
+    this->productName = "-";
     this->configRecipe = Matrix<string>(row, col);
 }
 
@@ -79,9 +79,7 @@ void Recipe::setProductName(string productName) {
 }
 
 void Recipe::setConfigElmt(int row, int col, string elmt) {
-    if (0 <= row && row < this->row && 0 <= col && col < this->col){
-        this->configRecipe(row, col) = elmt;
-    }
+    this->configRecipe.setELmt(row, col, elmt);
 }
 
 // for testing

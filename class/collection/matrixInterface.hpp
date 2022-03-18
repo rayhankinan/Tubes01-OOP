@@ -13,7 +13,7 @@ class Matrix {
         T **buffer;
 
     public:
-        // tidak memerlukan default ctor (tidak ada list of matrix) dan assignment operator (N dan M konstan)
+        Matrix(); // default ctor
         Matrix(int, int); // user-defined ctor
         Matrix(const Matrix&); // cctor
         ~Matrix(); // dtor
@@ -27,11 +27,17 @@ class Matrix {
 };
 
 template<class T>
-Matrix<T>::Matrix(int N, int M) : N(N), M(M) {
-    this->buffer = new T*[this->N];
+Matrix<T>::Matrix() {
+    this->N = 0;
+    this->M = 0;
+}
 
-    for (int i = 0; i < this->N; i++) {
-        this->buffer[i] = new T[this->M];
+template<class T>
+Matrix<T>::Matrix(int N, int M) : N(N), M(M) {
+    this->buffer = new T*[N];
+
+    for (int i = 0; i < N; i++) {
+        this->buffer[i] = new T[M];
     }
 }
 
@@ -48,11 +54,12 @@ Matrix<T>::Matrix(const Matrix& MT) : N(MT.N), M(MT.M) {
 
 template<class T>
 Matrix<T>::~Matrix() {
-    for (int i = 0; i < this->N; i++) {
-        delete[] this->buffer[i];
+    if (this->N == 0 || this->M == 0) {
+        for (int i = 0; i < this->N; i++) {
+            delete[] this->buffer[i];
+        }
+        delete[] this->buffer;
     }
-
-    delete[] this->buffer;
 }
 
 template<class T>
@@ -83,15 +90,19 @@ T& Matrix<T>::operator()(int i, int j) const {
 
 template<class T>
 Matrix<T>& Matrix<T>::operator=(const Matrix<T>& m) {
-    this->~Matrix();
-    this->N = m.N;
-    this->M = m.M;
-    this->buffer = new T*[this->N];
-    for (int i = 0; i < m.N; i++) {
-        for (int j = 0; j < m.M; j++) {
+    this->N = m.getLength();
+    this->M = m.getWidth();
+    this->buffer = new T*[m.getLength()];
+    for (int i = 0; i < this->N; i++) {
+        this->buffer[i] = new T[m.getWidth()];
+    }
+    
+    for (int i = 0; i < m.getLength(); i++) {
+        for (int j = 0; j < m.getWidth(); j++) {
             this->buffer[i][j] = m.buffer[i][j];
         }
     }
+    
     return *this;
 }
 

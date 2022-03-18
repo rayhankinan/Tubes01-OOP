@@ -1,4 +1,5 @@
 #include "fileInputInterface.hpp"
+#include <filesystem>
 using namespace std;
 
 string FileInput::configPath = "./config";
@@ -109,15 +110,17 @@ vector<Recipe> FileInput::listOfRecipe()
     cout << recipeConfigPath << endl;
     vectorOfWords = FileInput::vectorOfWords(recipeConfigPath);
     cout << vectorOfWords.size() << endl;
-    Recipe recipe;
 
     // line 0 of .txt is the m, n of matrix
     int length = vectorOfWords.size();
     int m = stoi(vectorOfWords[0][0]);
     int n = stoi(vectorOfWords[0][1]);
     cout << m << n << endl;
-    recipe.setRow(m);
-    recipe.setCol(n);
+    // recipe.setRow(m);
+    // recipe.setCol(n);
+    cout << "POPO" << endl;
+    Recipe recipe(m, n);
+    cout << "POPO" << endl;
 
     // iterate from line 0 to m
     for (int i = 1; i <= m; i++)

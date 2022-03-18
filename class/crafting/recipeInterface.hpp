@@ -13,12 +13,11 @@ private:
     int col;
     int productQty;
     string productName;
-    Matrix<string> configRecipe = Matrix<string>(row, col);
-
+    Matrix<string> configRecipe;
 public:
     Recipe(); // default ctor
     Recipe(const Recipe&); // cctor
-    Recipe(int, int, int, string); // parameterized ctor
+    Recipe(int, int); // parameterized ctor
     ~Recipe(); // dtor
 
     // getter
