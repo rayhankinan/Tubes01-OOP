@@ -10,7 +10,7 @@ template<class T>
 class Matrix {
     private:
         const int N, M;
-        T *buffer;
+        T **buffer;
 
     public:
         // tidak memerlukan default ctor (tidak ada list of matrix) dan assignment operator (N dan M konstan)
@@ -27,7 +27,11 @@ class Matrix {
 
 template<class T>
 Matrix<T>::Matrix(int N, int M) : N(N), M(M) {
-    this->buffer = new T[this->N][this->M];
+    this->buffer = new T*[this->N];
+
+    for (int i = 0; i < this->N; i++) {
+        this->buffer[i] = new T[this->M];
+    }
 }
 
 template<class T>
