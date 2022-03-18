@@ -10,19 +10,29 @@
 class CraftingTable {
 private:
     // attributes
-    Recipe* recipes;
+    Recipe* *recipes;
+    int NumOfRecipes;
+    const int MaxRecipes;
     const int row = 3;
     const int col = 3;
     Matrix<Item*> table = Matrix<Item*>(row, col);
 
 public:
     CraftingTable(); // default ctor
+    CraftingTable(int); // ctor with custom number of maxrecipes
     ~CraftingTable(); // dtor
+
+    // get NumOfRecipes
+    int getNumOfRecipes() const;
+    // get MaxRecipe
+    int getMaxRecipes() const;
 
     // craft item
     void craft(); 
     // show crafting table
     void show() const;
+    // add recipe
+    void addrecipe(Recipe*);
     // add item to crafting table
     void addItem(int, int, Item*);
     // move item from inv to crafting table
