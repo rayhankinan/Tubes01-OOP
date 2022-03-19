@@ -21,8 +21,13 @@ class Matrix {
         int getWidth() const; // M getter
         T& operator()(int, int) const; // index-based element getter
         T& operator[](string) const; // slotID-based element getter
-        void setELmt(int row, int col, T elmt); // element setter
+        
+        void setELmt(int, int, T); // index-based element setter
+        void setElmt(string, T); // slotID-based element setter
+
         Matrix<T>& operator=(const Matrix<T>&); // assignment operator
+
+        
 };
 
 template<class T>
@@ -100,11 +105,30 @@ T& Matrix<T>::operator[](string slotID) const {
 }
 
 template<class T>
-void Matrix<T>::setELmt(int row, int col, T elmt){
+void Matrix<T>::setELmt(int row, int col, T elmt) {
     if (row >= this->N || col >= this->M) {
         throw MatrixException(0);
     } else {
         this->buffer[row][col] = elmt;
+    }
+}
+
+template<class T>
+void Matrix<T>::setElmt(string slotID, T elmt) {
+    char type = slotID[0];
+    int num = stoi(slotID.erase(0,1)) - 1;
+    if (type == 'C') {
+        int row = num / 3;
+        int col = num % 3;
+        this->buffer[row][col] = elmt;
+    }
+    else if (type == 'I') {
+        int row = num / 3;
+        int col = num % 9;
+        this->buffer[row][col] = elmt;
+    }
+    else {
+        throw MatrixException(0);
     }
 }
 
