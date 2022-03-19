@@ -1,10 +1,16 @@
 #ifndef CONSOLE_INPUT_INTERFACE_HPP
 #define CONSOLE_INPUT_INTERFACE_HPP
 
+#include "../crafting/craftingTableInterface.hpp"
+#include "../inventory/inventoryInterface.hpp"
 #include "commandInterface.hpp"
+
 #include <string>
 #include <iostream>
 using namespace std;
+
+Inventory inventory;
+CraftingTable craftingTable;
 
 class ConsoleInput : public Command
 {

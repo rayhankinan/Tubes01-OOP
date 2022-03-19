@@ -1,11 +1,14 @@
 #ifndef CRAFTING_TABLE_INTERFACE_HPP
 #define CRAFTING_TABLE_INTERFACE_HPP
 
+#include "../inventory/inventoryInterface.hpp"
 #include "../collection/matrixInterface.hpp"
 #include "../item/nonToolInterface.hpp"
 #include "../item/itemInterface.hpp"
 #include "../item/toolInterface.hpp"
 #include "./recipeInterface.hpp"
+
+extern Inventory inventory;
 
 class CraftingTable {
 private:
@@ -26,6 +29,11 @@ public:
     int getNumOfRecipes() const;
     // get MaxRecipe
     int getMaxRecipes() const;
+    // get table element based on slotID
+    Item*& getElmt(string) const;
+        
+    // set table element based on slotID
+    void setElmt(string, Item*); 
 
     // craft item
     void craft(); 

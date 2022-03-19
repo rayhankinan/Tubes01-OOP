@@ -5,6 +5,8 @@
 #include "./class/item/toolInterface.hpp"
 #include "./class/fileIO/fileInput.cpp"
 #include "./class/crafting/recipeInterface.hpp"
+#include "./class/crafting/craftingTableInterface.hpp"
+#include "./class/inventory/inventoryInterface.hpp"
 #include "./class/collection/matrixInterface.hpp"
 #include "./class/consoleIO/commandInterface.hpp"
 #include "./class/consoleIO/consoleInputInterface.hpp"
@@ -18,6 +20,8 @@
 #include "./class/exception/toolException.cpp"
 #include "./class/exception/matrixException.cpp"
 #include "./class/crafting/recipe.cpp"
+#include "./class/crafting/craftingTable.cpp"
+#include "./class/inventory/inventory.cpp"
 #include "./class/consoleIO/command.cpp"
 #include "./class/consoleIO/consoleInput.cpp"
 
