@@ -20,7 +20,6 @@ class Inventory {
         Inventory(); // default ctor
         Inventory(const Inventory&); // cctor
         ~Inventory(); // dtor
-        template<class T>
         
         void show() const;
         // menambahkan item ke inventory sebanyak qty

@@ -21,7 +21,7 @@
 #include "./class/exception/matrixException.cpp"
 #include "./class/crafting/recipe.cpp"
 #include "./class/crafting/craftingTable.cpp"
-#include "./class/inventory/inventory.cpp"
+#include "./class/inventory/dump.cpp"
 #include "./class/consoleIO/command.cpp"
 #include "./class/consoleIO/consoleInput.cpp"
 
