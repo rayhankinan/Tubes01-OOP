@@ -1,6 +1,7 @@
 #ifndef CRAFTING_TABLE_INTERFACE_HPP
 #define CRAFTING_TABLE_INTERFACE_HPP
 
+#include "../exception/craftingExceptionInterface.hpp"
 #include "../inventory/inventoryInterface.hpp"
 #include "../collection/matrixInterface.hpp"
 #include "../item/nonToolInterface.hpp"
@@ -40,7 +41,7 @@ public:
     // show crafting table
     void show() const;
     // add recipe
-    void addrecipe(Recipe*);
+    void addRecipe(Recipe*);
     // add item to crafting table
     void addItem(int, int, Item*);
     // move item from inv to crafting table

@@ -19,6 +19,7 @@
 #include "./class/exception/nonToolException.cpp"
 #include "./class/exception/toolException.cpp"
 #include "./class/exception/matrixException.cpp"
+#include "./class/exception/craftingException.cpp"
 #include "./class/crafting/recipe.cpp"
 #include "./class/crafting/craftingTable.cpp"
 #include "./class/inventory/dump.cpp"

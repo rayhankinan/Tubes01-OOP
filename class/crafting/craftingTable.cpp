@@ -54,11 +54,16 @@ void CraftingTable::craft() {
 
 // show crafting table
 void CraftingTable::show() const {
-    
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->col; j++) {
+            cout << "[" << this->table(i, j) << "] ";
+        }
+        cout << endl;
+    }
 }
 
 // add recipe
-void CraftingTable::addrecipe(Recipe* r) {
+void CraftingTable::addRecipe(Recipe* r) {
     if (this->NumOfRecipes < this->MaxRecipes) {
         this->recipes[this->NumOfRecipes] = r;
         this->NumOfRecipes++;
