@@ -108,8 +108,18 @@ void Inventory::discard(string slotID, const int qty){
     catch(const NonToolException &e){
         e.displayMessage();
     }
-    if(this->table[slotID]->getQuantity() ==0){
-        setItemToNone(this->table[slotID]);
+    catch(const ToolException &e){
+        e.displayMessage();
+    }
+    try {
+        if (this->table[slotID]->getQuantity() == 0) {
+            this->table[slotID] = new NonTool(0, "-", "-", 0);
+        }
+    }
+    catch (const NonToolException &e) {
+        if (this->table[slotID]->getDurability() == 0){
+            this->table[slotID] = new Tool(0, "-", "-", 0);
+        }
     }
 }
 
@@ -126,7 +136,7 @@ void Inventory::use(const string slotID){
         e.displayMessage();
     }
     if(this->table[slotID]->getDurability()==0){
-        setItemToNone(this->table[slotID]);
+        this->table[slotID] = new NonTool(0, "-", "-", 0);
     }
 }
 
@@ -145,8 +155,16 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
         if (this->table[slotSrc]->getID() == this->table[slotTarget]->getID()){
             try{
                 if (this->table[slotSrc]->getQuantity() >= qty) {
-                    this->table[slotSrc]-=qty;
-                    this->table[slotTarget]+=qty;
+                    try{
+                        this->table[slotTarget] += qty;
+                        this->table[slotSrc] -= qty;
+                        if(this->table[slotSrc]->getQuantity()==0){
+                            this->table[slotSrc] = new NonTool(0, "-", "-", 0);
+                        }
+                    }
+                    catch(NonToolException &e){
+                        e.displayMessage();
+                    }
                 }
                 else{
                     throw NonToolException(1);
@@ -154,9 +172,6 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
             }
             catch(NonToolException &e){
                 e.displayMessage();
-            }
-            if(this->table[slotSrc]->getQuantity()==0){
-                setItemToNone(this->table[slotSrc]);
             }
         }
         else{
