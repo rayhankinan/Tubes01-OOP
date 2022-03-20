@@ -20,6 +20,8 @@ class NonTool : public Item {
 
         int getQuantity() const; // quantity getter
         int getDurability() const; // durability getter
+        void setQuantity(int); // quantity setter
+        void setDurability(int); // durability setter
 
         static int getNumOfNonTool(); // numOfNonTool getter
 

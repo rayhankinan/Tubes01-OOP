@@ -7,6 +7,10 @@
 #include "../item/toolInterface.hpp"
 #include "../exception/exceptionInterface.hpp"
 #include "../exception/matrixExceptionInterface.hpp"
+#include "../exception/nonToolExceptionInterface.hpp"
+#include "../exception/toolExceptionInterface.hpp"
+#include "../exception/inventoryExceptionInterface.hpp"
+#include "../collection/helper.hpp"
 
 class Inventory {
     private:
@@ -18,16 +22,36 @@ class Inventory {
 
     public:
         Inventory(); // default ctor
+
         Inventory(const Inventory&); // cctor
+      
         ~Inventory(); // dtor
         
         void show() const;
+
         // menambahkan item ke inventory sebanyak qty
-        void give(Item*, const int qty);
+        void give(string name, const int qty);
+
         // menghapus item dari inventory sebanyak qty
-        void discard(Item*, const int qty);
+        void discard(string slotID, const int qty);
+
         // menggunakan item tool dari inventory
         void use(const string slotID);
+
+        // Menumpuk item. Dua buah item nontool yang sama dapat ditumpuk
+        void moveInInventory(string slotSrc, int qty, string slotTarget);
+        
+        // get table element based on slotID
+        Item*& getElmt(string) const;
+            
+        // set table element based on slotID
+        void setElmt(string, Item*); 
+
+        // check apakah item berupa tool
+        bool isTool(Item*) const;
+
+        void setItemToNone(Item*);
+
 
 };
 

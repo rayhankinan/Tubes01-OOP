@@ -40,6 +40,14 @@ int Tool::getDurability() const {
     return this->durability;
 }
 
+void Tool::setQuantity(int quantity) {
+    throw ToolException(4);
+}
+
+void Tool::setDurability(int durability) {
+    this->durability = durability;
+}
+
 int Tool::getNumOfTool() {
     return Tool::numOfTool;
 }

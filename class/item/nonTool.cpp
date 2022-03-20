@@ -40,6 +40,13 @@ int NonTool::getDurability() const {
     throw NonToolException(4);
 }
 
+void NonTool::setQuantity(int){
+    this->quantity = quantity;
+} 
+void NonTool::setDurability(int){
+    throw NonToolException(4);
+} 
+
 int NonTool::getNumOfNonTool() {
     return NonTool::numOfNonTool;
 }

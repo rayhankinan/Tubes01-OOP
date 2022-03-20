@@ -33,6 +33,9 @@ class Item {
         virtual int getQuantity() const = 0; // quantity getter
         virtual int getDurability() const = 0; // durability getter
 
+        virtual void setQuantity(int) = 0; // quantity setter
+        virtual void setDurability(int) = 0; // durability setter
+
         static int getNumOfItem(); // numOfItem getter
 
         friend istream& operator>>(istream&, Item&); // input stream
