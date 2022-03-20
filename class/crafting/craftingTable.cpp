@@ -13,7 +13,7 @@ CraftingTable::CraftingTable() : MaxRecipes(10) {
 CraftingTable::CraftingTable(int MaxRecipes) : MaxRecipes(MaxRecipes) {
     this->recipes = new Recipe*[this->MaxRecipes];
     this->NumOfRecipes = 0;
-     this->table = Matrix<Item*>(row, col);
+    this->table = Matrix<Item*>(row, col);
 }
 
 // dtor

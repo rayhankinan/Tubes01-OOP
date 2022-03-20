@@ -4,7 +4,7 @@ using namespace std;
 
 int CommandException::numOfCommandException = 0;
 
-CommandException::CommandException(int ID, string _command) : Exception(ID)
+CommandException::CommandException(string _command) : Exception(ID)
 {
   this->command = _command;
   CommandException::numOfCommandException++;
@@ -24,4 +24,9 @@ string CommandException::getCommandException()
 int CommandException::getNumOfCommandException()
 {
   return CommandException::numOfCommandException;
+}
+
+void CommandException::displayMessage() const
+{
+  cout << "Command '" << this->command << "' invalid." << endl;
 }

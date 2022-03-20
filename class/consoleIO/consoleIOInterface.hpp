@@ -1,5 +1,5 @@
-#ifndef CONSOLE_INPUT_INTERFACE_HPP
-#define CONSOLE_INPUT_INTERFACE_HPP
+#ifndef CONSOLE_IO_INTERFACE_HPP
+#define CONSOLE_IO_INTERFACE_HPP
 
 #include "../crafting/craftingTableInterface.hpp"
 #include "../inventory/inventoryInterface.hpp"
@@ -9,21 +9,21 @@
 #include <iostream>
 using namespace std;
 
-Inventory inventory;
-CraftingTable craftingTable;
+// Inventory inventory;
+// CraftingTable craftingTable;
 
-class ConsoleInput : public Command
+class ConsoleIO : public Command
 {
 private:
   string command;
 
 public:
   // default ctor
-  ConsoleInput();
+  ConsoleIO();
   // user defined ctor
-  ConsoleInput(string);
+  ConsoleIO(string);
   // cctor
-  ConsoleInput(const ConsoleInput &CI);
+  ConsoleIO(const ConsoleIO &CI);
   // getter
   string getCommand();
   // setter
