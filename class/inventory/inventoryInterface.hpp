@@ -47,10 +47,6 @@ class Inventory {
         // set table element based on slotID
         void setElmt(string, Item*); 
 
-        // check apakah item berupa tool
-        bool isTool(Item*) const;
-
-        void setItemToNone(Item*);
 
 
 };

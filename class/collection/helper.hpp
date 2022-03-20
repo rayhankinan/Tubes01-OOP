@@ -20,16 +20,4 @@ bool isTool(Item* i){
     }
 }
 
-void setItemToNone(Item* i){
-    i->setID(0);
-    i->setName("");
-    i->setType("");
-    if(isTool(i)){
-        i -= i->getDurability();
-    }
-    else{
-        i -= i->getQuantity();
-    }
-}
-
 #endif

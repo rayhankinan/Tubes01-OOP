@@ -69,12 +69,10 @@ void Inventory::give(string name, const int qty){
                 try{
                     this->table(i, j)+= qty;
                     found = true;
+                    return;
                 }
                 catch(NonToolException &e){
                     e.displayMessage();
-                }
-                if (found) {
-                    return;
                 }
             }
         }
@@ -82,10 +80,16 @@ void Inventory::give(string name, const int qty){
     if(!found) {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
-                if (this->table(i, j)->getID() == 0 && qty <= 64) {
+                if (this->table(i, j)->getID() == 0) {
                     // this->table(i, j) = new NonTool(id ,name, type, qty); menunggu get id dari item.txt
-                    found = true;
-                    return;
+                    try{
+                        this->table(i, j)+= qty;
+                        found = true;
+                        return;
+                    }
+                    catch(NonToolException &e){
+                        e.displayMessage();
+                    }
                 }
             }
         }
@@ -104,22 +108,22 @@ void Inventory::give(string name, const int qty){
 void Inventory::discard(string slotID, const int qty){
     try{
         this->table[slotID]-=qty;
+        try {
+            if (this->table[slotID]->getQuantity() == 0) { //nontool
+                this->table[slotID] = new NonTool(0, "-", "-", 0);
+            }
+        }
+        catch (const NonToolException &e) { //tool
+            if (this->table[slotID]->getDurability() == 0){
+                this->table[slotID] = new Tool(0, "-", "-", 0);
+            }
+        }
     }
     catch(const NonToolException &e){
         e.displayMessage();
     }
     catch(const ToolException &e){
         e.displayMessage();
-    }
-    try {
-        if (this->table[slotID]->getQuantity() == 0) {
-            this->table[slotID] = new NonTool(0, "-", "-", 0);
-        }
-    }
-    catch (const NonToolException &e) {
-        if (this->table[slotID]->getDurability() == 0){
-            this->table[slotID] = new Tool(0, "-", "-", 0);
-        }
     }
 }
 
@@ -131,12 +135,12 @@ void Inventory::discard(string slotID, const int qty){
 void Inventory::use(const string slotID){
     try{
         this->table[slotID]->use();
+        if(this->table[slotID]->getDurability()==0){
+            this->table[slotID] = new NonTool(0, "-", "-", 0);
+        }
     }
     catch(ToolException &e){
         e.displayMessage();
-    }
-    if(this->table[slotID]->getDurability()==0){
-        this->table[slotID] = new NonTool(0, "-", "-", 0);
     }
 }
 
@@ -153,25 +157,20 @@ void Inventory::use(const string slotID){
 void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
     if(!isTool(this->table[slotSrc]) && !isTool(this->table[slotTarget])){
         if (this->table[slotSrc]->getID() == this->table[slotTarget]->getID()){
-            try{
-                if (this->table[slotSrc]->getQuantity() >= qty) {
-                    try{
-                        this->table[slotTarget] += qty;
-                        this->table[slotSrc] -= qty;
-                        if(this->table[slotSrc]->getQuantity()==0){
-                            this->table[slotSrc] = new NonTool(0, "-", "-", 0);
-                        }
-                    }
-                    catch(NonToolException &e){
-                        e.displayMessage();
+            if (this->table[slotSrc]->getQuantity() >= qty) {
+                try{
+                    this->table[slotTarget] += qty;
+                    this->table[slotSrc] -= qty;
+                    if(this->table[slotSrc]->getQuantity()==0){
+                        this->table[slotSrc] = new NonTool(0, "-", "-", 0);
                     }
                 }
-                else{
-                    throw NonToolException(1);
+                catch(NonToolException &e){
+                    e.displayMessage();
                 }
             }
-            catch(NonToolException &e){
-                e.displayMessage();
+            else{
+                cout << "Item tidak mencukupi" << endl;
             }
         }
         else{
@@ -183,3 +182,12 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
     }
 }
 
+
+ // get table element based on slotID
+Item*& Inventory::getElmt(string slotID) const{
+    return this->table[slotID];
+}
+
+void Inventory::setElmt(string slotID, Item* item){
+    this->table[slotID] = item;
+}
