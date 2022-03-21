@@ -1,6 +1,8 @@
 #ifndef CRAFTING_TABLE_INTERFACE_HPP
 #define CRAFTING_TABLE_INTERFACE_HPP
 
+#include <vector>
+
 #include "../exception/craftingExceptionInterface.hpp"
 #include "../inventory/inventoryInterface.hpp"
 #include "../collection/matrixInterface.hpp"
@@ -14,12 +16,12 @@ extern Inventory inventory;
 class CraftingTable {
 private:
     // attributes
-    Recipe* *recipes;
+    Recipe* recipes;
     int NumOfRecipes;
     const int MaxRecipes;
     const int row = 3;
     const int col = 3;
-    Matrix<Item*> table = Matrix<Item*>(row, col);
+    Matrix<Item*> table;
 
 public:
     CraftingTable(); // default ctor
@@ -40,8 +42,10 @@ public:
     void craft(); 
     // show crafting table
     void show() const;
+    // set recipe from FileIO::listOfRecipe()
+    void setRecipes(vector<Recipe> recipes);
     // add recipe
-    void addRecipe(Recipe*);
+    void addRecipe(Recipe r);
     // add item to crafting table
     void addItem(int, int, Item*);
     // move item from inv to crafting table

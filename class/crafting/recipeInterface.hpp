@@ -25,6 +25,7 @@ public:
     int getCol() const;
     int getProductQty() const;
     string getProductName() const;
+    string getConfigElmt(int row, int col);
 
     // setter
     void setRow(int);

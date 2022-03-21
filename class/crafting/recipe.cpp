@@ -72,6 +72,12 @@ string Recipe::getProductName() const
   return this->productName;
 }
 
+string Recipe::getConfigElmt(int row, int col)
+{
+  return this->configRecipe(row, col);
+}
+
+
 // setter
 void Recipe::setRow(int row)
 {
