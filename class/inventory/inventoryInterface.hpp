@@ -10,7 +10,6 @@
 #include "../exception/nonToolExceptionInterface.hpp"
 #include "../exception/toolExceptionInterface.hpp"
 #include "../exception/inventoryExceptionInterface.hpp"
-#include "../collection/helper.hpp"
 #include "../fileIO/fileIOInterface.hpp"
 
 class Inventory {
