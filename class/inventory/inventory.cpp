@@ -214,6 +214,7 @@ int Inventory::getInventoryID(FileIO FI, string name){
             return FI.listOfTool()[i].getID();
         }
     }
+    return 0;
 }
 
 string Inventory::getInventoryType(FileIO FI, string name){
@@ -224,4 +225,5 @@ string Inventory::getInventoryType(FileIO FI, string name){
             return FI.listOfTool()[i].getType();
         }
     }
+    return "none";
 }
