@@ -52,6 +52,8 @@ public:
     void move(string slotInv, int, ...);
     // return item from crafting table to inv
     void move(string slotCraft, int, string slotInv);
+    // check tool/nontool of an item
+    bool isTool(Item* i);
 
 };
 

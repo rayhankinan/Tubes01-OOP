@@ -299,3 +299,14 @@ void CraftingTable::move(string slotCraft, int n, string slotInv) {
     Item* item = this->getElmt(slotCraft);
     // inventory.setElmt[slotInv, item]; unable to access (waiting)
 }
+
+// check tool/nontool of an item
+bool CraftingTable::isTool(Item* i){
+    try {
+        i->getDurability();
+        return true;
+    } 
+    catch (Exception&) {
+        return false;
+    }
+}
