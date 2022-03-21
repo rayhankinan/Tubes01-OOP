@@ -11,7 +11,7 @@
 #include "../exception/toolExceptionInterface.hpp"
 #include "../exception/inventoryExceptionInterface.hpp"
 #include "../collection/helper.hpp"
-#include "../fileIO/fileInputInterface.hpp"
+#include "../fileIO/fileIOInterface.hpp"
 
 class Inventory {
     private:
@@ -50,9 +50,9 @@ class Inventory {
 
         bool isTool(Item*);
 
-        int getInventoryID(FileInput, string);
+        int getInventoryID(FileIO, string);
 
-        string getInventoryType(FileInput, string);
+        string getInventoryType(FileIO, string);
 
 
 

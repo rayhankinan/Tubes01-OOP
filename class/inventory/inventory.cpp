@@ -40,13 +40,13 @@ void Inventory::show() const{
                 }
             }
             else {
-                if(isTool(table(i, j))){
+                try{
                     cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]";
                     if (j == 8) {
                         cout << endl;
                     }
                 }
-                else{
+                catch(const NonToolException &e){
                     cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]";
                     if (j == 8) {
                         cout << endl;
@@ -63,7 +63,7 @@ void Inventory::show() const{
 // Apabila tidak ditemukan slot yang memenuhi syarat tersebut, item ditambahkan pada slot kosong. Penambahan item dilakukan dari ID inventory terkecil.
 void Inventory::give(string name, const int qty){
     bool found = false;
-    FileInput FI;
+    FileIO FI;
     FI.listOfTool();
     FI.listOfNonTool(); 
     for (int i = 0; i < length; i++) {
@@ -199,13 +199,14 @@ bool Inventory::isTool(Item* i){
     try {
         i->getDurability();
         return true;
-    } catch (Exception&) {
+    } 
+    catch (Exception&) {
         return false;
     }
 }
 
 
-int Inventory::getInventoryID(FileInput FI, string name){
+int Inventory::getInventoryID(FileIO FI, string name){
     FI.listOfTool();
     // search name item in list of tool and return item ID
     for (int i = 0; i < FI.listOfTool().size(); i++){
@@ -215,7 +216,7 @@ int Inventory::getInventoryID(FileInput FI, string name){
     }
 }
 
-string Inventory::getInventoryType(FileInput FI, string name){
+string Inventory::getInventoryType(FileIO FI, string name){
     FI.listOfTool();
     // search name item in list of tool and return item type
     for (int i = 0; i < FI.listOfTool().size(); i++){

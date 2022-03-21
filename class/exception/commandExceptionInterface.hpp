@@ -12,11 +12,12 @@ protected:
   string command;
 
 public:
-  CommandException(int, string);              // user-defined ctor
+  CommandException(string);              // user-defined ctor
   CommandException(const CommandException &); // cctor
 
   string getCommandException();
   static int getNumOfCommandException();
+  void displayMessage() const;
 };
 
 #endif

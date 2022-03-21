@@ -1,6 +1,7 @@
 #ifndef COMMAND_INTERFACE_HPP
 #define COMMAND_INTERFACE_HPP
 
+#include "../exception/commandExceptionInterface.hpp"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -24,7 +25,7 @@ public:
   void CRAFT();
   void EXPORT();
   void GIVE();
-  void INVALID_COMMAND();
+  void INVALID_COMMAND(string);
 };
 
 #endif
