@@ -15,16 +15,40 @@ int Command::getNumOfCommand()
 
 void Command::SHOW()
 {
-  cout << "BABI" << endl;
+  cout << "SHOW" << endl;
   Command::numOfCommand++;
 }
 
-void Command::DISCARD() { Command::numOfCommand++; }
-void Command::MOVE() { Command::numOfCommand++; }
-void Command::USE() { Command::numOfCommand++; }
-void Command::CRAFT() { Command::numOfCommand++; }
-void Command::EXPORT() { Command::numOfCommand++; }
-void Command::GIVE() { Command::numOfCommand++; }
+void Command::DISCARD()
+{
+  cout << "DISCARD" << endl;
+  Command::numOfCommand++;
+}
+void Command::MOVE()
+{
+  cout << "MOVE" << endl;
+  Command::numOfCommand++;
+}
+void Command::USE()
+{
+  cout << "USE" << endl;
+  Command::numOfCommand++;
+}
+void Command::CRAFT()
+{
+  cout << "CRAFT" << endl;
+  Command::numOfCommand++;
+}
+void Command::EXPORT()
+{
+  cout << "EXPORT" << endl;
+  Command::numOfCommand++;
+}
+void Command::GIVE()
+{
+  cout << "GIVE" << endl;
+  Command::numOfCommand++;
+}
 
 void Command::INVALID_COMMAND(string command)
 {

@@ -1,5 +1,4 @@
 #include "./class/fileIO/fileIOInterface.hpp"
-#include "./class/crafting/craftingTableInterface.hpp"
 #include "./class/consoleIO/consoleIOInterface.hpp"
 
 using namespace std;
@@ -7,15 +6,19 @@ using namespace std;
 int main() {
   FileIO FIO;
   ConsoleIO CIO;
-  // string FileName;
-  // cout << "ANJING" << endl;
-  // int countFile =  FIO.countOfTestFile(FIO.getTestsPath());
+  string FileName;
+  
+  // check for how many test case is needed
+  int countFile =  FIO.countOfTestFile(FIO.getTestsPath());
 
-  // for (int i = 0; i < countFile; i++){
-  //   cin >> FileName;
-  //   cout << FileName;
+  // USING MAKE ALL
+  for (int i = 0; i < countFile; i++){
+    CIO.start();
   // }
 
-  CIO.start();
-
+  // DIFFERENT WAY OF TESTING
+  // string test1 = "1.in";
+  // string test2 = "2.in";
+  // FIO.start(test1); 
+  // FIO.start(test2);
 }

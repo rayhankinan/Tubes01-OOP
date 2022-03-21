@@ -3,7 +3,7 @@ EXT_IN = in
 EXT_OUT = out
 EXT_ANS = ans
 EXECUTABLE_FILENAME = main
-ALL_SRCS := $(wildcard *.cpp ./class/collection/matrixInterface.hpp ./class/collection/*.cpp ./class/consoleIO/*.cpp ./class/crafting/*.cpp ./class/exception/*.cpp ./class/fileIO/*.cpp ./class/inventory/*.cpp ./class/item/*.cpp)
+ALL_SRCS := $(wildcard *.cpp ./class/*/*.cpp)
 SRCS     := $(filter-out check.cpp testMain.cpp, $(ALL_SRCS))
 
 all: compile test check

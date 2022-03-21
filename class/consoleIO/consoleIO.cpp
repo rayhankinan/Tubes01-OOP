@@ -38,7 +38,7 @@ void ConsoleIO::start()
   setCommand();
 
   /* loop until command EXIT*/
-  while (this->command != "EXIT")
+  while (this->command != "")
   {
     try {
       if (this->command == "SHOW")

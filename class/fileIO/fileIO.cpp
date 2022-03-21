@@ -62,11 +62,15 @@ vector<vector<string>> FileIO::vectorOfWords(string path)
   vector<vector<string>> vectorOfWords;
   vector<string> words;
   // initilaize file IO
-  try
-  {
-    string line;
-    ifstream wordsConfigFile(path);
+  string line;
+  ifstream wordsConfigFile(path);
 
+  if (!wordsConfigFile)
+  {
+    throw FileException(path);
+  }
+  else
+  {
     // read each line
     while (getline(wordsConfigFile, line))
     {
@@ -75,12 +79,8 @@ vector<vector<string>> FileIO::vectorOfWords(string path)
       vectorOfWords.push_back(words);
     }
 
-    wordsConfigFile.close();
   }
-  catch (FileException FE)
-  {
-    FE.displayMessage();
-  }
+  wordsConfigFile.close();
 
   return vectorOfWords;
 }
@@ -88,7 +88,16 @@ vector<vector<string>> FileIO::vectorOfWords(string path)
 /* get list of tool */
 vector<Tool> FileIO::listOfTool()
 {
-  vector<vector<string>> vectorOfWords = FileIO::vectorOfWords(FileIO::configPath + "/item.txt");
+  vector<vector<string>> vectorOfWords;
+
+  try
+  {
+    vector<vector<string>> vectorOfWords = FileIO::vectorOfWords(FileIO::configPath + "/item.txt");
+  }
+  catch (FileException &FE)
+  {
+    FE.displayMessage();
+  }
   vector<Tool> tools;
 
   for (int i = 0; i < vectorOfWords.size(); i++)
@@ -112,7 +121,16 @@ vector<Tool> FileIO::listOfTool()
 /* get list of non tool */
 vector<NonTool> FileIO::listOfNonTool()
 {
-  vector<vector<string>> vectorOfWords = FileIO::vectorOfWords(FileIO::configPath + "/item.txt");
+  vector<vector<string>> vectorOfWords;
+
+  try
+  {
+    vector<vector<string>> vectorOfWords = FileIO::vectorOfWords(FileIO::configPath + "/item.txt");
+  }
+  catch (FileException &FE)
+  {
+    FE.displayMessage();
+  }
   vector<NonTool> nonTools;
 
   for (int i = 0; i < vectorOfWords.size(); i++)
@@ -143,7 +161,14 @@ vector<Recipe> FileIO::listOfRecipe()
   for (const auto &entry : filesystem::directory_iterator(FileIO::configPath + "/recipe"))
   {
     string recipeConfigPath = entry.path().string();
+  try
+  {
     vectorOfWords = FileIO::vectorOfWords(recipeConfigPath);
+  }
+  catch (FileException &FE)
+  {
+    FE.displayMessage();
+  }
 
     // line 0 of .txt is the m, n of matrix
     int length = vectorOfWords.size();
@@ -194,14 +219,23 @@ void FileIO::EXPORT(string FileName)
 /* MAIN PROGRAM */
 void FileIO::start(string FileName)
 {
-  string FilePath = FileIO::testsPath + FileName;
-  vector<vector<string>> commands = vectorOfWords(FilePath);
+  string FilePath = FileIO::testsPath + "/" + FileName;
+  vector<vector<string>> commands;
+
+  try
+  {
+    commands = vectorOfWords(FilePath);
+  }
+  catch (FileException &FE)
+  {
+    FE.displayMessage();
+  }
+  cout << commands.size() << endl;
 
   // iterate each line of the command
-  for (int i = 0; i += 0; i++)
+  for (int i = 0; i < commands.size(); i++)
   {
     string command = commands[i][0];
-
     try
     {
       if (command == "SHOW")
