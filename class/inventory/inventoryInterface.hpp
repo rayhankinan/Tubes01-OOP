@@ -11,6 +11,7 @@
 #include "../exception/toolExceptionInterface.hpp"
 #include "../exception/inventoryExceptionInterface.hpp"
 #include "../collection/helper.hpp"
+#include "../fileIO/fileInputInterface.hpp"
 
 class Inventory {
     private:
@@ -45,7 +46,14 @@ class Inventory {
         Item*& getElmt(string) const;
             
         // set table element based on slotID
-        void setElmt(string, Item*); 
+        void setElmt(string, Item*);
+
+        bool isTool(Item*);
+
+        int getInventoryID(FileInput, string);
+
+        string getInventoryType(FileInput, string);
+
 
 
 

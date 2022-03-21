@@ -34,20 +34,20 @@ void Inventory::show() const{
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
             if (this->table(i, j)->getID() == 0) {
-                cout << "[I" << i*9+j << "|empty] ";
+                cout << "\t[I" << i*9+j << "|0]\t";
                 if (j == 8) {
                     cout << endl;
                 }
             }
             else {
                 if(isTool(table(i, j))){
-                    cout << "[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getDurability() << "] ";
+                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]";
                     if (j == 8) {
                         cout << endl;
                     }
                 }
                 else{
-                    cout << "[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getQuantity() << "] ";
+                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]";
                     if (j == 8) {
                         cout << endl;
                     }
@@ -63,6 +63,9 @@ void Inventory::show() const{
 // Apabila tidak ditemukan slot yang memenuhi syarat tersebut, item ditambahkan pada slot kosong. Penambahan item dilakukan dari ID inventory terkecil.
 void Inventory::give(string name, const int qty){
     bool found = false;
+    FileInput FI;
+    FI.listOfTool();
+    FI.listOfNonTool(); 
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
             if (this->table(i, j)->getName() == name) {
@@ -81,7 +84,7 @@ void Inventory::give(string name, const int qty){
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
                 if (this->table(i, j)->getID() == 0) {
-                    // this->table(i, j) = new NonTool(id ,name, type, qty); menunggu get id dari item.txt
+                    this->table(i, j) = new NonTool(getInventoryID(FI, name),name, getInventoryType(FI, name), qty);
                     try{
                         this->table(i, j)+= qty;
                         found = true;
@@ -190,4 +193,34 @@ Item*& Inventory::getElmt(string slotID) const{
 
 void Inventory::setElmt(string slotID, Item* item){
     this->table[slotID] = item;
+}
+
+bool Inventory::isTool(Item* i){
+    try {
+        i->getDurability();
+        return true;
+    } catch (Exception&) {
+        return false;
+    }
+}
+
+
+int Inventory::getInventoryID(FileInput FI, string name){
+    FI.listOfTool();
+    // search name item in list of tool and return item ID
+    for (int i = 0; i < FI.listOfTool().size(); i++){
+        if (FI.listOfTool()[i].getName() == name){
+            return FI.listOfTool()[i].getID();
+        }
+    }
+}
+
+string Inventory::getInventoryType(FileInput FI, string name){
+    FI.listOfTool();
+    // search name item in list of tool and return item type
+    for (int i = 0; i < FI.listOfTool().size(); i++){
+        if (FI.listOfTool()[i].getName() == name){
+            return FI.listOfTool()[i].getType();
+        }
+    }
 }
