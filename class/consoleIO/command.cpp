@@ -24,7 +24,14 @@ void Command::DISCARD(Inventory &inv, string slotID, int qty)
 {
   cout << "DISCARD " << slotID << " " << qty << endl;
   Command::numOfCommand++;
-  inv.discard(slotID, qty);
+  try 
+  {
+    inv.discard(slotID, qty);
+  }
+  catch (InventoryException &IE)
+  {
+    IE.displayMessage();
+  }
 }
 
 void Command::MOVE(Inventory &inv, string slotSrc, int qty, string slotTarget)
@@ -35,7 +42,7 @@ void Command::MOVE(Inventory &inv, string slotSrc, int qty, string slotTarget)
   {
     inv.moveInInventory(slotSrc, qty, slotTarget);
   }
-  catch (const InventoryException &e)
+  catch (const Exception &e)
   {
     e.displayMessage();
   }
@@ -55,6 +62,8 @@ void Command::USE(Inventory &inv, string slotID)
     e.displayMessage();
   }
 }
+
+
 void Command::CRAFT()
 {
   cout << "CRAFT" << endl;

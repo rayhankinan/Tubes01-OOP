@@ -88,7 +88,7 @@ T& Matrix<T>::operator()(int i, int j) const {
 template<class T>
 T& Matrix<T>::operator[](string slotID) const {
     char type = slotID[0];
-    int num = stoi(slotID.erase(0,1));
+    int num = stoi(slotID.substr(1));
     if (type == 'C' && 0 <= num && num <= 8) {
         int row = num / 3;
         int col = num % 3;
@@ -116,7 +116,7 @@ void Matrix<T>::setElmt(int row, int col, T elmt) {
 template<class T>
 void Matrix<T>::setElmt(string slotID, T elmt) {
     char type = slotID[0];
-    int num = stoi(slotID.erase(0,1));
+    int num = stoi(slotID.substr(1));
     if (type == 'C' && 0 <= num && num <= 8) {
         int row = num / 3;
         int col = num % 3;

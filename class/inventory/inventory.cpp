@@ -89,12 +89,12 @@ void Inventory::give(string name, int qty){
             for (int j = 0; j < width && qty > 0; j++) {
                 if (this->table(i,j) != NULL && this->table(i, j)->getName() == name) {
                     try {
-                        this->table(i, j) += qty;
+                        *(this->table(i, j)) += qty;
                         qty = 0;
                         
                     } catch(NonToolException &e){
                         int sisa = 64 - this->table(i, j)->getQuantity();
-                        this->table(i, j) += sisa;
+                        *(this->table(i, j)) += sisa;
                         qty -= sisa;
                     }
                 }
@@ -126,7 +126,7 @@ void Inventory::discard(string slotID,  int qty){
     }
     else if(!(this->table[slotID])->isTool()){
         try{
-            this->table[slotID]-= qty;
+            *(this->table[slotID])-= qty;
             if (this->table[slotID]->getQuantity() == 0) {
                 delete table[slotID];
                 this->table[slotID] = NULL;
@@ -155,31 +155,63 @@ void Inventory::use(const string slotID){
 }
 
 void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
-    if(this->table[slotSrc] == NULL || this->table[slotTarget] == NULL){
+    // slot asal tidak boleh kosong
+    if(this->table[slotSrc] == NULL){
         throw InventoryException(5);
     }
-    if (this->table[slotSrc]->isTool() || this->table[slotTarget]->isTool()){
-        throw InventoryException(1);
+    // jika slot tujuan tidak kosong maka jenis item harus sama
+    if(this->table[slotTarget] != NULL){
+        if ((this->table[slotSrc]->isTool() && !(this->table[slotTarget]->isTool())) || (!(this->table[slotSrc]->isTool() && this->table[slotTarget]->isTool()))) {
+            throw InventoryException(2);
+        }
     }
-    if (this->table[slotSrc]->getID() != this->table[slotTarget]->getID()){
-        throw InventoryException(2);
+    //jika slot tujuan tidak kosong maka id harus sama
+    if(this->table[slotTarget] != NULL){
+        if (this->table[slotSrc]->getID() != this->table[slotTarget]->getID()){
+            throw InventoryException(2);
+        }
     }
+    // yang dipindah tidak boleh melebihi quantity asal
     if (this->table[slotSrc]->getQuantity() < qty) {
         throw InventoryException(3);
     }
-
-    try{
-        this->table[slotTarget] += qty;
-        this->table[slotSrc] -= qty;
-        if(this->table[slotSrc]->getQuantity()==0){
-            delete this->table[slotTarget];
-            this->table[slotSrc] = NULL;        
+    
+    //jika target kosong
+    if(this->table[slotTarget] == NULL){
+        if (this->table[slotSrc]->isTool())
+        {
+            this->table[slotTarget] = new Tool(this->table[slotSrc]->getID(), this->table[slotSrc]->getName(), this->table[slotSrc]->getType(), this->table[slotSrc]->getDurability());
+        }
+        else
+        {
+            this->table[slotTarget] = new NonTool(this->table[slotSrc]->getID(), this->table[slotSrc]->getName(), this->table[slotSrc]->getType(), this->table[slotSrc]->getQuantity());
+        }
+        
+        delete this->table[slotSrc];
+        this->table[slotSrc] = NULL;
+    }
+    //jika target tidak kosong
+    else{
+        try{
+            *(this->table[slotTarget]) += qty;
+            *(this->table[slotSrc]) -= qty;
+            try{
+                if (this->table[slotSrc]->getQuantity() == 0) {
+                    delete table[slotSrc];
+                    this->table[slotSrc] = NULL;
+                }
+            }
+            catch(NonToolException &e){
+                if (this->table[slotSrc]->getDurability() == 0) {
+                    delete table[slotSrc];
+                    this->table[slotSrc] = NULL;
+                }
+            }
+        }
+        catch(NonToolException &e){
+            e.displayMessage();
         }
     }
-    catch(NonToolException &e){
-        e.displayMessage();
-    }
-
 }
 
 
