@@ -217,104 +217,104 @@ void FileIO::EXPORT(string FileName)
 }
 
 /* MAIN PROGRAM */
-void FileIO::start(string FileName)
-{
-  string FilePath = FileIO::testsPath + "/" + FileName;
-  vector<vector<string>> commands;
+// void FileIO::start(string FileName)
+// {
+//   string FilePath = FileIO::testsPath + "/" + FileName;
+//   vector<vector<string>> commands;
 
-  try
-  {
-    commands = vectorOfWords(FilePath);
-  }
-  catch (FileException &FE)
-  {
-    FE.displayMessage();
-  }
-  cout << commands.size() << endl;
+//   try
+//   {
+//     commands = vectorOfWords(FilePath);
+//   }
+//   catch (FileException &FE)
+//   {
+//     FE.displayMessage();
+//   }
+//   cout << commands.size() << endl;
 
-  // iterate each line of the command
-  for (int i = 0; i < commands.size(); i++)
-  {
-    string command = commands[i][0];
-    try
-    {
-      if (command == "SHOW")
-      {
-        /* Display crafting table */
-        this->Command::SHOW();
-      }
-      else if (command == "GIVE")
-      {
-        string itemName = commands[i][1];
-        string itemQty = commands[i][2];
+//   // iterate each line of the command
+//   for (int i = 0; i < commands.size(); i++)
+//   {
+//     string command = commands[i][0];
+//     try
+//     {
+//       if (command == "SHOW")
+//       {
+//         /* Display crafting table */
+//         this->Command::SHOW();
+//       }
+//       else if (command == "GIVE")
+//       {
+//         string itemName = commands[i][1];
+//         string itemQty = commands[i][2];
 
-        /* Give item */
-        this->Command::GIVE();
-      }
-      else if (command == "DISCARD")
-      {
-        string inventorySlotID = commands[i][1];
-        string itemQty = commands[i][2];
+//         /* Give item */
+//         this->Command::GIVE();
+//       }
+//       else if (command == "DISCARD")
+//       {
+//         string inventorySlotID = commands[i][1];
+//         string itemQty = commands[i][2];
 
-        /* Discard item */
-        this->Command::DISCARD();
-      }
-      else if (command == "MOVE")
-      {
-        string slotSrc = commands[i][1];
-        string slotDest = commands[i][2];
-        string slotQty = commands[i][3];
+//         /* Discard item */
+//         this->Command::DISCARD();
+//       }
+//       else if (command == "MOVE")
+//       {
+//         string slotSrc = commands[i][1];
+//         string slotDest = commands[i][2];
+//         string slotQty = commands[i][3];
 
-        /* Move item */
-        this->Command::MOVE();
-      }
-      else if (command == "USE")
-      {
-        string inventorySlotID = commands[i][1];
+//         /* Move item */
+//         this->Command::MOVE();
+//       }
+//       else if (command == "USE")
+//       {
+//         string inventorySlotID = commands[i][1];
 
-        cin >> inventorySlotID;
-        /* Use item */
-        this->Command::USE();
-      }
-      else if (command == "CRAFT")
-      {
-        /* Craft item */
-        this->Command::CRAFT();
-      }
-      else if (command == "EXPORT")
-      {
-        string fileName = commands[i][1];
+//         cin >> inventorySlotID;
+//         /* Use item */
+//         this->Command::USE();
+//       }
+//       else if (command == "CRAFT")
+//       {
+//         /* Craft item */
+//         this->Command::CRAFT();
+//       }
+//       else if (command == "EXPORT")
+//       {
+//         string fileName = commands[i][1];
 
-        /* Export to file */
-        this->Command::EXPORT();
-      }
-      else
-      {
-        this->Command::INVALID_COMMAND(command);
-      }
-    }
-    /* catch for any invalid command */
-    catch (CommandException CE)
-    {
-      CE.displayMessage();
-    }
-  }
-}
+//         /* Export to file */
+//         this->Command::EXPORT();
+//       }
+//       else
+//       {
+//         this->Command::INVALID_COMMAND(command);
+//       }
+//     }
+//     /* catch for any invalid command */
+//     catch (CommandException CE)
+//     {
+//       CE.displayMessage();
+//     }
+//   }
+// }
 
-/* tester function */
-void FileIO::displayTool()
-{
-  vector<Tool> tools = listOfTool();
+// /* tester function */
+// void FileIO::displayTool()
+// {
+//   vector<Tool> tools = listOfTool();
 
-  cout << "List of Tool: " << endl;
-  for (int i = 0; i < tools.size(); i++)
-  {
-    cout << i + 1 << "." << endl;
-    tools[i].display();
-    cout << endl;
-  }
-  cout << endl;
-}
+//   cout << "List of Tool: " << endl;
+//   for (int i = 0; i < tools.size(); i++)
+//   {
+//     cout << i + 1 << "." << endl;
+//     tools[i].display();
+//     cout << endl;
+//   }
+//   cout << endl;
+// }
 
 /* tester function */
 void FileIO::displayNonTool()

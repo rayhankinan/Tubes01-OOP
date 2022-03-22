@@ -2,13 +2,8 @@
 #define INVENTORY_INTERFACE_HPP
 
 #include "../collection/matrixInterface.hpp"
-#include "../item/itemInterface.hpp"
 #include "../item/nonToolInterface.hpp"
 #include "../item/toolInterface.hpp"
-#include "../exception/exceptionInterface.hpp"
-#include "../exception/matrixExceptionInterface.hpp"
-#include "../exception/nonToolExceptionInterface.hpp"
-#include "../exception/toolExceptionInterface.hpp"
 #include "../exception/inventoryExceptionInterface.hpp"
 #include "../fileIO/fileIOInterface.hpp"
 
@@ -40,6 +35,9 @@ class Inventory {
 
         // Menumpuk item. Dua buah item nontool yang sama dapat ditumpuk
         void moveInInventory(string slotSrc, int qty, string slotTarget);
+
+        // EXPORT
+        void EXPORT(string);
         
         // get table element based on slotID
         Item*& getElmt(string);
@@ -47,11 +45,11 @@ class Inventory {
         // set table element based on slotID
         void setElmt(string, Item*);
 
-        int getInventoryID(FileIO, string);
+        int getInventoryID(string);
 
-        string getInventoryType(FileIO, string);
+        string getInventoryType(string);
 
-        string getCategory(FileIO, string);
+        string getCategory(string);
 
 
 

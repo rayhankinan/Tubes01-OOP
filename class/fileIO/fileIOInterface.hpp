@@ -6,14 +6,13 @@
 #include "../item/toolInterface.hpp"
 #include "../crafting/recipeInterface.hpp"
 #include "../exception/fileExceptionInterface.hpp"
-#include "../consoleIO/commandInterface.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
-class FileIO: public Command
+class FileIO
 {
 protected:
   static string configPath;
@@ -39,7 +38,7 @@ public:
   // exporting item from inventory
   void EXPORT(string);
   // main program
-  void start(string);
+  // void start(string);
   // display tool
   void displayTool();
   // display non tool

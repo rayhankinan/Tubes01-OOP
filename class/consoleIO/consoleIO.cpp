@@ -54,7 +54,7 @@ void ConsoleIO::start()
 
         cin >> itemName >> itemQty;
         /* Give item */
-        this->Command::GIVE();
+        this->Command::GIVE(inventory, itemName, itemQty);
       }
       else if (this->command == "DISCARD")
       {
@@ -72,7 +72,7 @@ void ConsoleIO::start()
 
         cin >> slotSrc >> slotQty >> slotDest;
         /* Move item */
-        this->Command::MOVE();
+        this->Command::MOVE(inventory);
       }
       else if (this->command == "USE")
       {
@@ -80,7 +80,7 @@ void ConsoleIO::start()
 
         cin >> inventorySlotID;
         /* Use item */
-        this->Command::USE();
+        this->Command::USE(inventory, inventorySlotID);
       }
       else if (this->command == "CRAFT")
       {
@@ -93,7 +93,7 @@ void ConsoleIO::start()
 
         cin >> fileName;
         /* Export to file */
-        this->Command::EXPORT();
+        this->Command::EXPORT(inventory, fileName);
       }
       else
       {

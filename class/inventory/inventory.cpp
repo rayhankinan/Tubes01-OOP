@@ -65,14 +65,14 @@ void Inventory::show() const{
 void Inventory::give(string name, int qty){
     FileIO FI;
     string category;
-    category = getCategory(FI, name);
+    category = getCategory(name);
     bool found = false;
     if (category == "TOOL") {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
                 if (qty > 0){
                     if (this->table(i, j) == NULL) {
-                        this->table(i, j) = new Tool(getInventoryID(FI, name),name, getInventoryType(FI, name), 10);
+                        this->table(i, j) = new Tool(getInventoryID(name),name, getInventoryType(name), 10);
                         qty--;
                     }
                 }
@@ -109,7 +109,7 @@ void Inventory::give(string name, int qty){
             for (int j = 0; j < width; j++) {
                 if (qty > 0) {
                     if (this->table(i, j) == NULL) {
-                        this->table(i, j) = new NonTool(getInventoryID(FI, name),name, getInventoryType(FI, name), qty > 64 ? 64 : qty);
+                        this->table(i, j) = new NonTool(getInventoryID(name),name, getInventoryType(name), qty > 64 ? 64 : qty);
                         qty -= 64;
                     }
                 }
@@ -198,7 +198,8 @@ void Inventory::setElmt(string slotID, Item* item){
     this->table[slotID] = item;
 }
 
-int Inventory::getInventoryID(FileIO FI, string name){
+int Inventory::getInventoryID(string name){
+    FileIO FI;
     vector<Tool> listTool = FI.listOfTool();
     vector<NonTool> listNonTool = FI.listOfNonTool();
     // search name item in list of tool and return item ID
@@ -210,7 +211,8 @@ int Inventory::getInventoryID(FileIO FI, string name){
     throw InventoryException(4);
 }
 
-string Inventory::getInventoryType(FileIO FI, string name){
+string Inventory::getInventoryType(string name){
+    FileIO FI;
     vector<Tool> listTool = FI.listOfTool();
     vector<NonTool> listNonTool = FI.listOfNonTool();
     // search name item in list of tool and return item type
@@ -222,7 +224,8 @@ string Inventory::getInventoryType(FileIO FI, string name){
     throw InventoryException(4);
 }
 
-string Inventory::getCategory(FileIO FI, string name){
+string Inventory::getCategory(string name){
+    FileIO FI;
     vector<Tool> listTool = FI.listOfTool();
     vector<NonTool> listNonTool = FI.listOfNonTool();
     // search name item in list of tool and return item category
@@ -238,4 +241,21 @@ string Inventory::getCategory(FileIO FI, string name){
         }
     }
     throw InventoryException(4);
+}
+
+void Inventory::EXPORT(string FileName){
+  FileIO FI;
+  ofstream outputFile("./" + FileName);
+
+  for (int i = 0; i < length; i++){
+    for (int j = 0; j < width; j++){
+      if (this->table(i, j) == NULL){
+        outputFile << "0:0" << endl;
+      } else {
+        outputFile << *(this->table(i, j)) << endl;
+      }
+    }
+  }
+
+  outputFile.close();
 }

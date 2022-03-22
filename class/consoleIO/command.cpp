@@ -22,33 +22,37 @@ void Command::SHOW(Inventory& inv)
 
 void Command::DISCARD(Inventory &inv, string slotID, int qty)
 {
-  cout << "DISCARD" << endl;
+  cout << "DISCARD " << slotID << " " <<  qty << endl;
   Command::numOfCommand++;
   inv.discard(slotID, qty);
 }
-void Command::MOVE()
+
+void Command::MOVE(Inventory &inv)
 {
   cout << "MOVE" << endl;
   Command::numOfCommand++;
 }
-void Command::USE()
+void Command::USE(Inventory &inv, string slotID)
 {
-  cout << "USE" << endl;
+  cout << "USE " << slotID << endl;
   Command::numOfCommand++;
+  inv.use(slotID);
 }
 void Command::CRAFT()
 {
   cout << "CRAFT" << endl;
   Command::numOfCommand++;
 }
-void Command::EXPORT()
+void Command::EXPORT(Inventory& inv, string fileName)
 {
-  cout << "EXPORT" << endl;
+  cout << "EXPORT " << fileName << endl;
   Command::numOfCommand++;
+  inv.EXPORT(fileName);
 }
-void Command::GIVE()
+
+void Command::GIVE(Inventory &inv, string slotID, int qty)
 {
-  cout << "GIVE" << endl;
+  cout << "GIVE " << slotID << " " << qty << endl;
   Command::numOfCommand++;
 }
 

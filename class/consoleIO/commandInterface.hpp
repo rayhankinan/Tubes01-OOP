@@ -21,11 +21,11 @@ public:
   // fungsi yang berkaitan sama modul kalian masing-masing
   void SHOW(Inventory&);
   void DISCARD(Inventory&, string, int);
-  void MOVE();
-  void USE();
+  void MOVE(Inventory&);
+  void USE(Inventory&, string);
   void CRAFT();
-  void EXPORT();
-  void GIVE();
+  void EXPORT(Inventory&, string);
+  void GIVE(Inventory&, string, int);
   void INVALID_COMMAND(string);
 };
 
