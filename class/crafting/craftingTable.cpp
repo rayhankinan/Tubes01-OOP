@@ -65,12 +65,18 @@ void CraftingTable::setElmt(string slotID, Item* item) {
 // craft item
 void CraftingTable::craft() {
     /* CEK bila table kosong semua */
+    bool empty = true;
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
             if (this->table(i,j) != NULL) {
-                throw CraftingException(0);
+                empty = false;
+                break;
             }
-    }}
+        }
+    }
+    if (empty) {
+        throw CraftingException(0);
+    }
 
     /* OPSI PERTAMA CRAFTING: 
     Craft dua item tool dengan jenis sama
@@ -282,22 +288,48 @@ void CraftingTable::addItem(int row, int col, Item* item) {
 // move item from inv to crafting table
 /* NOT TESTED YET (waiting for inventory access) */
 void CraftingTable::move(string slotInv, int n, ...) {
-    va_list listSlotID;
-    va_start(listSlotID, n);
-    // Item* elmt = inventory.getElmt(slotInv); unable to access (waiting)
+    va_list listSlotCraft;
+    va_start(listSlotCraft, n);
+    // check jumlah item di slot inv, harus >= n (unable to access inv, waiting)
+    /*
+    Item* item = inventory.getElmt(slotInv);
+    if (item.quantity < n) {
+        throw CraftingException(2);
+    } 
+    */
     Item* item; // for example purposes (temporary)
     for (int i = 0; i < n; i++) {
-        string slotID = va_arg(listSlotID, char*);
-        this->setElmt(slotID, item);
+        string slotCraft = va_arg(listSlotCraft, char*);
+        // kalo ternyata gaboleh ngisi crafting table yang uda ada isi:
+        /* 
+        if (this->getElmt(slotCraft) != NULL) {
+            throw CraftingException(3);
+        }
+        */
+        this->setElmt(slotCraft, item);
     }
-    va_end(listSlotID);
+    va_end(listSlotCraft);
 }
 
 // return item from crafting table to inv
-/* NOT TESTED YET (waiting for inventory access) */
+// NOT TESTED YET (waiting for inventory access)
 void CraftingTable::move(string slotCraft, int n, string slotInv) {
+    // kalo ternyata N-nya boleh lebih dari 1 --> paramnya ganti jadi ellipsis (rombak)
+    /*
+    if (item == NULL || item->getQuantity() < n) { // tambahin juga: OR inventory tidak kosong (isinya item jenis beda/isinya jenis sama tp penuh)
+        throw CraftingException(2);
+    }
+    */
+
     Item* item = this->getElmt(slotCraft);
-    // inventory.setElmt[slotInv, item]; unable to access (waiting)
+    // asumsi sementara kayak di spek (N-nya cuma boleh 1)
+    if (item == NULL || n != 1) {
+        throw CraftingException(2);
+    }
+    else {
+        // inventory.setElmt[slotInv, item]; unable to access (waiting)
+        this->setElmt(slotCraft, NULL);
+    }
 }
 
 // check tool/nontool of an item

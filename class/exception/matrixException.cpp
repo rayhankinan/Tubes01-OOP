@@ -2,7 +2,10 @@
 
 int MatrixException::numOfMatrixException = 0;
 
-string MatrixException::message[] = {"Indeks diluar batas matriks!"};
+string MatrixException::message[] = {
+    "Indeks diluar batas matriks!",
+    "SlotID invalid!"
+};
 
 MatrixException::MatrixException(int ID) : Exception(ID) {
     MatrixException::numOfMatrixException++;
