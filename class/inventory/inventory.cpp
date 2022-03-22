@@ -66,6 +66,7 @@ void Inventory::give(string name, int qty){
     FileIO FI;
     string category;
     category = getCategory(name);
+    cout << category << endl;
     bool found = false;
     if (category == "TOOL") {
         for (int i = 0; i < length; i++) {
@@ -241,13 +242,17 @@ string Inventory::getCategory(string name){
     vector<NonTool> listNonTool = FI.listOfNonTool();
     // search name item in list of tool and return item category
     for (int i = 0; i < listTool.size(); i++) {
-        if (listTool[i].getName() == name) {
+        int checkTool = listTool[i].getName().compare(name);
+        checkTool = checkTool == 0;
+        if (checkTool) {
             return "TOOL";
         }
     }
     // search name item in list of non tool and return item category
     for (int i = 0; i < listNonTool.size(); i++) {
-        if (listNonTool[i].getName() == name) {
+        int checkTool = listNonTool[i].getName().compare(name);
+        checkTool = checkTool == 0;
+        if (checkTool) {
             return "NONTOOL";
         }
     }

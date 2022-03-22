@@ -101,7 +101,7 @@ void Recipe::setProductName(string productName)
 
 void Recipe::setConfigElmt(int row, int col, string elmt)
 {
-  this->configRecipe.setELmt(row, col, elmt);
+  this->configRecipe.setElmt(row, col, elmt);
 }
 
 // for testing

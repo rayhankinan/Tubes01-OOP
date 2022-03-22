@@ -10,7 +10,11 @@ int main() {
   string FileName;
 
   Inventory INV;
-  INV.show();
+  // INV.show();  
+
+  FIO.displayTool();
+  FIO.displayNonTool();
+  // FIO.displayRecipe();
   
   // check for how many test case is needed
   int countFile =  FIO.countOfTestFile(FIO.getTestsPath());

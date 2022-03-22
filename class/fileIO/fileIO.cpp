@@ -64,7 +64,7 @@ vector<vector<string>> FileIO::vectorOfWords(string path)
   // initilaize file IO
   string line;
   ifstream wordsConfigFile(path);
-
+  
   if (!wordsConfigFile)
   {
     throw FileException(path);
@@ -92,22 +92,28 @@ vector<Tool> FileIO::listOfTool()
 
   try
   {
-    vector<vector<string>> vectorOfWords = FileIO::vectorOfWords(FileIO::configPath + "/item.txt");
+    vectorOfWords = FileIO::vectorOfWords(this->configPath + "/item.txt");
   }
   catch (FileException &FE)
   {
     FE.displayMessage();
   }
+  
   vector<Tool> tools;
-
   for (int i = 0; i < vectorOfWords.size(); i++)
   {
+    int ID = stoi(vectorOfWords[i][0]);
+    string name = vectorOfWords[i][1];
+    string type = vectorOfWords[i][2];
+    string item = vectorOfWords[i][3];
+    int checkItem = item.compare("TOOL");
+    // checkItem = (checkItem == 1) || (checkItem == 0);
+
+    // cout << (item.compare("TOOL")) << endl;
+    // cout << item << " == TOOL : " << (item == "TOOL") << endl;
     // define item depends of the type
-    if (vectorOfWords[i][3] == "TOOL")
+    if (checkItem == 0)
     {
-      int ID = stoi(vectorOfWords[i][0]);
-      string name = vectorOfWords[i][1];
-      string type = vectorOfWords[i][2];
       // auto set to 10
       int durability = 10;
       Tool tool(ID, name, type, durability);
@@ -125,7 +131,7 @@ vector<NonTool> FileIO::listOfNonTool()
 
   try
   {
-    vector<vector<string>> vectorOfWords = FileIO::vectorOfWords(FileIO::configPath + "/item.txt");
+    vectorOfWords = FileIO::vectorOfWords(FileIO::configPath + "/item.txt");
   }
   catch (FileException &FE)
   {
@@ -133,14 +139,19 @@ vector<NonTool> FileIO::listOfNonTool()
   }
   vector<NonTool> nonTools;
 
+  
+
   for (int i = 0; i < vectorOfWords.size(); i++)
   {
+    int ID = stoi(vectorOfWords[i][0]);
+    string name = vectorOfWords[i][1];
+    string type = vectorOfWords[i][2];
+    string item = vectorOfWords[i][3];
+    int checkItem = item.compare("NONTOOL");
+    // checkItem = (checkItem == 1) || (checkItem == 0);
     // define item depends of the type
-    if (vectorOfWords[i][3] == "NONTOOL")
+    if (checkItem == 0)
     {
-      int ID = stoi(vectorOfWords[i][0]);
-      string name = vectorOfWords[i][1];
-      string type = vectorOfWords[i][2];
       // set quantity to 0
       int quantity = 0;
       NonTool nonTool(ID, name, type, quantity);
@@ -158,17 +169,17 @@ vector<Recipe> FileIO::listOfRecipe()
   vector<Recipe> recipes;
 
   // read recipe from recipe folder
-  for (const auto &entry : filesystem::directory_iterator(FileIO::configPath + "/recipe"))
+  for (const auto &entry : filesystem::directory_iterator(this->configPath + "/recipe"))
   {
     string recipeConfigPath = entry.path().string();
-  try
-  {
-    vectorOfWords = FileIO::vectorOfWords(recipeConfigPath);
-  }
-  catch (FileException &FE)
-  {
-    FE.displayMessage();
-  }
+    try
+    {
+      vectorOfWords = FileIO::vectorOfWords(recipeConfigPath);
+    }
+    catch (FileException &FE)
+    {
+      FE.displayMessage();
+    }
 
     // line 0 of .txt is the m, n of matrix
     int length = vectorOfWords.size();
@@ -302,24 +313,24 @@ void FileIO::EXPORT(string FileName)
 // }
 
 // /* tester function */
-// void FileIO::displayTool()
-// {
-//   vector<Tool> tools = listOfTool();
+void FileIO::displayTool()
+{
+  vector<Tool> tools = this->listOfTool();
 
-//   cout << "List of Tool: " << endl;
-//   for (int i = 0; i < tools.size(); i++)
-//   {
-//     cout << i + 1 << "." << endl;
-//     tools[i].display();
-//     cout << endl;
-//   }
-//   cout << endl;
-// }
+  cout << "List of Tool: " << endl;
+  for (int i = 0; i < tools.size(); i++)
+  {
+    cout << i + 1 << "." << endl;
+    tools[i].display();
+    cout << endl;
+  }
+  cout << endl;
+}
 
 /* tester function */
 void FileIO::displayNonTool()
 {
-  vector<NonTool> nonTools = listOfNonTool();
+  vector<NonTool> nonTools = this->listOfNonTool();
 
   cout << "List of NonTool: " << endl;
   for (int i = 0; i < nonTools.size(); i++)
@@ -334,7 +345,7 @@ void FileIO::displayNonTool()
 /* tester function */
 void FileIO::displayRecipe()
 {
-  vector<Recipe> recipes = listOfRecipe();
+  vector<Recipe> recipes = this->listOfRecipe();
 
   cout << "List of Recipe: " << endl;
   for (int i = 0; i < recipes.size(); i++)

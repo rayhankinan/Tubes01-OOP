@@ -6,6 +6,7 @@
 #include "../item/toolInterface.hpp"
 #include "../crafting/recipeInterface.hpp"
 #include "../exception/fileExceptionInterface.hpp"
+#include "string.h"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
