@@ -1,10 +1,12 @@
 #include "craftingTableInterface.hpp"
 
-#include <cstdarg>
 
 // default ctor
-CraftingTable::CraftingTable() : MaxRecipes(10) {
-    this->recipes = new Recipe[10];
+CraftingTable::CraftingTable() {
+    FileIO FIO;
+    vector<Recipe> r = FIO.listOfRecipe();
+    this->MaxRecipes = r.size();
+    this->recipes = new Recipe[r.size()];
     this->NumOfRecipes = 0;
     this->table = Matrix<Item*>(row, col);
 
@@ -15,21 +17,7 @@ CraftingTable::CraftingTable() : MaxRecipes(10) {
             // set setiap indeks crafting table ke item null
             this->table.setElmt(i, j, NULL);
     }}
-}
-
-// ctor with custom number of maxrecipes
-CraftingTable::CraftingTable(int MaxRecipes) : MaxRecipes(MaxRecipes) {
-    this->recipes = new Recipe[this->MaxRecipes];
-    this->NumOfRecipes = 0;
-    this->table = Matrix<Item*>(row, col);
-
-    // BELUM YAKIN
-    // set crafting table matrix to empty items
-    for (int i=0; i < this->row; i++) {
-        for (int j=0; j < this->col; j++) {
-            // set setiap indeks crafting table ke item null
-            this->table.setElmt(i, j, NULL);
-    }}
+    this->setRecipes(r);
 }
 
 // dtor
@@ -59,11 +47,12 @@ Item*& CraftingTable::getElmt(string slotID) const {
         
 // set table element based on slotID
 void CraftingTable::setElmt(string slotID, Item* item) {
+    delete this->getElmt(slotID);
     this->table.setElmt(slotID, item);
 }
 
 // craft item
-void CraftingTable::craft() {
+void CraftingTable::craft(Inventory& inv) {
     /* CEK bila table kosong semua */
     bool empty = true;
     for (int i = 0; i < this->row; i++) {
@@ -132,10 +121,8 @@ void CraftingTable::craft() {
                     this->table(i, j) = NULL;
                 }
         }}
-        /* give item to inventory
-        AGAK BINGUNG GES GIMANA NAMBAHIN DURABILITY NYA 
-        min(firstDurability+secondDurability, 10) nya maksudnya durability*/
-        // inventory.give(FirstTool, 1, min(firstDurability+secondDurability, 10));
+        /* give item to inventory, min(firstDurability+secondDurability, 10) nya maksudnya durability*/
+        inv.give(FirstTool, min(firstDurability+secondDurability, 10), 1);
         return;
     } // Bila tidak ketemu dua tools cek opsi kedua crafting
     /* OPSI KEDUA CRAFTING: 
@@ -261,10 +248,8 @@ void CraftingTable::craft() {
                 }
             }
         }
-        /* give item to inventory
-        AGAK BINGUNG GES GIMANA GIVE NYA NENTUIN TOOL AMA NONTOOL
-        10 nya maksudnya durability buat tool*/
-        // inventory.give(this->recipes[rightRecipe].getProductName(), this->recipes[rightRecipe].getProductQty(), 10);
+        /* give item to inventory */
+        inv.give(this->recipes[rightRecipe].getProductName(), this->recipes[rightRecipe].getProductQty());
     }
 }
 
@@ -311,49 +296,93 @@ void CraftingTable::addItem(int row, int col, Item* item) {
 }
 
 // move item from inv to crafting table
-/* NOT TESTED YET (waiting for inventory access) */
-void CraftingTable::move(string slotInv, int n, ...) {
-    va_list listSlotCraft;
-    va_start(listSlotCraft, n);
-    // check jumlah item di slot inv, harus >= n (unable to access inv, waiting)
-    /*
-    Item* item = inventory.getElmt(slotInv);
-    if (item.quantity < n) {
+void CraftingTable::move(Inventory& inv, string slotInv, int n, vector<string> slotCrafts) {
+    // check jumlah item di slot inv, harus >= n
+    Item* item = inv.getElmt(slotInv);
+    try {
+        if (item->getQuantity() < n) {
+            throw CraftingException(2);
+        } 
+    } catch (NonToolException &e) {
         throw CraftingException(2);
-    } 
-    */
-    Item* item; // for example purposes (temporary)
-    for (int i = 0; i < n; i++) {
-        string slotCraft = va_arg(listSlotCraft, char*);
-        // kalo ternyata gaboleh ngisi crafting table yang uda ada isi:
-        /* 
-        if (this->getElmt(slotCraft) != NULL) {
-            throw CraftingException(3);
-        }
-        */
-        this->setElmt(slotCraft, item);
     }
-    va_end(listSlotCraft);
+
+    if (slotCrafts.size() == 1) {
+        int qty = 1;
+        if (n > 1) {
+            if (item->isTool()) {
+                throw CraftingException(2);
+            }
+            qty = n;
+        }
+        if (item->isTool()) {
+            this->setElmt(slotCrafts[0], (new Tool(item->getID(), item->getName(), item->getType(), item->getDurability())));
+        }
+        else {
+            this->setElmt(slotCrafts[0], (new NonTool(item->getID(), item->getName(), item->getType(), qty)));
+        }
+
+        if (item->getQuantity() - qty == 0) {
+            inv.setElmt(slotInv, NULL);
+        }
+        else {
+            item->setQuantity(item->getQuantity() - qty);
+            inv.setElmt(slotInv, item);
+        }
+    }
+
+    else {
+        int qty = 1;
+        if (item->isTool()) {
+            for (int i = 0; i < n; i++) {
+                // kalo ternyata gaboleh ngisi crafting table yang uda ada isi
+                if (this->getElmt(slotCrafts[i]) != NULL) {
+                    throw CraftingException(3);
+                }
+                this->setElmt(slotCrafts[i], (new Tool(item->getID(), item->getName(), item->getType(), item->getDurability())));
+            }
+        }
+        else {
+            for (int i = 0; i < n; i++) {
+                // kalo ternyata gaboleh ngisi crafting table yang uda ada isi
+                if (this->getElmt(slotCrafts[i]) != NULL) {
+                    throw CraftingException(3);
+                }
+                this->setElmt(slotCrafts[i], (new NonTool(item->getID(), item->getName(), item->getType(), qty)));
+            }
+        }
+
+        if (item->isTool() || item->getQuantity() - qty == 0) {
+            inv.setElmt(slotInv, NULL);
+        }
+        else {
+            item->setQuantity(item->getQuantity() - qty);
+            inv.setElmt(slotInv, item);
+        }
+    }
 }
 
 // return item from crafting table to inv
-// NOT TESTED YET (waiting for inventory access)
-void CraftingTable::move(string slotCraft, int n, string slotInv) {
-    // kalo ternyata N-nya boleh lebih dari 1 --> paramnya ganti jadi ellipsis (rombak)
-    /*
-    if (item == NULL || item->getQuantity() < n) { // tambahin juga: OR inventory tidak kosong (isinya item jenis beda/isinya jenis sama tp penuh)
+void CraftingTable::move(Inventory& inv, string slotCraft, int n, string slotInv) {
+    Item* item = this->getElmt(slotCraft);
+    if (item == NULL) {
         throw CraftingException(2);
     }
-    */
-
-    Item* item = this->getElmt(slotCraft);
-    // asumsi sementara kayak di spek (N-nya cuma boleh 1)
-    if (item == NULL || n != 1) {
-        throw CraftingException(2);
+    // N-nya cuma boleh 1 sesuai di spesifikasi
+    int qty = 1;
+    if (item->isTool()) {
+        inv.setElmt(slotInv, (new Tool(item->getID(), item->getName(), item->getType(), item->getDurability())));
     }
     else {
-        // inventory.setElmt[slotInv, item]; unable to access (waiting)
+        inv.setElmt(slotInv, (new NonTool(item->getID(), item->getName(), item->getType(), qty)));
+    }
+
+    if (item->isTool() || item->getQuantity() - qty == 0) {
         this->setElmt(slotCraft, NULL);
+    }
+    else {
+        item->setQuantity(item->getQuantity() - qty);
+        this->setElmt(slotCraft, item);
     }
 }
 

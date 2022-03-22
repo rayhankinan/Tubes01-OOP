@@ -27,6 +27,9 @@ class Inventory {
         // menambahkan item ke inventory sebanyak qty
         void give(string name, int qty);
 
+        // menambahkan tool hasil crafting
+        void give(string name, int dur, int qty);
+
         // menghapus item dari inventory sebanyak qty
         void discard(string slotID, int qty);
 

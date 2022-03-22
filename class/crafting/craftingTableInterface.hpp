@@ -6,26 +6,24 @@
 #include "../exception/craftingExceptionInterface.hpp"
 #include "../inventory/inventoryInterface.hpp"
 #include "../collection/matrixInterface.hpp"
+#include "../fileIO/fileIOInterface.hpp"
 #include "../item/nonToolInterface.hpp"
 #include "../item/itemInterface.hpp"
 #include "../item/toolInterface.hpp"
 #include "./recipeInterface.hpp"
-
-extern Inventory inventory;
 
 class CraftingTable {
 private:
     // attributes
     Recipe* recipes;
     int NumOfRecipes;
-    const int MaxRecipes;
+    int MaxRecipes;
     const int row = 3;
     const int col = 3;
     Matrix<Item*> table;
 
 public:
     CraftingTable(); // default ctor
-    CraftingTable(int); // ctor with custom number of maxrecipes
     ~CraftingTable(); // dtor
 
     // get NumOfRecipes
@@ -39,21 +37,22 @@ public:
     void setElmt(string, Item*); 
 
     // craft item
-    void craft(); 
+    void craft(Inventory&); 
     // show crafting table
     void show() const;
     // set recipe from FileIO::listOfRecipe()
-    void setRecipes(vector<Recipe> recipes);
+    void setRecipes(vector<Recipe>);
     // add recipe
-    void addRecipe(Recipe r);
+    void addRecipe(Recipe);
     // add item to crafting table
     void addItem(int, int, Item*);
     // move item from inv to crafting table
-    void move(string slotInv, int, ...);
+    void move(Inventory&, string, int, vector<string>);
+    // return item from inv table to crafting table
     // return item from crafting table to inv
-    void move(string slotCraft, int, string slotInv);
+    void move(Inventory&, string, int, string);
     // check tool/nontool of an item
-    bool isTool(Item* i);
+    bool isTool(Item*);
 
 };
 

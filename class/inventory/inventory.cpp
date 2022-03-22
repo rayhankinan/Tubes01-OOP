@@ -116,6 +116,27 @@ void Inventory::give(string name, int qty){
     }
 }
 
+void Inventory::give(string name, int dur, int qty){
+    FileIO FI;
+    string category;
+    category = getCategory(name);
+    cout << category << endl;
+    bool found = false;
+    for (int i = 0; i < length; i++) {
+        for (int j = 0; j < width; j++) {
+            if (qty > 0){
+                if (this->table(i, j) == NULL) {
+                    this->table(i, j) = new Tool(getInventoryID(name),name, getInventoryType(name), dur);
+                    qty--;
+                }
+            }
+        }
+    }
+    if (qty > 0) {
+        throw InventoryException(0); //throw
+    }
+}
+
 void Inventory::discard(string slotID,  int qty){
     if(table[slotID] == NULL){
         throw InventoryException(5);
@@ -221,6 +242,7 @@ Item*& Inventory::getElmt(string slotID) {
 }
 
 void Inventory::setElmt(string slotID, Item* item){
+    delete this->getElmt(slotID);
     this->table[slotID] = item;
 }
 
