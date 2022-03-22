@@ -53,7 +53,13 @@ void ConsoleIO::start()
 
         cin >> itemName >> itemQty;
         /* Give item */
-        this->Command::GIVE();
+        try{
+          this->Command::GIVE();
+        }
+        catch (InventoryException &IE)
+        {
+          IE.displayMessage();
+        }
       }
       else if (this->command == "DISCARD")
       {

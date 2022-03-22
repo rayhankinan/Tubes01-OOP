@@ -107,11 +107,12 @@ void Inventory::give(string name, int qty){
         }
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
-                if (this->table(i, j) == NULL) {
-                    this->table(i, j) = new NonTool(getInventoryID(FI, name),name, getInventoryType(FI, name), qty > 64 ? 64 : qty);
-                    qty = 0;
+                if (qty > 0) {
+                    if (this->table(i, j) == NULL) {
+                        this->table(i, j) = new NonTool(getInventoryID(FI, name),name, getInventoryType(FI, name), qty > 64 ? 64 : qty);
+                        qty -= 64;
+                    }
                 }
-                
             }
         }
         if (qty > 0) {
