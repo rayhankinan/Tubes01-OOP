@@ -2,7 +2,7 @@
 
 int InventoryException::numOfInventoryException = 0;
 
-string InventoryException::message[] = {"Inventory Penuh!", "You can't move a tool!", "Item yang ditumpuk tidak sama", "Quantity item asal tidak mencukupi", "Item tidak terdaftar"};
+string InventoryException::message[] = {"Inventory Penuh!", "You can't move a tool!", "Item yang ditumpuk tidak sama", "Quantity item asal tidak mencukupi", "Item tidak terdaftar", "slot kosong"};
 
 InventoryException::InventoryException(int ID) : Exception(ID) {
     InventoryException::numOfInventoryException++;

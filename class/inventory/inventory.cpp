@@ -8,7 +8,7 @@ Inventory::Inventory(){
     this->table = Matrix<Item*>(length, width);
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
-            this->table.setELmt(i, j, new NULL);
+            this->table.setELmt(i, j, NULL);
         }
     }
 } 
@@ -38,7 +38,7 @@ Inventory::~Inventory(){
 void Inventory::show() const{
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
-            if (this->table(i, j)->getID() == 0) {
+            if (this->table(i, j) == NULL) {
                 cout << "\t[I" << i*9+j << "|0]\t";
                 if (j == 8) {
                     cout << endl;
@@ -71,7 +71,7 @@ void Inventory::give(string name, int qty){
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
                 if (qty > 0){
-                    if (this->table(i, j)->getID() == 0) {
+                    if (this->table(i, j) == NULL) {
                         this->table(i, j) = new Tool(getInventoryID(FI, name),name, getInventoryType(FI, name), 10);
                         qty--;
                     }
@@ -87,7 +87,7 @@ void Inventory::give(string name, int qty){
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
                 if (qty > 0){
-                    if (this->table(i, j)->getName() == name) {
+                    if (this->table(i,j) != NULL && this->table(i, j)->getName() == name) {
                         try{
                             this->table(i, j)+= qty;
                             qty = 0;
@@ -105,6 +105,15 @@ void Inventory::give(string name, int qty){
                 }
             }
         }
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                if (this->table(i, j) == NULL) {
+                    this->table(i, j) = new NonTool(getInventoryID(FI, name),name, getInventoryType(FI, name), qty > 64 ? 64 : qty);
+                    qty = 0;
+                }
+                
+            }
+        }
         if (qty > 0) {
             throw InventoryException(0); //throw
         }
@@ -113,14 +122,17 @@ void Inventory::give(string name, int qty){
 }
 
 void Inventory::discard(string slotID,  int qty){
-    if((table[slotID])->isTool()){
-        this->table[slotID] = new Tool(0, "-", "-", 0);
+    if(table[slotID] == NULL){
+        throw InventoryException(5);
     }
-    else{
+    if((table[slotID])->isTool()){
+        this->table[slotID] = NULL;
+    }
+    else if(!(table[slotID])->isTool()){
         try{
             this->table[slotID]-= qty;
             if (table[slotID]->getQuantity() == 0) {
-                this->table[slotID] = new NonTool(0, "-", "-", 0);
+                this->table[slotID] = NULL;
             }
         }
         catch(NonToolException &e){
@@ -131,10 +143,16 @@ void Inventory::discard(string slotID,  int qty){
 }
 
 void Inventory::use(const string slotID){
+    if(table[slotID] == NULL){
+        throw InventoryException(5);
+    }
+    if(table[slotID]){
+        throw InventoryException(5);
+    }
     try{
         this->table[slotID]->use();
         if(this->table[slotID]->getDurability()==0){
-            this->table[slotID] = new NonTool(0, "-", "-", 0);
+            this->table[slotID] = NULL;
         }
     }
     catch(ToolException &e){
@@ -143,6 +161,9 @@ void Inventory::use(const string slotID){
 }
 
 void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
+    if(table[slotSrc] == NULL || table[slotTarget] == NULL){
+        throw InventoryException(5);
+    }
     if (this->table[slotSrc]->isTool() || this->table[slotTarget]->isTool()){
         throw InventoryException(1);
     }
@@ -157,7 +178,7 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
         this->table[slotTarget] += qty;
         this->table[slotSrc] -= qty;
         if(this->table[slotSrc]->getQuantity()==0){
-            this->table[slotSrc] = new NonTool(0, "-", "-", 0);
+            this->table[slotSrc] = NULL;
         }
     }
     catch(NonToolException &e){
