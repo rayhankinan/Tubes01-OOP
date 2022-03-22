@@ -45,13 +45,13 @@ void Inventory::show() const{
                 }
             }
             else {
-                try{
+                if (this->table(i,j)->isTool()){
                     cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]";
                     if (j == 8) {
                         cout << endl;
                     }
                 }
-                catch(const NonToolException &e){
+                else{
                     cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]";
                     if (j == 8) {
                         cout << endl;
@@ -85,34 +85,27 @@ void Inventory::give(string name, int qty){
     
     }
     else if(category == "NONTOOL"){
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < width; j++) {
-                if (qty > 0){
-                    if (this->table(i,j) != NULL && this->table(i, j)->getName() == name) {
-                        try{
-                            this->table(i, j)+= qty;
-                            qty = 0;
-                            return;
-                        }
-                        catch(NonToolException &e){
-                            int sisa = 64 - this->table(i, j)->getQuantity();
-                            this->table(i, j) += sisa;
-                            qty -= sisa;
-                            if (qty == 0) {
-                                return;
-                            }
-                        }
+        for (int i = 0; i < length && qty > 0; i++) {
+            for (int j = 0; j < width && qty > 0; j++) {
+                if (this->table(i,j) != NULL && this->table(i, j)->getName() == name) {
+                    try {
+                        this->table(i, j) += qty;
+                        qty = 0;
+                        
+                    } catch(NonToolException &e){
+                        int sisa = 64 - this->table(i, j)->getQuantity();
+                        this->table(i, j) += sisa;
+                        qty -= sisa;
                     }
                 }
             }
         }
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < width; j++) {
-                if (qty > 0) {
-                    if (this->table(i, j) == NULL) {
-                        this->table(i, j) = new NonTool(getInventoryID(name),name, getInventoryType(name), qty > 64 ? 64 : qty);
-                        qty -= 64;
-                    }
+
+        for (int i = 0; i < length && qty > 0; i++) {
+            for (int j = 0; j < width && qty > 0; j++) {
+                if (this->table(i, j) == NULL) {
+                    this->table(i, j) = new NonTool(getInventoryID(name),name, getInventoryType(name), qty > 64 ? 64 : qty);
+                    qty -= 64;
                 }
             }
         }

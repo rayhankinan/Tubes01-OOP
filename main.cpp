@@ -12,17 +12,17 @@ int main() {
   Inventory INV;
   // INV.show();  
 
-  FIO.displayTool();
-  FIO.displayNonTool();
+  // FIO.displayTool();
+  // FIO.displayNonTool();
   // FIO.displayRecipe();
   
   // check for how many test case is needed
-  int countFile =  FIO.countOfTestFile(FIO.getTestsPath());
+  // int countFile =  FIO.countOfTestFile(FIO.getTestsPath());
 
   // USING MAKE ALL
-  for (int i = 0; i < countFile; i++) {
-    CIO.start();
-  }
+  // for (int i = 0; i < countFile; i++) {
+  CIO.start();
+  // }
 
   // DIFFERENT WAY OF TESTING
   // string test1 = "1.in";
