@@ -97,7 +97,7 @@ void Inventory::give(string name, int qty){
                             int sisa = 64 - this->table(i, j)->getQuantity();
                             this->table(i, j) += sisa;
                             qty -= sisa;
-                            if (qty = 0) {
+                            if (qty == 0) {
                                 return;
                             }
                         }

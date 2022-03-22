@@ -13,16 +13,18 @@ int Command::getNumOfCommand()
   return Command::numOfCommand;
 }
 
-void Command::SHOW()
+void Command::SHOW(Inventory& inv)
 {
   cout << "SHOW" << endl;
   Command::numOfCommand++;
+  inv.show();
 }
 
-void Command::DISCARD()
+void Command::DISCARD(Inventory &inv, string slotID, int qty)
 {
   cout << "DISCARD" << endl;
   Command::numOfCommand++;
+  inv.discard(slotID, qty);
 }
 void Command::MOVE()
 {

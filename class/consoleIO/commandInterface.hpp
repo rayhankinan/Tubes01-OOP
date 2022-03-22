@@ -2,6 +2,7 @@
 #define COMMAND_INTERFACE_HPP
 
 #include "../exception/commandExceptionInterface.hpp"
+#include "../inventory/inventoryInterface.hpp"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -18,8 +19,8 @@ public:
   int getNumOfCommand();
   // ini fungsi boleh ganti parameter sama return valuenya tergantung
   // fungsi yang berkaitan sama modul kalian masing-masing
-  void SHOW();
-  void DISCARD();
+  void SHOW(Inventory&);
+  void DISCARD(Inventory&, string, int);
   void MOVE();
   void USE();
   void CRAFT();

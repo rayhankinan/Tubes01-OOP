@@ -36,6 +36,7 @@ void ConsoleIO::start()
 {
   /* Read command from user */
   setCommand();
+  Inventory inventory = Inventory();
 
   /* loop until command EXIT*/
   while (this->command != "")
@@ -44,7 +45,7 @@ void ConsoleIO::start()
       if (this->command == "SHOW")
       {
         /* Display crafting table */
-        this->Command::SHOW();
+        this->Command::SHOW(inventory);
       }
       else if (this->command == "GIVE")
       {
@@ -53,13 +54,7 @@ void ConsoleIO::start()
 
         cin >> itemName >> itemQty;
         /* Give item */
-        try{
-          this->Command::GIVE();
-        }
-        catch (InventoryException &IE)
-        {
-          IE.displayMessage();
-        }
+        this->Command::GIVE();
       }
       else if (this->command == "DISCARD")
       {
@@ -68,7 +63,7 @@ void ConsoleIO::start()
 
         cin >> inventorySlotID >> itemQty;
         /* Discard item */
-        this->Command::DISCARD();
+        this->Command::DISCARD(inventory, inventorySlotID, itemQty);
       }
       else if (this->command == "MOVE")
       {
