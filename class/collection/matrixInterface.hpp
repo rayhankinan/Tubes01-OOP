@@ -78,7 +78,7 @@ int Matrix<T>::getWidth() const {
 
 template<class T>
 T& Matrix<T>::operator()(int i, int j) const {
-    if (i >= this->N || j >= this->M) {
+    if (i < 0 || i >= this->N || j < 0 || j >= this->M) {
         throw MatrixException(0);
     } else {
         return this->buffer[i][j];
@@ -88,25 +88,30 @@ T& Matrix<T>::operator()(int i, int j) const {
 template<class T>
 T& Matrix<T>::operator[](string slotID) const {
     char type = slotID[0];
-    int num = stoi(slotID.erase(0,1)) - 1;
-    if (type == 'C') {
+    int num = stoi(slotID.erase(0,1));
+    if (type == 'C' && 0 <= num && num <= 8) {
         int row = num / 3;
         int col = num % 3;
         return this->buffer[row][col];
     }
-    else if (type == 'I') {
-        int row = num / 3;
+    else if (type == 'I' && 0 <= num && num <= 26) {
+        int row = num / 9;
         int col = num % 9;
         return this->buffer[row][col];
     }
     else {
-        throw MatrixException(0);
+        throw MatrixException(1);
     }
 }
 
 template<class T>
+<<<<<<< HEAD
 void Matrix<T>::setElmt(int row, int col, T elmt) {
     if (row >= this->N || col >= this->M) {
+=======
+void Matrix<T>::setELmt(int row, int col, T elmt) {
+    if (row < 0 || row >= this->N || col < 0 || col >= this->M) {
+>>>>>>> edc0d30c79c63f9539270d79b31eddc27ef5d256
         throw MatrixException(0);
     } else {
         this->buffer[row][col] = elmt;
@@ -116,19 +121,19 @@ void Matrix<T>::setElmt(int row, int col, T elmt) {
 template<class T>
 void Matrix<T>::setElmt(string slotID, T elmt) {
     char type = slotID[0];
-    int num = stoi(slotID.erase(0,1)) - 1;
-    if (type == 'C') {
+    int num = stoi(slotID.erase(0,1));
+    if (type == 'C' && 0 <= num && num <= 8) {
         int row = num / 3;
         int col = num % 3;
         this->buffer[row][col] = elmt;
     }
-    else if (type == 'I') {
-        int row = num / 3;
+    else if (type == 'I' && 0 <= num && num <= 26) {
+        int row = num / 9;
         int col = num % 9;
         this->buffer[row][col] = elmt;
     }
     else {
-        throw MatrixException(0);
+        throw MatrixException(1);
     }
 }
 
