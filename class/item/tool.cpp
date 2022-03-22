@@ -27,7 +27,7 @@ Tool::~Tool() {
 
 Tool& Tool::operator=(const Tool& T) {
     this->Item::operator=(T);
-    this->durability = durability;
+    this->durability = T.durability;
 
     return *this;
 }

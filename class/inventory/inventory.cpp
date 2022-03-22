@@ -193,8 +193,16 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
         }
     }
     // yang dipindah tidak boleh melebihi quantity asal
-    if (this->table[slotSrc]->getQuantity() < qty) {
-        throw InventoryException(3);
+    if (!(this->table[slotSrc]->isTool())){
+        if (this->table[slotSrc]->getQuantity() < qty) {
+            throw InventoryException(3);
+        }
+    }
+
+    if (this->table[slotSrc]->isTool()){
+        if(qty > 1){
+            throw InventoryException(3);
+        }
     }
     
     //jika target kosong
