@@ -30,10 +30,10 @@ class Inventory {
         void show() const;
 
         // menambahkan item ke inventory sebanyak qty
-        void give(string name, const int qty);
+        void give(string name, int qty);
 
         // menghapus item dari inventory sebanyak qty
-        void discard(string slotID, const int qty);
+        void discard(string slotID, int qty);
 
         // menggunakan item tool dari inventory
         void use(const string slotID);
@@ -42,7 +42,7 @@ class Inventory {
         void moveInInventory(string slotSrc, int qty, string slotTarget);
         
         // get table element based on slotID
-        Item*& getElmt(string) const;
+        Item*& getElmt(string);
             
         // set table element based on slotID
         void setElmt(string, Item*);
@@ -52,6 +52,8 @@ class Inventory {
         int getInventoryID(FileIO, string);
 
         string getInventoryType(FileIO, string);
+
+        string getCategory(FileIO, string);
 
 
 
