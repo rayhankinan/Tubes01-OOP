@@ -22,7 +22,7 @@ class Matrix {
         T& operator()(int, int) const; // index-based element getter
         T& operator[](string) const; // slotID-based element getter
         
-        void setELmt(int, int, T); // index-based element setter
+        void setElmt(int, int, T); // index-based element setter
         void setElmt(string, T); // slotID-based element setter
 
         Matrix<T>& operator=(const Matrix<T>&); // assignment operator
@@ -105,7 +105,7 @@ T& Matrix<T>::operator[](string slotID) const {
 }
 
 template<class T>
-void Matrix<T>::setELmt(int row, int col, T elmt) {
+void Matrix<T>::setElmt(int row, int col, T elmt) {
     if (row >= this->N || col >= this->M) {
         throw MatrixException(0);
     } else {

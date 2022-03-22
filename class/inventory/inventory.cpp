@@ -8,7 +8,7 @@ Inventory::Inventory(){
     this->table = Matrix<Item*>(length, width);
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
-            this->table.setELmt(i, j, NULL);
+            this->table.setElmt(i, j, NULL);
         }
     }
 } 
@@ -20,7 +20,7 @@ Inventory::Inventory(const Inventory &inv) {
     // copy table
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
-            this->table(i, j) = inv.table(i, j);
+            *(this->table(i, j)) = *(inv.table(i, j));
         }
     }
 }
@@ -126,13 +126,15 @@ void Inventory::discard(string slotID,  int qty){
     if(table[slotID] == NULL){
         throw InventoryException(5);
     }
-    if((table[slotID])->isTool()){
+    if((this->table[slotID])->isTool()){
+        delete table[slotID];
         this->table[slotID] = NULL;
     }
-    else if(!(table[slotID])->isTool()){
+    else if(!(this->table[slotID])->isTool()){
         try{
             this->table[slotID]-= qty;
-            if (table[slotID]->getQuantity() == 0) {
+            if (this->table[slotID]->getQuantity() == 0) {
+                delete table[slotID];
                 this->table[slotID] = NULL;
             }
         }
@@ -144,10 +146,7 @@ void Inventory::discard(string slotID,  int qty){
 }
 
 void Inventory::use(const string slotID){
-    if(table[slotID] == NULL){
-        throw InventoryException(5);
-    }
-    if(table[slotID]){
+    if(this->table[slotID] == NULL){
         throw InventoryException(5);
     }
     try{
@@ -162,7 +161,7 @@ void Inventory::use(const string slotID){
 }
 
 void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
-    if(table[slotSrc] == NULL || table[slotTarget] == NULL){
+    if(this->table[slotSrc] == NULL || this->table[slotTarget] == NULL){
         throw InventoryException(5);
     }
     if (this->table[slotSrc]->isTool() || this->table[slotTarget]->isTool()){
@@ -179,7 +178,8 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
         this->table[slotTarget] += qty;
         this->table[slotSrc] -= qty;
         if(this->table[slotSrc]->getQuantity()==0){
-            this->table[slotSrc] = NULL;
+            delete this->table[slotTarget];
+            this->table[slotSrc] = NULL;        
         }
     }
     catch(NonToolException &e){
@@ -208,6 +208,12 @@ int Inventory::getInventoryID(string name){
             return listTool[i].getID();
         }
     }
+    for (int i = 0; i < listNonTool.size(); i++) {
+        if (listNonTool[i].getName() == name) {
+            return listNonTool[i].getID();
+        }
+    }
+
     throw InventoryException(4);
 }
 
@@ -219,6 +225,11 @@ string Inventory::getInventoryType(string name){
     for (int i = 0; i < listTool.size(); i++) {
         if (listTool[i].getName() == name) {
             return listTool[i].getType();
+        }
+    }
+    for (int i = 0; i < listNonTool.size(); i++) {
+        if (listNonTool[i].getName() == name) {
+            return listNonTool[i].getType();
         }
     }
     throw InventoryException(4);
