@@ -179,37 +179,30 @@ void Inventory::setElmt(string slotID, Item* item){
 int Inventory::getInventoryID(FileIO FI, string name){
     vector<Tool> listTool = FI.listOfTool();
     vector<NonTool> listNonTool = FI.listOfNonTool();
-    bool found = false;
     // search name item in list of tool and return item ID
     for (int i = 0; i < listTool.size(); i++) {
         if (listTool[i].getName() == name) {
             return listTool[i].getID();
         }
     }
-    if(!found){
-        throw InventoryException(4);
-    }
+    throw InventoryException(4);
 }
 
 string Inventory::getInventoryType(FileIO FI, string name){
     vector<Tool> listTool = FI.listOfTool();
     vector<NonTool> listNonTool = FI.listOfNonTool();
-    bool found = false;
     // search name item in list of tool and return item type
     for (int i = 0; i < listTool.size(); i++) {
         if (listTool[i].getName() == name) {
             return listTool[i].getType();
         }
     }
-    if(!found){
-        throw InventoryException(4);
-    }
+    throw InventoryException(4);
 }
 
 string Inventory::getCategory(FileIO FI, string name){
     vector<Tool> listTool = FI.listOfTool();
     vector<NonTool> listNonTool = FI.listOfNonTool();
-    bool found = false;
     // search name item in list of tool and return item category
     for (int i = 0; i < listTool.size(); i++) {
         if (listTool[i].getName() == name) {
@@ -222,7 +215,5 @@ string Inventory::getCategory(FileIO FI, string name){
             return "NONTOOL";
         }
     }
-    if (!found){
-        throw InventoryException(4);
-    }
+    throw InventoryException(4);
 }
