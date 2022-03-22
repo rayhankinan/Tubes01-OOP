@@ -47,8 +47,6 @@ class Inventory {
         // set table element based on slotID
         void setElmt(string, Item*);
 
-        bool isTool(Item*);
-
         int getInventoryID(FileIO, string);
 
         string getInventoryType(FileIO, string);

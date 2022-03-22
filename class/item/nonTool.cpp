@@ -51,7 +51,7 @@ int NonTool::getNumOfNonTool() {
     return NonTool::numOfNonTool;
 }
 
-bool isTool() {
+bool NonTool::isTool() {
     return false;
 }
 

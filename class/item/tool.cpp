@@ -52,7 +52,7 @@ int Tool::getNumOfTool() {
     return Tool::numOfTool;
 }
 
-bool isTool() {
+bool Tool::isTool() {
     return true;
 }
 

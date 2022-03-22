@@ -3,9 +3,14 @@
 
 using namespace std;
 
-// default ctor
+// default ctor and fill with default item constructor
 Inventory::Inventory(){
     this->table = Matrix<Item*>(length, width);
+    for (int i = 0; i < length; i++) {
+        for (int j = 0; j < width; j++) {
+            // this->table(i, j) = new Item();
+        }
+    }
 } 
 
 // copy constructor
@@ -60,34 +65,28 @@ void Inventory::show() const{
 void Inventory::give(string name, int qty){
     FileIO FI;
     string category;
-    try{
-        category = getCategory(FI, name);
-    }
-    catch(//sesuatu){
-        cout << "Item tidak ditemukan" << endl;
-        return
-    }
+    category = getCategory(FI, name);
     bool found = false;
     if (category == "TOOL") {
-        while (qty > 0){
-            for (int i = 0; i < length; i++) {
-                for (int j = 0; j < width; j++) {
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                if (qty > 0){
                     if (this->table(i, j)->getID() == 0) {
                         this->table(i, j) = new Tool(getInventoryID(FI, name),name, getInventoryType(FI, name), 10);
                         qty--;
-                        return;
                     }
                 }
             }
-            if (!found) {
-                cout << "Inventory is full" << endl; //throw
-            }
         }
+        if (qty > 0) {
+            throw InventoryException(0); //throw
+        }
+    
     }
     else if(category == "NONTOOL"){
-        while (qty > 0){
-            for (int i = 0; i < length; i++) {
-                for (int j = 0; j < width; j++) {
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                if (qty > 0){
                     if (this->table(i, j)->getName() == name) {
                         try{
                             this->table(i, j)+= qty;
@@ -98,19 +97,23 @@ void Inventory::give(string name, int qty){
                             int sisa = 64 - this->table(i, j)->getQuantity();
                             this->table(i, j) += sisa;
                             qty -= sisa;
+                            if (qty = 0) {
+                                return;
+                            }
                         }
                     }
                 }
             }
-            if (!found) {
-                cout << "Inventory is full" << endl; //throw
-            }
         }
+        if (qty > 0) {
+            throw InventoryException(0); //throw
+        }
+        
     }
 }
 
 void Inventory::discard(string slotID,  int qty){
-    if(isTool(table[slotID])){
+    if((table[slotID])->isTool()){
         this->table[slotID] = new Tool(0, "-", "-", 0);
     }
     else{
@@ -140,17 +143,14 @@ void Inventory::use(const string slotID){
 }
 
 void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
-    if (isTool(this->table[slotSrc]) || isTool(this->table[slotTarget])){
-        cout << "You can't move a tool!" << endl; //throw
-        return;
+    if (this->table[slotSrc]->isTool() || this->table[slotTarget]->isTool()){
+        throw InventoryException(1);
     }
     if (this->table[slotSrc]->getID() != this->table[slotTarget]->getID()){
-        cout << "Item tidak sama" << endl; //throw
-        return;
+        throw InventoryException(2);
     }
     if (this->table[slotSrc]->getQuantity() < qty) {
-        cout << "Item tidak mencukupi" << endl; //throw
-        return;
+        throw InventoryException(3);
     }
 
     try{
@@ -176,17 +176,6 @@ void Inventory::setElmt(string slotID, Item* item){
     this->table[slotID] = item;
 }
 
-bool Inventory::isTool(Item* i){
-    try {
-        i->getDurability();
-        return true;
-    } 
-    catch (Exception&) {
-        return false;
-    }
-}
-
-
 int Inventory::getInventoryID(FileIO FI, string name){
     vector<Tool> listTool = FI.listOfTool();
     vector<NonTool> listNonTool = FI.listOfNonTool();
@@ -198,7 +187,7 @@ int Inventory::getInventoryID(FileIO FI, string name){
         }
     }
     if(!found){
-        //throw
+        throw InventoryException(4);
     }
 }
 
@@ -213,7 +202,7 @@ string Inventory::getInventoryType(FileIO FI, string name){
         }
     }
     if(!found){
-        //throw
+        throw InventoryException(4);
     }
 }
 
@@ -234,6 +223,6 @@ string Inventory::getCategory(FileIO FI, string name){
         }
     }
     if (!found){
-        //throw
+        throw InventoryException(4);
     }
 }
