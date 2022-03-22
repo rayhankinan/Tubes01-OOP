@@ -11,7 +11,7 @@ CraftingTable::CraftingTable() : MaxRecipes(10) {
     // BELUM YAKIN
     // set crafting table matrix to empty items
     for (int i=0; i < this->row; i++) {
-        for (int j=0; i < this->col; j++) {
+        for (int j=0; j < this->col; j++) {
             // set setiap indeks crafting table ke item null
             this->table.setElmt(i, j, NULL);
     }}
@@ -26,7 +26,7 @@ CraftingTable::CraftingTable(int MaxRecipes) : MaxRecipes(MaxRecipes) {
     // BELUM YAKIN
     // set crafting table matrix to empty items
     for (int i=0; i < this->row; i++) {
-        for (int j=0; i < this->col; j++) {
+        for (int j=0; j < this->col; j++) {
             // set setiap indeks crafting table ke item null
             this->table.setElmt(i, j, NULL);
     }}
@@ -128,7 +128,8 @@ void CraftingTable::craft() {
             for (int j = 0; j < this->col; j++) {
                 if (this->table(i,j) != NULL) {
                     // delete item tool yang telah digunakan pada crafting table
-                    delete this->table(i,j);
+                    delete this->table(i, j);
+                    this->table(i, j) = NULL;
                 }
         }}
         /* give item to inventory
@@ -137,23 +138,20 @@ void CraftingTable::craft() {
         // inventory.give(FirstTool, 1, min(firstDurability+secondDurability, 10));
         return;
     } // Bila tidak ketemu dua tools cek opsi kedua crafting
-
     /* OPSI KEDUA CRAFTING: 
     Craft item dari resep yang ada
     - dapat dengan resep submatriks kurang dari 3x3
     - resep dapat direfleksikan pada sumbu-y
     - tidak harus item, tapi tipe yang sama */
-
     // cek dulu apakah semua item di crafting table adalah nontool
     bool nonToolCheck = true;
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
-            if (isTool(this->table(i,j))) {
+            if ((this->table(i,j)) != NULL && (this->table(i,j))->isTool()) {
                 throw CraftingException(1);
             }
         }
     }
-
     bool recipeFound = false;   // check if current recipe matches
     int iterRecipe = 0, rightRecipe, offsetRow, offsetCol, currentRow, currentCol, rightOffsetRow, rightOffsetCol;
     // iterate through all recipe
@@ -172,11 +170,19 @@ void CraftingTable::craft() {
                     currentCol = 0;
                     while (currentCol < this->col && currentRecipe) {
                         // check recipe for submatrix
+                        string name, type;
+                        if (this->table(currentRow, currentCol) == NULL) {
+                            name = "-";
+                            type = "-";
+                        }
+                        else {
+                            name = this->table(currentRow,currentCol)->getName();
+                            type = this->table(currentRow,currentCol)->getType();
+                        }
                         if (offsetRow <= currentRow && currentRow <= offsetRow+this->recipes[iterRecipe].getRow()-1 && offsetCol <= currentCol && currentCol <= offsetCol+this->recipes[iterRecipe].getCol()-1) {
                             //check if current slot matches name or type of slot recipe
-                            // TAPI BELUM TAU BENER ATAU GA NYESUAIIN KE GETNAME/GETTYPE
-                            if (this->table(currentRow,currentCol)->getName() != this->recipes[iterRecipe].getConfigElmt(currentRow-offsetRow, currentCol-offsetCol) 
-                            && this->table(currentRow,currentCol)->getType() != this->recipes[iterRecipe].getConfigElmt(currentRow-offsetRow, currentCol-offsetCol)) {
+                            string recipeNameType = this->recipes[iterRecipe].getConfigElmt(currentRow-offsetRow, currentCol-offsetCol);
+                            if (name != recipeNameType && type != recipeNameType) {
                                 currentRecipe = false;
                             } 
                         // check if slot empty di luar submatrix
@@ -191,6 +197,7 @@ void CraftingTable::craft() {
                 // if non inverted recipe is right
                 if (currentRecipe) {
                     recipeFound = true;
+                    break;
                 } else {
                     // check recipe for particular submatrix INVERTED
                     currentRecipe = true;
@@ -198,12 +205,20 @@ void CraftingTable::craft() {
                     while (currentRow < this->row && currentRecipe) {
                         currentCol = 0;
                         while (currentCol < this->col && currentRecipe) {
+                            string name, type;
+                            if (this->table(currentRow, currentCol) == NULL) {
+                                name = "-";
+                                type = "-";
+                            }
+                            else {
+                                name = this->table(currentRow,currentCol)->getName();
+                                type = this->table(currentRow,currentCol)->getType();
+                            }
                             // check recipe for submatrix
                             if (offsetRow <= currentRow && currentRow <= offsetRow+this->recipes[iterRecipe].getRow()-1 && offsetCol <= currentCol && currentCol <= offsetCol+this->recipes[iterRecipe].getCol()-1) {
                                 //check if current slot matches name or type of slot recipe
-                                // TAPI BELUM TAU BENER ATAU GA NYESUAIIN KE GETNAME/GETTYPE
-                                if (this->table(currentRow,currentCol)->getName() != this->recipes[iterRecipe].getConfigElmt(this->recipes[iterRecipe].getRow()-1-(currentRow-offsetRow), this->recipes[iterRecipe].getCol()-1-(currentCol-offsetCol)) 
-                                && this->table(currentRow,currentCol)->getType() != this->recipes[iterRecipe].getConfigElmt(this->recipes[iterRecipe].getRow()-1-(currentRow-offsetRow), this->recipes[iterRecipe].getCol()-1-(currentCol-offsetCol)) ) {
+                                string recipeNameType = this->recipes[iterRecipe].getConfigElmt((currentRow-offsetRow), this->recipes[iterRecipe].getCol()-1-(currentCol-offsetCol));
+                                if (name != recipeNameType && type != recipeNameType) {
                                     currentRecipe = false;
                                 } 
                             // check if slot empty di luar submatrix
@@ -217,6 +232,7 @@ void CraftingTable::craft() {
                     }
                     if (currentRecipe) {
                         recipeFound = true;
+                        break;
                     }
                 }
                 offsetCol++;
@@ -234,11 +250,14 @@ void CraftingTable::craft() {
         for (int i = rightOffsetRow; i < rightOffsetRow + this->recipes[rightRecipe].getRow(); i++) {
             for (int j = rightOffsetCol; j < rightOffsetCol + this->recipes[rightRecipe].getCol(); j++) {
                 // bila quantity di crafting table hanya 1, remove
-                if (this->table(i,j)->getQuantity() == 1) {
-                    delete table(i, j);
-                } else {
-                // bila quantity di crafting table hanya > 1, quantity 
-                    this->table(i,j)->setQuantity(this->table(i,j)->getQuantity()-1);
+                if (this->table(i, j) != NULL) {
+                    if (this->table(i,j)->getQuantity() == 1) {
+                        delete this->table(i, j);
+                        this->table(i, j) = NULL;
+                    } else {
+                        // bila quantity di crafting table hanya > 1, quantity 
+                        this->table(i, j)->setQuantity(this->table(i,j)->getQuantity() - 1);
+                    }
                 }
             }
         }
@@ -253,7 +272,15 @@ void CraftingTable::craft() {
 void CraftingTable::show() const {
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
-            cout << "[" << this->table(i, j) << "] ";
+            Item* item = (this->table(i, j));
+            string var;
+            if (item == NULL) {
+                var = "-";
+            }
+            else {
+                var = (item->getName());
+            }
+            cout << "[" << var << "] ";
         }
         cout << endl;
     }
@@ -262,7 +289,7 @@ void CraftingTable::show() const {
 // set recipe from FileIO::listOfRecipe()
 void CraftingTable::setRecipes(vector<Recipe> r) {
     this->NumOfRecipes = 0;
-    if (r.size() < getMaxRecipes()) {
+    if (r.size() <= getMaxRecipes()) {
         for (int i = 0; i < r.size(); i++) {
             this->recipes[i] = r[i];
             this->NumOfRecipes++;
@@ -280,9 +307,7 @@ void CraftingTable::addRecipe(Recipe r) {
 
 // add item to crafting table
 void CraftingTable::addItem(int row, int col, Item* item) {
-    if (0 <= row && row < this->row && 0 <= col && col < this->col){
-        this->table(row, col) = item;
-    }
+    this->table.setElmt(row, col, item);
 }
 
 // move item from inv to crafting table

@@ -40,10 +40,10 @@ int NonTool::getDurability() const {
     throw NonToolException(4);
 }
 
-void NonTool::setQuantity(int){
+void NonTool::setQuantity(int quantity){
     this->quantity = quantity;
 } 
-void NonTool::setDurability(int){
+void NonTool::setDurability(int durability){
     throw NonToolException(4);
 } 
 

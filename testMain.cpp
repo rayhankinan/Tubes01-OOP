@@ -19,6 +19,7 @@
 #include "./class/exception/nonToolException.cpp"
 #include "./class/exception/toolException.cpp"
 #include "./class/exception/matrixException.cpp"
+#include "./class/exception/inventoryException.cpp"
 #include "./class/exception/craftingException.cpp"
 #include "./class/exception/commandException.cpp"
 #include "./class/exception/fileException.cpp"
@@ -40,6 +41,44 @@ int main()
   FIO.displayTool();
   // display recipe
   FIO.displayRecipe();
+
+  try {
+    vector<Recipe> r = FIO.listOfRecipe();
+    CraftingTable table = CraftingTable(r.size());
+    table.setRecipes(r);
+
+    // // test nontool
+    // NonTool* i = new NonTool(0, "OAK_PLANK", "PLANK", 2);
+    // NonTool* j = new NonTool(0, "SPRUCE_PLANK", "PLANK", 2);
+    // NonTool* k = new NonTool(0, "BIRCH_PLANK", "PLANK", 2);
+    // NonTool* l = new NonTool(0, "STICK", "-", 3);
+    // NonTool* m = new NonTool(0, "STICK", "-", 2);
+    // table.addItem(0, 0, i);
+    // table.addItem(0, 1, j);
+    // table.addItem(1, 1, k);
+    // table.addItem(2, 0, l);
+    // table.addItem(1, 0, m);
+
+    // test tool
+    Tool* a = new Tool(0, "WOODEN_AXE", "-", 7);
+    Tool* b = new Tool(0, "WOODEN_AXE", "-", 6);
+    table.addItem(0, 1, a);
+    table.addItem(2, 2, b);
+
+    // display 
+    cout << "BEFORE" << endl;
+    table.show();
+    cout << endl << "AFTER CRAFT" << endl;
+    table.craft();
+    table.show();
+    cout << endl << "AFTER SECOND CRAFT" << endl;
+    table.craft();
+    table.show();
+
+  }
+  catch (CraftingException e) {
+    e.displayMessage();
+  }
 
   //  start program
   CIO.start();
