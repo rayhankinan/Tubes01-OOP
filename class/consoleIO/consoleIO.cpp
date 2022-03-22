@@ -37,6 +37,7 @@ void ConsoleIO::start()
   /* Read command from user */
   setCommand();
   Inventory inventory = Inventory();
+  CraftingTable table = CraftingTable();
 
   /* loop until command EXIT*/
   while (this->command != "")
@@ -45,7 +46,7 @@ void ConsoleIO::start()
       if (this->command == "SHOW")
       {
         /* Display crafting table */
-        this->Command::SHOW(inventory);
+        this->Command::SHOW(inventory, table);
       }
       else if (this->command == "GIVE")
       {
@@ -67,12 +68,37 @@ void ConsoleIO::start()
       }
       else if (this->command == "MOVE")
       {
-        string slotSrc, slotDest;
         int slotQty;
+        string slotSrc, slotDest;
 
-        cin >> slotSrc >> slotQty >> slotDest;
-        /* Move item */
-        this->Command::MOVE(inventory, slotSrc, slotQty, slotDest);
+        cin >> slotSrc >> slotQty;
+        if (slotQty == 1) {
+          cin >> slotDest;
+          if (slotDest[0] == 'I') {
+            if (slotSrc[0] == 'I') {
+              /* Move item inventory to inventory */
+              this->Command::MOVE(inventory, slotSrc, slotQty, slotDest);
+            }
+            else {
+              /* Move item crafting to inventory */
+              this->Command::MOVE(table, inventory, slotSrc, slotQty, slotDest);
+            }
+          }
+          else {
+            /* Move item inventory to crafting (1 item) */
+            vector<string> slots = { slotDest };
+            this->Command::MOVE(table, inventory, slotSrc, slotQty, slots);
+          }
+        } 
+        else {
+          /* Move item inventory to crafting (multiple item) */
+          vector<string> slots;
+          for (int i = 0; i < slotQty; i++) {
+            cin >> slotDest;
+            slots.push_back(slotDest);
+          }
+          this->Command::MOVE(table, inventory, slotSrc, slotQty, slots);
+        }
       }
       else if (this->command == "USE")
       {
@@ -85,7 +111,7 @@ void ConsoleIO::start()
       else if (this->command == "CRAFT")
       {
         /* Craft item */
-        this->Command::CRAFT();
+        this->Command::CRAFT(table, inventory);
       }
       else if (this->command == "EXPORT")
       {

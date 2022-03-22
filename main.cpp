@@ -1,6 +1,5 @@
 #include "./class/fileIO/fileIOInterface.hpp"
 #include "./class/consoleIO/consoleIOInterface.hpp"
-#include "./class/inventory/InventoryInterface.hpp"
 
 using namespace std;
 
@@ -9,7 +8,7 @@ int main() {
   ConsoleIO CIO;
   string FileName;
 
-  Inventory INV;
+  // Inventory INV;
   // INV.show();  
 
   // FIO.displayTool();
