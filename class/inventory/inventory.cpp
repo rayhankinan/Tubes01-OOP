@@ -8,7 +8,7 @@ Inventory::Inventory(){
     this->table = Matrix<Item*>(length, width);
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
-            this->table.setELmt(i, j, NULL);
+            this->table.setELmt(i, j, new NULL);
         }
     }
 } 
