@@ -52,6 +52,10 @@ int Tool::getNumOfTool() {
     return Tool::numOfTool;
 }
 
+bool isTool() {
+    return true;
+}
+
 Item& Tool::operator+=(int N) {
     if (this->durability + N > 10) {
         throw ToolException(0);

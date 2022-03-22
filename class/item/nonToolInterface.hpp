@@ -25,6 +25,8 @@ class NonTool : public Item {
 
         static int getNumOfNonTool(); // numOfNonTool getter
 
+        bool isTool();
+
         Item& operator+=(int); // quantity sum and assignment with integer argument
         Item& operator-=(int); // quantity subtraction and assignment with integer argument
 

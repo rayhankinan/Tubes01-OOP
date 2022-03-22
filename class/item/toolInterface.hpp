@@ -25,6 +25,8 @@ class Tool : public Item {
 
         static int getNumOfTool(); // numOfTool getter
 
+        bool isTool();
+
         Item& operator+=(int); // durability sum and assignment with integer argument
         Item& operator-=(int); // durability subtraction and assignment with integer argument
 

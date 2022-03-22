@@ -51,6 +51,10 @@ int NonTool::getNumOfNonTool() {
     return NonTool::numOfNonTool;
 }
 
+bool isTool() {
+    return false;
+}
+
 Item& NonTool::operator+=(int N) {
     if (this->quantity + N > 64) {
         throw NonToolException(0);

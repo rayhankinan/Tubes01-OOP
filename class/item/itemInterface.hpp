@@ -41,6 +41,8 @@ class Item {
         friend istream& operator>>(istream&, Item&); // input stream
         friend ostream& operator<<(ostream&, const Item&); // output stream
 
+        virtual bool isTool() = 0; // isItemTool getter
+
         virtual Item& operator+=(int) = 0; // sum and assignment with integer argument
         virtual Item& operator-=(int) = 0; // subtraction and assignment with integer argument
 
