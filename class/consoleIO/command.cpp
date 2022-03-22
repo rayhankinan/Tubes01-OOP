@@ -27,16 +27,27 @@ void Command::DISCARD(Inventory &inv, string slotID, int qty)
   inv.discard(slotID, qty);
 }
 
-void Command::MOVE(Inventory &inv)
+void Command::MOVE(Inventory &inv, string slotSrc, int qty, string slotTarget)
 {
   cout << "MOVE" << endl;
   Command::numOfCommand++;
+  try{
+    inv.moveInInventory(slotSrc, qty, slotTarget);
+  }
+  catch(const InventoryException &e){
+    e.displayMessage();
+  }
 }
 void Command::USE(Inventory &inv, string slotID)
 {
   cout << "USE " << slotID << endl;
   Command::numOfCommand++;
-  inv.use(slotID);
+  try{
+    inv.use(slotID);
+  }
+  catch(const InventoryException &e){
+    e.displayMessage();
+  }
 }
 void Command::CRAFT()
 {
@@ -54,6 +65,12 @@ void Command::GIVE(Inventory &inv, string slotID, int qty)
 {
   cout << "GIVE " << slotID << " " << qty << endl;
   Command::numOfCommand++;
+  try{
+    inv.give(slotID, qty);
+  }
+  catch(const InventoryException &e){
+    e.displayMessage();
+  }
 }
 
 void Command::INVALID_COMMAND(string command)

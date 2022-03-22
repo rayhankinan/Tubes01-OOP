@@ -72,7 +72,7 @@ void ConsoleIO::start()
 
         cin >> slotSrc >> slotQty >> slotDest;
         /* Move item */
-        this->Command::MOVE(inventory);
+        this->Command::MOVE(inventory, slotSrc, slotQty, slotDest);
       }
       else if (this->command == "USE")
       {
