@@ -13,7 +13,7 @@ CraftingTable::CraftingTable() : MaxRecipes(10) {
     for (int i=0; i < this->row; i++) {
         for (int j=0; i < this->col; j++) {
             // set setiap indeks crafting table ke item null
-            this->table.setELmt(i, j, NULL);
+            this->table.setElmt(i, j, NULL);
     }}
 }
 
@@ -28,7 +28,7 @@ CraftingTable::CraftingTable(int MaxRecipes) : MaxRecipes(MaxRecipes) {
     for (int i=0; i < this->row; i++) {
         for (int j=0; i < this->col; j++) {
             // set setiap indeks crafting table ke item null
-            this->table.setELmt(i, j, NULL);
+            this->table.setElmt(i, j, NULL);
     }}
 }
 

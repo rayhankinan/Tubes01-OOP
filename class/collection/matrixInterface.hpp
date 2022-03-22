@@ -105,13 +105,8 @@ T& Matrix<T>::operator[](string slotID) const {
 }
 
 template<class T>
-<<<<<<< HEAD
 void Matrix<T>::setElmt(int row, int col, T elmt) {
-    if (row >= this->N || col >= this->M) {
-=======
-void Matrix<T>::setELmt(int row, int col, T elmt) {
     if (row < 0 || row >= this->N || col < 0 || col >= this->M) {
->>>>>>> edc0d30c79c63f9539270d79b31eddc27ef5d256
         throw MatrixException(0);
     } else {
         this->buffer[row][col] = elmt;
