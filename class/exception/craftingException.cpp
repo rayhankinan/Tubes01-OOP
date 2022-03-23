@@ -7,6 +7,7 @@ string CraftingException::errorMessages[] = {
     "Gagal melakukan craft, periksa lagi konfigurasi!",
     "Jumlah item invalid!",
     "Slot sudah terisi item lain!",
+    "Slot kosong/invalid",
 };
 
 CraftingException::CraftingException(int ID) : Exception(ID) {
