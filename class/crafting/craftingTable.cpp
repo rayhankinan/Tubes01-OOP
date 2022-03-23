@@ -256,20 +256,29 @@ void CraftingTable::craft(Inventory& inv) {
 // show crafting table
 void CraftingTable::show() const {
     for (int i = 0; i < this->row; i++) {
-        cout << "\t\t\t\t\t\t\t\t";
+        cout << "\t\t\t\t\t";
         for (int j = 0; j < this->col; j++) {
-            Item* item = (this->table(i, j));
-            string var;
-            if (item == NULL) {
-                var = "-";
+            if (this->table(i, j) == NULL) {
+                cout << "\t[C" << i*3+j << "|0]\t";
+                if (j == 2) {
+                    cout << endl;
+                }
             }
             else {
-                var = (item->getName());
+                if (this->table(i,j)->isTool()){
+                    cout << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]";
+                    if (j == 2) {
+                        cout << endl;
+                    }
+                }
+                else{
+                    cout << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]";
+                    if (j == 2) {
+                        cout << endl;
+                    }
+                }
             }
-            cout << "[" << var << "]";
         }
-        cout << "\t\t\t\t\t\t\t\t";
-        cout << endl;
     }
     cout << endl;
 }
@@ -324,8 +333,14 @@ void CraftingTable::move(Inventory& inv, string slotInv, int n, vector<string> s
             qty = n;
         }
         // gaboleh ngisi crafting table yang uda ada isi
-        if (this->getElmt(slotCrafts[0]) != NULL) {
-            throw CraftingException(3);
+        Item* destSlot = this->getElmt(slotCrafts[0]);
+        if (destSlot != NULL) {
+            if ((destSlot->getName() != item->getName() || destSlot->getType() != item->getType()) || destSlot->isTool()) {
+                throw CraftingException(3);
+            }
+            else {
+                qty += destSlot->getQuantity();
+            }
         }
         // mengisi slot crafting untuk tool
         if (item->isTool()) {
@@ -366,18 +381,25 @@ void CraftingTable::move(Inventory& inv, string slotInv, int n, vector<string> s
         else {
             for (int i = 0; i < n; i++) {
                 // gaboleh ngisi crafting table yang uda ada isi
-                if (this->getElmt(slotCrafts[i]) != NULL) {
-                    throw CraftingException(3);
+                Item* destSlot = this->getElmt(slotCrafts[i]);
+                if (destSlot != NULL) {
+                    if ((destSlot->getName() != item->getName() || destSlot->getType() != item->getType()) || destSlot->isTool()) {
+                        throw CraftingException(3);
+                    }
+                    else {
+                        qty += destSlot->getQuantity();
+                    }
                 }
                 this->setElmt(slotCrafts[i], (new NonTool(item->getID(), item->getName(), item->getType(), qty)));
+                qty = 1;
             }
         }
         // mengosongkan/mengurangi item inventory
-        if (item->isTool() || item->getQuantity() - qty == 0) {
+        if (item->isTool() || item->getQuantity() - n == 0) {
             inv.setElmt(slotInv, NULL);
         }
         else {
-            inv.setElmt(slotInv, (new NonTool(item->getID(), item->getName(), item->getType(), (item->getQuantity() - qty))));
+            inv.setElmt(slotInv, (new NonTool(item->getID(), item->getName(), item->getType(), (item->getQuantity() - n))));
         }
     }
 }
