@@ -119,14 +119,15 @@ void Command::GIVE(Inventory &inv, string name, int qty)
 {
   cout << "GIVE " << name << " " << qty << endl;
   Command::numOfCommand++;
-  try
-  {
-    inv.give(name, qty);
-  }
-  catch (const InventoryException &e)
-  {
-    e.displayMessage();
-  }
+  // try
+  // {
+  //   inv.give(name, qty);
+  // }
+  // catch (const InventoryException &e)
+  // {
+  //   e.displayMessage();
+  // }
+  inv.give(name, qty);
 }
 
 void Command::INVALID_COMMAND(string command)

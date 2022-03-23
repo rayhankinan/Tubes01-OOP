@@ -51,27 +51,31 @@ void ConsoleIO::start()
       else if (this->command == "GIVE")
       {
         string itemName;
-        int itemQty;
+        string itemQtyStr;
 
-        cin >> itemName >> itemQty;
+        cin >> itemName >> itemQtyStr;
+        int itemQty = stoi(itemQtyStr);
+
         /* Give item */
         this->Command::GIVE(inventory, itemName, itemQty);
       }
       else if (this->command == "DISCARD")
       {
         string inventorySlotID;
-        int itemQty;
+        string itemQtyStr;
 
-        cin >> inventorySlotID >> itemQty;
+        cin >> inventorySlotID >> itemQtyStr;
+        int itemQty = stoi(itemQtyStr);
         /* Discard item */
         this->Command::DISCARD(inventory, inventorySlotID, itemQty);
       }
       else if (this->command == "MOVE")
       {
-        int slotQty;
+        string slotQtyStr;
         string slotSrc, slotDest;
 
-        cin >> slotSrc >> slotQty;
+        cin >> slotSrc >> slotQtyStr;
+        int slotQty = stoi(slotQtyStr);
         if (slotQty == 1) {
           cin >> slotDest;
           if (slotDest[0] == 'I') {
@@ -127,9 +131,12 @@ void ConsoleIO::start()
       }
     }
     /* catch for any invalid command */
-    catch(CommandException CE) 
+    catch(Exception &E) 
     {
-      CE.displayMessage();
+      E.displayMessage();
+    }
+    catch(invalid_argument &e){
+      cout << "Can't be parsed to a number." << endl;
     }
     /* ask again for IO */
     setCommand();
