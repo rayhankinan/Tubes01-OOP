@@ -180,29 +180,20 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
     if(this->table[slotSrc] == NULL){
         throw InventoryException(5);
     }
-    // jika slot tujuan tidak kosong maka jenis item harus sama
-    if(this->table[slotTarget] != NULL){
-        if ((this->table[slotSrc]->isTool() && !(this->table[slotTarget]->isTool())) || (!(this->table[slotSrc]->isTool() && this->table[slotTarget]->isTool()))) {
-            throw InventoryException(2);
-        }
-    }
     //jika slot tujuan tidak kosong maka id harus sama
     if(this->table[slotTarget] != NULL){
         if (this->table[slotSrc]->getID() != this->table[slotTarget]->getID()){
             throw InventoryException(2);
         }
     }
-    // yang dipindah tidak boleh melebihi quantity asal
-    if (!(this->table[slotSrc]->isTool())){
-        if (this->table[slotSrc]->getQuantity() < qty) {
+    //jika slot src adalah tool maka tidak boleh dipindah ke selain null
+    if(this->table[slotSrc]->isTool()){
+        if(this->table[slotTarget] != NULL){
             throw InventoryException(3);
         }
     }
-
-    if (this->table[slotSrc]->isTool()){
-        if(qty > 1){
-            throw InventoryException(3);
-        }
+    if(qty != 1){
+        throw InventoryException(6);
     }
     
     //jika target kosong
@@ -219,27 +210,22 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
         delete this->table[slotSrc];
         this->table[slotSrc] = NULL;
     }
-    //jika target tidak kosong
+    //jika target tidak kosong, dan sudah pasti yang dipindah nontool
     else{
         try{
-            *(this->table[slotTarget]) += qty;
-            *(this->table[slotSrc]) -= qty;
-            try{
-                if (this->table[slotSrc]->getQuantity() == 0) {
-                    delete table[slotSrc];
-                    this->table[slotSrc] = NULL;
-                }
-            }
-            catch(NonToolException &e){
-                if (this->table[slotSrc]->getDurability() == 0) {
-                    delete table[slotSrc];
-                    this->table[slotSrc] = NULL;
-                }
+            *(this->table[slotTarget]) += *(this->table[slotSrc]);
+            *(this->table[slotSrc]) -= *(this->table[slotSrc]);
+            if (this->table[slotSrc]->getQuantity() == 0) {
+                delete table[slotSrc];
+                this->table[slotSrc] = NULL;
             }
         }
         catch(NonToolException &e){
-            e.displayMessage();
+            int sisa = 64 - this->table[slotTarget]->getQuantity();
+            *(this->table[slotSrc]) -= sisa;
+            *(this->table[slotTarget]) += sisa;
         }
+
     }
 }
 
