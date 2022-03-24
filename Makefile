@@ -4,7 +4,7 @@ EXT_OUT = out
 EXT_ANS = ans
 EXECUTABLE_FILENAME = main
 ALL_SRCS := $(wildcard *.cpp ./class/*/*.cpp)
-SRCS     := $(filter-out check.cpp testMain.cpp, $(ALL_SRCS))
+SRCS     := $(filter-out check.cpp driverIO.cpp driverCrafting.cpp driverInventory.cpp driverItem.cpp, $(ALL_SRCS))
 
 all: compile test check
 
