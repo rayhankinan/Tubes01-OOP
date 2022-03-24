@@ -53,145 +53,121 @@ void CraftingTable::setElmt(string slotID, Item* item) {
 
 // craft item
 void CraftingTable::craft(Inventory& inv) {
-    /* CEK bila table kosong semua */
-    bool empty = true;
-    for (int i = 0; i < this->row; i++) {
-        for (int j = 0; j < this->col; j++) {
-            if (this->table(i,j) != NULL) {
-                empty = false;
-                break;
-            }
-        }
-    }
-    if (empty) {
-        throw CraftingException(0);
-    }
-
-    /* OPSI PERTAMA CRAFTING: 
-    Craft dua item tool dengan jenis sama
-    dengan durability x dan y menjadi satu item tool sama dengan durability
-    min(x+y,10) 
-    
-    Kalau ada lebih dari dua tool di crafting table haram,
-    kalau ada dua tool yang berbeda haram,
-    kalau ada nontool haram*/
-    int toolcount = 0;  // hitung jumlah tool di crafting table
-    string FirstTool;
-    int firstDurability, secondDurability;
-    bool twotools = false;
-    
-    for (int i = 0; i < this->row; i++) {
-        for (int j = 0; j < this->col; j++) {
-            if (this->table(i,j) == NULL) {     // skip slot yg tidak berisi
-                continue;
-            } else {
-                // cek apakah tool
-                if (isTool(this->table(i,j))) {
-                    toolcount++;
-                    if (toolcount == 1) {
-                        FirstTool = this->table(i,j)->getName();    // get ID of first tool
-                        firstDurability = this->table(i,j)->getDurability();
-                    } else if (toolcount == 2) {
-                        // cek apakah id tool kedua sama dengan pertama
-                        if (this->table(i,j)->getName() != FirstTool) {
-                            break;
-                        } else {
-                            secondDurability = this->table(i,j)->getDurability();
-                            twotools = true;
-                        }
-                    } else {    // terdapat lebih dari 2 tool di crafting table
-                        twotools = false;
-                        break;
-                    }
-
-                } else {    // di crafting table ada item yang tidak tool
-                    twotools = false;
-                    break;
-                }
-            }
-        }
-    }
-    if (twotools) {     // jika format kedua tool sudah benar dan ditambahkan ke inventory
-        // clear crafting table
+    bool firstCraft = true;
+    while (true) {
+        /* CEK bila table kosong semua
+        Bila kosong crafting pada crafting pertama throw error,
+        bila kosong pada crafting selanjutnya, tidak throw error tapi keluar dari method*/
+        bool empty = true;
         for (int i = 0; i < this->row; i++) {
             for (int j = 0; j < this->col; j++) {
                 if (this->table(i,j) != NULL) {
-                    // delete item tool yang telah digunakan pada crafting table
-                    delete this->table(i, j);
-                    this->table(i, j) = NULL;
+                    empty = false;
+                    break;
                 }
-        }}
-        /* give item to inventory, min(firstDurability+secondDurability, 10) nya maksudnya durability*/
-        inv.give(FirstTool, min(firstDurability+secondDurability, 10), 1);
-        return;
-    } // Bila tidak ketemu dua tools cek opsi kedua crafting
-    /* OPSI KEDUA CRAFTING: 
-    Craft item dari resep yang ada
-    - dapat dengan resep submatriks kurang dari 3x3
-    - resep dapat direfleksikan pada sumbu-y
-    - tidak harus item, tapi tipe yang sama */
-    // cek dulu apakah semua item di crafting table adalah nontool
-    bool nonToolCheck = true;
-    for (int i = 0; i < this->row; i++) {
-        for (int j = 0; j < this->col; j++) {
-            if ((this->table(i,j)) != NULL && (this->table(i,j))->isTool()) {
-                throw CraftingException(1);
             }
         }
-    }
-    bool recipeFound = false;   // check if current recipe matches
-    int iterRecipe = 0, rightRecipe, offsetRow, offsetCol, currentRow, currentCol, rightOffsetRow, rightOffsetCol;
-    // iterate through all recipe
-    while (iterRecipe < this->NumOfRecipes && !recipeFound) {       // iterate through all recipes
-        rightRecipe = iterRecipe;
-        offsetRow=0;
-        while (offsetRow <= this->row - this->recipes[iterRecipe].getRow() && !recipeFound) { // give row offset for submatrix
-            offsetCol=0;
-            while (offsetCol <= this->row - this->recipes[iterRecipe].getCol() && !recipeFound) { // give column offset for submatrix
-                rightOffsetRow = offsetRow; rightOffsetCol = offsetCol;
+        if (empty) {
+            if (firstCraft) {
+                throw CraftingException(0);
+            } else {
+                return;
+            }
+        }
+        /* set pengecek apakah crafting pertama sehingga pada loop craft selanjutnya
+        tidak throw error crafting table kosong */
+        firstCraft = false;
 
-                // check recipe for particular submatrix NOT INVERTED
-                bool currentRecipe = true;
-                currentRow = 0;
-                while (currentRow < this->row && currentRecipe) {
-                    currentCol = 0;
-                    while (currentCol < this->col && currentRecipe) {
-                        // check recipe for submatrix
-                        string name, type;
-                        if (this->table(currentRow, currentCol) == NULL) {
-                            name = "-";
-                            type = "-";
-                        }
-                        else {
-                            name = this->table(currentRow,currentCol)->getName();
-                            type = this->table(currentRow,currentCol)->getType();
-                        }
-                        if (offsetRow <= currentRow && currentRow <= offsetRow+this->recipes[iterRecipe].getRow()-1 && offsetCol <= currentCol && currentCol <= offsetCol+this->recipes[iterRecipe].getCol()-1) {
-                            //check if current slot matches name or type of slot recipe
-                            string recipeNameType = this->recipes[iterRecipe].getConfigElmt(currentRow-offsetRow, currentCol-offsetCol);
-                            if (name != recipeNameType && type != recipeNameType) {
-                                currentRecipe = false;
-                            } 
-                        // check if slot empty di luar submatrix
-                        } else {
-                            if (this->table(currentRow,currentCol) != NULL) {
-                                currentRecipe = false;
-                        }}
-                        currentCol++;
-                    }
-                    currentRow++;
-                }
-                // if non inverted recipe is right
-                if (currentRecipe) {
-                    recipeFound = true;
-                    break;
+        /* OPSI PERTAMA CRAFTING: 
+        Craft dua item tool dengan jenis sama
+        dengan durability x dan y menjadi satu item tool sama dengan durability
+        min(x+y,10) 
+        
+        Kalau ada lebih dari dua tool di crafting table haram,
+        kalau ada dua tool yang berbeda haram,
+        kalau ada nontool haram*/
+        int toolcount = 0;  // hitung jumlah tool di crafting table
+        string FirstTool;
+        int firstDurability, secondDurability;
+        bool twotools = false;
+        
+        for (int i = 0; i < this->row; i++) {
+            for (int j = 0; j < this->col; j++) {
+                if (this->table(i,j) == NULL) {     // skip slot yg tidak berisi
+                    continue;
                 } else {
-                    // check recipe for particular submatrix INVERTED
-                    currentRecipe = true;
+                    // cek apakah tool
+                    if (isTool(this->table(i,j))) {
+                        toolcount++;
+                        if (toolcount == 1) {
+                            FirstTool = this->table(i,j)->getName();    // get ID of first tool
+                            firstDurability = this->table(i,j)->getDurability();
+                        } else if (toolcount == 2) {
+                            // cek apakah id tool kedua sama dengan pertama
+                            if (this->table(i,j)->getName() != FirstTool) {
+                                break;
+                            } else {
+                                secondDurability = this->table(i,j)->getDurability();
+                                twotools = true;
+                            }
+                        } else {    // terdapat lebih dari 2 tool di crafting table
+                            twotools = false;
+                            break;
+                        }
+
+                    } else {    // di crafting table ada item yang tidak tool
+                        twotools = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if (twotools) {     // jika format kedua tool sudah benar dan ditambahkan ke inventory
+            // clear crafting table
+            for (int i = 0; i < this->row; i++) {
+                for (int j = 0; j < this->col; j++) {
+                    if (this->table(i,j) != NULL) {
+                        // delete item tool yang telah digunakan pada crafting table
+                        delete this->table(i, j);
+                        this->table(i, j) = NULL;
+                    }
+            }}
+            /* give item to inventory, min(firstDurability+secondDurability, 10) nya maksudnya durability*/
+            inv.give(FirstTool, min(firstDurability+secondDurability, 10), 1);
+            return;
+        } // Bila tidak ketemu dua tools cek opsi kedua crafting
+        /* OPSI KEDUA CRAFTING: 
+        Craft item dari resep yang ada
+        - dapat dengan resep submatriks kurang dari 3x3
+        - resep dapat direfleksikan pada sumbu-y
+        - tidak harus item, tapi tipe yang sama */
+        // cek dulu apakah semua item di crafting table adalah nontool
+        bool nonToolCheck = true;
+        for (int i = 0; i < this->row; i++) {
+            for (int j = 0; j < this->col; j++) {
+                if ((this->table(i,j)) != NULL && (this->table(i,j))->isTool()) {
+                    throw CraftingException(1);
+                }
+            }
+        }
+        bool recipeFound = false;   // check if current recipe matches
+        int iterRecipe = 0, rightRecipe, offsetRow, offsetCol, currentRow, currentCol, rightOffsetRow, rightOffsetCol;
+        // iterate through all recipe
+        while (iterRecipe < this->NumOfRecipes && !recipeFound) {       // iterate through all recipes
+            rightRecipe = iterRecipe;
+            offsetRow=0;
+            while (offsetRow <= this->row - this->recipes[iterRecipe].getRow() && !recipeFound) { // give row offset for submatrix
+                offsetCol=0;
+                while (offsetCol <= this->row - this->recipes[iterRecipe].getCol() && !recipeFound) { // give column offset for submatrix
+                    rightOffsetRow = offsetRow; rightOffsetCol = offsetCol;
+
+                    // check recipe for particular submatrix NOT INVERTED
+                    bool currentRecipe = true;
                     currentRow = 0;
                     while (currentRow < this->row && currentRecipe) {
                         currentCol = 0;
                         while (currentCol < this->col && currentRecipe) {
+                            // check recipe for submatrix
                             string name, type;
                             if (this->table(currentRow, currentCol) == NULL) {
                                 name = "-";
@@ -201,10 +177,9 @@ void CraftingTable::craft(Inventory& inv) {
                                 name = this->table(currentRow,currentCol)->getName();
                                 type = this->table(currentRow,currentCol)->getType();
                             }
-                            // check recipe for submatrix
                             if (offsetRow <= currentRow && currentRow <= offsetRow+this->recipes[iterRecipe].getRow()-1 && offsetCol <= currentCol && currentCol <= offsetCol+this->recipes[iterRecipe].getCol()-1) {
                                 //check if current slot matches name or type of slot recipe
-                                string recipeNameType = this->recipes[iterRecipe].getConfigElmt((currentRow-offsetRow), this->recipes[iterRecipe].getCol()-1-(currentCol-offsetCol));
+                                string recipeNameType = this->recipes[iterRecipe].getConfigElmt(currentRow-offsetRow, currentCol-offsetCol);
                                 if (name != recipeNameType && type != recipeNameType) {
                                     currentRecipe = false;
                                 } 
@@ -217,39 +192,76 @@ void CraftingTable::craft(Inventory& inv) {
                         }
                         currentRow++;
                     }
+                    // if non inverted recipe is right
                     if (currentRecipe) {
                         recipeFound = true;
                         break;
-                    }
-                }
-                offsetCol++;
-            }
-            offsetRow++;
-        }
-        iterRecipe++;
-    }
-    if (!recipeFound) { // bila tidak bisa crafting
-        throw CraftingException(1);
-    } else {
-        // give item hasil craft
-        // mencoba handling untuk multiple crafting item
-        // get rightRecipe, rightOffsetRow, rightOffsetCol
-        for (int i = rightOffsetRow; i < rightOffsetRow + this->recipes[rightRecipe].getRow(); i++) {
-            for (int j = rightOffsetCol; j < rightOffsetCol + this->recipes[rightRecipe].getCol(); j++) {
-                // bila quantity di crafting table hanya 1, remove
-                if (this->table(i, j) != NULL) {
-                    if (this->table(i,j)->getQuantity() == 1) {
-                        delete this->table(i, j);
-                        this->table(i, j) = NULL;
                     } else {
-                        // bila quantity di crafting table hanya > 1, quantity 
-                        this->table(i, j)->setQuantity(this->table(i,j)->getQuantity() - 1);
+                        // check recipe for particular submatrix INVERTED
+                        currentRecipe = true;
+                        currentRow = 0;
+                        while (currentRow < this->row && currentRecipe) {
+                            currentCol = 0;
+                            while (currentCol < this->col && currentRecipe) {
+                                string name, type;
+                                if (this->table(currentRow, currentCol) == NULL) {
+                                    name = "-";
+                                    type = "-";
+                                }
+                                else {
+                                    name = this->table(currentRow,currentCol)->getName();
+                                    type = this->table(currentRow,currentCol)->getType();
+                                }
+                                // check recipe for submatrix
+                                if (offsetRow <= currentRow && currentRow <= offsetRow+this->recipes[iterRecipe].getRow()-1 && offsetCol <= currentCol && currentCol <= offsetCol+this->recipes[iterRecipe].getCol()-1) {
+                                    //check if current slot matches name or type of slot recipe
+                                    string recipeNameType = this->recipes[iterRecipe].getConfigElmt((currentRow-offsetRow), this->recipes[iterRecipe].getCol()-1-(currentCol-offsetCol));
+                                    if (name != recipeNameType && type != recipeNameType) {
+                                        currentRecipe = false;
+                                    } 
+                                // check if slot empty di luar submatrix
+                                } else {
+                                    if (this->table(currentRow,currentCol) != NULL) {
+                                        currentRecipe = false;
+                                }}
+                                currentCol++;
+                            }
+                            currentRow++;
+                        }
+                        if (currentRecipe) {
+                            recipeFound = true;
+                            break;
+                        }
+                    }
+                    offsetCol++;
+                }
+                offsetRow++;
+            }
+            iterRecipe++;
+        }
+        if (!recipeFound) { // bila tidak bisa crafting
+            throw CraftingException(1);
+        } else {
+            // give item hasil craft
+            // mencoba handling untuk multiple crafting item
+            // get rightRecipe, rightOffsetRow, rightOffsetCol
+            for (int i = rightOffsetRow; i < rightOffsetRow + this->recipes[rightRecipe].getRow(); i++) {
+                for (int j = rightOffsetCol; j < rightOffsetCol + this->recipes[rightRecipe].getCol(); j++) {
+                    // bila quantity di crafting table hanya 1, remove
+                    if (this->table(i, j) != NULL) {
+                        if (this->table(i,j)->getQuantity() == 1) {
+                            delete this->table(i, j);
+                            this->table(i, j) = NULL;
+                        } else {
+                            // bila quantity di crafting table hanya > 1, quantity 
+                            this->table(i, j)->setQuantity(this->table(i,j)->getQuantity() - 1);
+                        }
                     }
                 }
             }
+            /* give item to inventory */
+            inv.give(this->recipes[rightRecipe].getProductName(), this->recipes[rightRecipe].getProductQty());
         }
-        /* give item to inventory */
-        inv.give(this->recipes[rightRecipe].getProductName(), this->recipes[rightRecipe].getProductQty());
     }
 }
 
