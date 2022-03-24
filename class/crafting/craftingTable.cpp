@@ -321,16 +321,18 @@ void CraftingTable::move(Inventory& inv, string slotInv, int n, vector<string> s
         } 
     }
 
+    int toGive = 1; // default qty yg dipindahkan adalah 1
+    int inSlotDest = 0; // default item di slot destination
+
     // kasus memindahkan 1 barang ke 1 slot craft 
     if (slotCrafts.size() == 1) {
         // menentukan quantity item yang dipindahkan (default 1)
-        int qty = 1;
         if (n > 1) {
             // exception (tool tidak bisa ditumpuk di slotcraft)
             if (item->isTool()) {
                 throw CraftingException(2);
             }
-            qty = n;
+            toGive = n;
         }
         // gaboleh ngisi crafting table yang uda ada isi
         Item* destSlot = this->getElmt(slotCrafts[0]);
@@ -343,24 +345,25 @@ void CraftingTable::move(Inventory& inv, string slotInv, int n, vector<string> s
                     throw CraftingException(3);
                 }
                 else {
-                    qty += destSlot->getQuantity();
+                    inSlotDest = destSlot->getQuantity();
                 }
             }
         }
+        
         // mengisi slot crafting untuk tool
         if (item->isTool()) {
             this->setElmt(slotCrafts[0], (new Tool(item->getID(), item->getName(), item->getType(), item->getDurability())));
         }
         // mengisi slot crafting untuk non-tool (bisa ditumpuk, multiple crafting support)
         else {
-            this->setElmt(slotCrafts[0], (new NonTool(item->getID(), item->getName(), item->getType(), qty)));
+            this->setElmt(slotCrafts[0], (new NonTool(item->getID(), item->getName(), item->getType(), inSlotDest + toGive)));
         }
         // mengosongkan/mengurangi item inventory
-        if (item->isTool() || item->getQuantity() - qty == 0) {
+        if (item->isTool() || item->getQuantity() - toGive == 0) {
             inv.setElmt(slotInv, NULL);
         }
         else {
-            inv.setElmt(slotInv, (new NonTool(item->getID(), item->getName(), item->getType(), (item->getQuantity() - qty))));
+            inv.setElmt(slotInv, (new NonTool(item->getID(), item->getName(), item->getType(), (item->getQuantity() - toGive))));
         }
     }
 
@@ -370,8 +373,6 @@ void CraftingTable::move(Inventory& inv, string slotInv, int n, vector<string> s
         if (n != slotCrafts.size()) {
             throw CraftingException(2);
         }
-        // menentukan quantity item yang dipindahkan (default 1)
-        int qty = 1;
         // mengisi slot crafting untuk tool
         if (item->isTool()) {
             for (int i = 0; i < n; i++) {
@@ -388,15 +389,17 @@ void CraftingTable::move(Inventory& inv, string slotInv, int n, vector<string> s
                 // gaboleh ngisi crafting table yang uda ada isi
                 Item* destSlot = this->getElmt(slotCrafts[i]);
                 if (destSlot != NULL) {
-                    if ((destSlot->getName() != item->getName() || destSlot->getType() != item->getType()) || destSlot->isTool()) {
-                        throw CraftingException(3);
-                    }
-                    else {
-                        qty += destSlot->getQuantity();
+                    if (!destSlot->isTool()) {
+                        if ((destSlot->getName() != item->getName() || destSlot->getType() != item->getType())) {
+                            throw CraftingException(3);
+                        }
+                        else {
+                            inSlotDest = destSlot->getQuantity();
+                        }
                     }
                 }
-                this->setElmt(slotCrafts[i], (new NonTool(item->getID(), item->getName(), item->getType(), qty)));
-                qty = 1;
+                this->setElmt(slotCrafts[i], (new NonTool(item->getID(), item->getName(), item->getType(), inSlotDest + toGive)));
+                inSlotDest = 0;
             }
         }
         // mengosongkan/mengurangi item inventory
@@ -417,21 +420,37 @@ void CraftingTable::move(Inventory& inv, string slotCraft, int n, string slotInv
         throw CraftingException(2);
     }
     // N-nya cuma boleh 1 sesuai di spesifikasi
-    int qty = 1;
+    int toGive = 1;
+    int inSlotDest = 0; // default assumption isi item di slot tujuan
+    // asumsi default item di slot tujuan adalah 0
+    Item* destSlot = inv.getElmt(slotInv);
+        if (destSlot != NULL) {
+            if (destSlot->isTool()) {
+                throw CraftingException(3);
+            }
+            else {
+                if ((destSlot->getName() != item->getName() || destSlot->getType() != item->getType())) {
+                    throw CraftingException(3);
+                }
+                else {
+                    inSlotDest = destSlot->getQuantity();
+                }
+            }
+        }
     // mengisi slot inventory untuk tool
     if (item->isTool()) {
         inv.setElmt(slotInv, (new Tool(item->getID(), item->getName(), item->getType(), item->getDurability())));
     }
     // mengisi slot inventory untuk non-tool
     else {
-        inv.setElmt(slotInv, (new NonTool(item->getID(), item->getName(), item->getType(), qty)));
+        inv.setElmt(slotInv, (new NonTool(item->getID(), item->getName(), item->getType(), inSlotDest + toGive)));
     }
     // mengosongkan/mengurangi item di crafting table
-    if (item->isTool() || item->getQuantity() - qty == 0) {
+    if (item->isTool() || item->getQuantity() - toGive == 0) {
         this->setElmt(slotCraft, NULL);
     }
     else {
-        this->setElmt(slotCraft, (new NonTool(item->getID(), item->getName(), item->getType(), (item->getQuantity() - qty))));
+        this->setElmt(slotCraft, (new NonTool(item->getID(), item->getName(), item->getType(), (item->getQuantity() - toGive))));
     }
 }
 
