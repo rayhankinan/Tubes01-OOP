@@ -67,6 +67,9 @@ void Inventory::give(string name, int qty){
     string category;
     category = getCategory(name);
     bool found = false;
+    if(qty <= 0){
+        throw InventoryException(7); //throw
+    }
     if (category == "TOOL") {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < width; j++) {
@@ -140,6 +143,9 @@ void Inventory::discard(string slotID,  int qty){
     if(table[slotID] == NULL){
         throw InventoryException(5);
     }
+    if(qty > 1){
+        throw InventoryException(8);
+    }
     if((this->table[slotID])->isTool()){
         delete table[slotID];
         this->table[slotID] = NULL;
@@ -188,7 +194,7 @@ void Inventory::moveInInventory(string slotSrc, int qty, string slotTarget){
     //jika slot src adalah tool maka tidak boleh dipindah ke selain null
     if(this->table[slotSrc]->isTool()){
         if(this->table[slotTarget] != NULL){
-            throw InventoryException(3);
+            throw InventoryException(1);
         }
     }
     if(qty != 1){
