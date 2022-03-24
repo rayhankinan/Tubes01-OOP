@@ -39,17 +39,19 @@ int main(){
         cout << "TAKE OAK_PLANK 1 and TAKE BIRCH_PLANK 1" << endl;
         INV.discard("I0", 1);
         INV.discard("I1", 1);
+        INV.show();
         cout << "GIVE DIAMOND_SWORD 1" << endl;
         INV.give("DIAMOND_SWORD", 1);
         INV.show();
         cout << "USE DIAMOND_SWORD" << endl;
-        INV.use("I0");
+        INV.use("I2");
         INV.show();
         cout << "GIVE OAK_PLANK 1" << endl;
         INV.give("OAK_PLANK", 1);
         INV.show();
-        cout << "MOVE OAK_PLANK to SLOT I1" << endl;
-        INV.moveInInventory("I0",1, "I1");
+        cout << "MOVE OAK_PLANK to SLOT I26" << endl;
+        INV.moveInInventory("I0",1, "I26");
+        INV.show();
     }
     catch (Exception &e){
         e.displayMessage();
