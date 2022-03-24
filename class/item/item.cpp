@@ -78,7 +78,7 @@ ostream& operator<<(ostream& os, const Item& I) {
     return os;
 }
 
-void Item::display(){
+void Item::display() {
     cout << "ID         : " << this->getID() << endl;
     cout << "Name       : " << this->getName() << endl;
     cout << "Type       : " << this->getType() << endl;

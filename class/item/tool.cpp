@@ -9,9 +9,14 @@ Tool::Tool() : Item() {
 }
 
 Tool::Tool(int ID, string name, string type, int durability) : Item(ID, name, type) {
-    this->durability = durability;
+    if (durability > 10) {
+        throw ToolException(0);
+        
+    } else {
+        this->durability = durability;
 
-    Tool::numOfTool++;
+        Tool::numOfTool++;
+    }
 }
 
 Tool::Tool(const Tool& T) : Item(T.ID, T.name, T.type) {
