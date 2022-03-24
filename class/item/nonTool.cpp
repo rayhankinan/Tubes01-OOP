@@ -9,9 +9,14 @@ NonTool::NonTool() : Item() {
 }
 
 NonTool::NonTool(int ID, string name, string type, int quantity) : Item(ID, name, type) {
-    this->quantity = quantity;
+    if (quantity > 64) {
+        throw NonToolException(0);
+        
+    } else {
+        this->quantity = quantity;
 
-    NonTool::numOfNonTool++;
+        NonTool::numOfNonTool++;
+    }
 }
 
 NonTool::NonTool(const NonTool& NT) : Item(NT.ID, NT.name, NT.type) {
