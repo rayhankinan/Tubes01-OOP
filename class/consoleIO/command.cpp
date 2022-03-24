@@ -5,7 +5,6 @@ int Command::numOfCommand = 0;
 
 Command::Command()
 {
-  numOfCommand++;
 }
 
 int Command::getNumOfCommand()
