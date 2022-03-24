@@ -48,6 +48,7 @@ class Inventory {
         // set table element based on slotID
         void setElmt(string, Item*);
 
+        //get table element based on name
         int getInventoryID(string);
 
         string getInventoryType(string);
