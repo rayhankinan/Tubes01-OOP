@@ -48,7 +48,6 @@ public:
     void addItem(int, int, Item*);
     // move item from inv to crafting table
     void move(Inventory&, string, int, vector<string>);
-    // return item from inv table to crafting table
     // return item from crafting table to inv
     void move(Inventory&, string, int, string);
     // check tool/nontool of an item
