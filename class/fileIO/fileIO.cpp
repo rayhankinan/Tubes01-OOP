@@ -107,10 +107,6 @@ vector<Tool> FileIO::listOfTool()
     string type = vectorOfWords[i][2];
     string item = vectorOfWords[i][3];
     int checkItem = item.compare("TOOL");
-    // checkItem = (checkItem == 1) || (checkItem == 0);
-
-    // cout << (item.compare("TOOL")) << endl;
-    // cout << item << " == TOOL : " << (item == "TOOL") << endl;
     // define item depends of the type
     if (checkItem == 0)
     {
@@ -212,21 +208,6 @@ vector<Recipe> FileIO::listOfRecipe()
   return recipes;
 }
 
-/* exporting inventory */
-/* BELUM BISA INVENTORYNYA BELUM FIXED */
-void FileIO::EXPORT(string FileName)
-{
-  // try
-  // {
-
-  // }
-
-  // catch (FileException FE)
-  // {
-  //   FE.displayMessage();
-  // }
-}
-
 /* MAIN PROGRAM */
 // void FileIO::start(string FileName)
 // {
@@ -312,7 +293,7 @@ void FileIO::EXPORT(string FileName)
 //   }
 // }
 
-// /* tester function */
+/* tester function */
 void FileIO::displayTool()
 {
   vector<Tool> tools = this->listOfTool();

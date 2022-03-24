@@ -36,8 +36,6 @@ public:
   vector<NonTool> listOfNonTool();
   // vector of recipe
   vector<Recipe> listOfRecipe();
-  // exporting item from inventory
-  void EXPORT(string);
   // main program
   // void start(string);
   // display tool

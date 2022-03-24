@@ -66,7 +66,6 @@ void Inventory::give(string name, int qty){
     FileIO FI;
     string category;
     category = getCategory(name);
-    cout << category << endl;
     bool found = false;
     if (category == "TOOL") {
         for (int i = 0; i < length; i++) {

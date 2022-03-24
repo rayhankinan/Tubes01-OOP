@@ -40,14 +40,16 @@ void ConsoleIO::start()
   CraftingTable table = CraftingTable();
 
   /* loop until command EXIT*/
-  while (this->command != "")
+  while (this->command != "EXIT")
   {
-    try {
+    try
+    {
+      /* Display inventory and crafting table */
       if (this->command == "SHOW")
       {
-        /* Display crafting table */
-        this->Command::SHOW(inventory, table);
+        this->SHOW(inventory, table);
       }
+      /* Give item */
       else if (this->command == "GIVE")
       {
         string itemName;
@@ -56,9 +58,9 @@ void ConsoleIO::start()
         cin >> itemName >> itemQtyStr;
         int itemQty = stoi(itemQtyStr);
 
-        /* Give item */
-        this->Command::GIVE(inventory, itemName, itemQty);
+        this->GIVE(inventory, itemName, itemQty);
       }
+      /* Discard item */
       else if (this->command == "DISCARD")
       {
         string inventorySlotID;
@@ -66,9 +68,9 @@ void ConsoleIO::start()
 
         cin >> inventorySlotID >> itemQtyStr;
         int itemQty = stoi(itemQtyStr);
-        /* Discard item */
-        this->Command::DISCARD(inventory, inventorySlotID, itemQty);
+        this->DISCARD(inventory, inventorySlotID, itemQty);
       }
+      /* Move item */
       else if (this->command == "MOVE")
       {
         string slotQtyStr;
@@ -76,66 +78,76 @@ void ConsoleIO::start()
 
         cin >> slotSrc >> slotQtyStr;
         int slotQty = stoi(slotQtyStr);
-        if (slotQty == 1) {
+        if (slotQty == 1)
+        {
           cin >> slotDest;
-          if (slotDest[0] == 'I') {
-            if (slotSrc[0] == 'I') {
+          if (slotDest[0] == 'I')
+          {
+            if (slotSrc[0] == 'I')
+            {
               /* Move item inventory to inventory */
-              this->Command::MOVE(inventory, slotSrc, slotQty, slotDest);
+              this->MOVE(inventory, slotSrc, slotQty, slotDest);
             }
-            else {
+            else
+            {
               /* Move item crafting to inventory */
-              this->Command::MOVE(table, inventory, slotSrc, slotQty, slotDest);
+              this->MOVE(table, inventory, slotSrc, slotQty, slotDest);
             }
           }
-          else {
+          else
+          {
             /* Move item inventory to crafting (1 item) */
-            vector<string> slots = { slotDest };
-            this->Command::MOVE(table, inventory, slotSrc, slotQty, slots);
+            vector<string> slots = {slotDest};
+            this->MOVE(table, inventory, slotSrc, slotQty, slots);
           }
-        } 
-        else {
+        }
+        else
+        {
           /* Move item inventory to crafting (multiple item) */
           vector<string> slots;
-          for (int i = 0; i < slotQty; i++) {
+          for (int i = 0; i < slotQty; i++)
+          {
             cin >> slotDest;
             slots.push_back(slotDest);
           }
-          this->Command::MOVE(table, inventory, slotSrc, slotQty, slots);
+          this->MOVE(table, inventory, slotSrc, slotQty, slots);
         }
       }
+      /* Use item */
       else if (this->command == "USE")
       {
         string inventorySlotID;
 
         cin >> inventorySlotID;
-        /* Use item */
-        this->Command::USE(inventory, inventorySlotID);
+        this->USE(inventory, inventorySlotID);
       }
+      /* Craft item */
       else if (this->command == "CRAFT")
       {
-        /* Craft item */
-        this->Command::CRAFT(table, inventory);
+        this->CRAFT(table, inventory);
       }
+      /* Export to file */
       else if (this->command == "EXPORT")
       {
         string fileName;
 
         cin >> fileName;
-        /* Export to file */
         this->Command::EXPORT(inventory, fileName);
       }
+      /* Invalid command */
       else
       {
         this->Command::INVALID_COMMAND(this->command);
       }
     }
     /* catch for any invalid command */
-    catch(Exception &E) 
+    catch (Exception &E)
     {
       E.displayMessage();
     }
-    catch(invalid_argument &e){
+    /* catch for invalid argument from conversion */
+    catch (invalid_argument &e)
+    {
       cout << "Can't be parsed to a number." << endl;
     }
     /* ask again for IO */

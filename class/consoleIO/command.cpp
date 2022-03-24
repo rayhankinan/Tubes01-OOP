@@ -25,42 +25,21 @@ void Command::DISCARD(Inventory &inv, string slotID, int qty)
 {
   cout << "DISCARD " << slotID << " " << qty << endl;
   Command::numOfCommand++;
-  try
-  {
-    inv.discard(slotID, qty);
-  }
-    catch (InventoryException &IE)
-  {
-    IE.displayMessage();
-  }
+  inv.discard(slotID, qty);
 }
 
 void Command::MOVE(Inventory &inv, string slotSrc, int qty, string slotTarget)
 {
   cout << "MOVE" << " " << slotSrc << " " << qty << " " << slotTarget << endl;
   Command::numOfCommand++;
-  try
-  {
-    inv.moveInInventory(slotSrc, qty, slotTarget);
-  }
-  catch (const Exception &e)
-  {
-    e.displayMessage();
-  }
+  inv.moveInInventory(slotSrc, qty, slotTarget);
 }
 
 void Command::MOVE(CraftingTable &table, Inventory &inv, string slotCraft, int n, string slotInv)
 {
   cout << "MOVE" << " " << slotCraft << " " << n << " " << slotInv << endl;
   Command::numOfCommand++;
-  try
-  {
-    table.move(inv, slotCraft, n, slotInv);
-  }
-  catch (const Exception &e)
-  {
-    e.displayMessage();
-  }
+  table.move(inv, slotCraft, n, slotInv);
 }
 
 void Command::MOVE(CraftingTable &table, Inventory &inv, string slotInv, int n, vector<string> slotCrafts)
@@ -70,41 +49,21 @@ void Command::MOVE(CraftingTable &table, Inventory &inv, string slotInv, int n, 
     cout << slotCrafts[i] << " ";
   } 
   cout << endl;
-  Command::numOfCommand++;
-  try
-  {
-    table.move(inv, slotInv, n, slotCrafts);
-  }
-  catch (const Exception &e) {
-    e.displayMessage();
-  }
+  table.move(inv, slotInv, n, slotCrafts);
 }
 
 void Command::USE(Inventory &inv, string slotID)
 {
   cout << "USE " << slotID << endl;
   Command::numOfCommand++;
-  try
-  {
-    inv.use(slotID);
-  }
-  catch (const InventoryException &e)
-  {
-    e.displayMessage();
-  }
+  inv.use(slotID);
 }
 
 void Command::CRAFT(CraftingTable &table, Inventory& inv)
 {
   cout << "CRAFT" << endl;
   Command::numOfCommand++;
-  try
-  {
-    table.craft(inv);
-  }
-  catch (const Exception &e) {
-    e.displayMessage();
-  }
+  table.craft(inv);
 }
 
 void Command::EXPORT(Inventory &inv, string fileName)
@@ -119,14 +78,6 @@ void Command::GIVE(Inventory &inv, string name, int qty)
 {
   cout << "GIVE " << name << " " << qty << endl;
   Command::numOfCommand++;
-  // try
-  // {
-  //   inv.give(name, qty);
-  // }
-  // catch (const InventoryException &e)
-  // {
-  //   e.displayMessage();
-  // }
   inv.give(name, qty);
 }
 
