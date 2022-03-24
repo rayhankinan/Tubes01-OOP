@@ -39,8 +39,8 @@ void ConsoleIO::start()
   Inventory inventory = Inventory();
   CraftingTable table = CraftingTable();
 
-  /* loop until command EXIT*/
-  while (this->command != "EXIT")
+  /* loop until command EXIT or reach an EOF*/
+  while (!(this->command == "" || this->command == "EXIT"))
   {
     try
     {
