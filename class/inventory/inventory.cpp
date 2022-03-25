@@ -391,3 +391,57 @@ void Inventory::peek(string itemName)
     throw InventoryException(4);
   }
 }
+
+void Inventory::peek(int id)
+{
+  FileIO FIO;
+  vector<Tool> tools = FIO.listOfTool();
+  vector<NonTool> nonTools = FIO.listOfNonTool();
+  vector<Recipe> recipes = FIO.listOfRecipe();
+  bool itemFound = false;
+  string itemName;
+
+  // check for tool
+  cout << "Item: " << endl;
+  for (int i = 0; i < tools.size() && !itemFound; i++)
+  {
+    if (id == tools[i].getID())
+    {
+      tools[i].display();
+      cout << endl;
+      itemName = tools[i].getName();
+      itemFound = true;
+    }
+  }
+
+  // check for nontool
+    for (int i = 0; i < nonTools.size() && !itemFound; i++)
+  {
+    if (id == nonTools[i].getID())
+    {
+      nonTools[i].display();
+      cout << endl;
+      itemName = nonTools[i].getName();
+      itemFound = true;
+    }
+  }
+
+  // check if item is found
+  if (itemFound)
+  {
+    for (int i = 0; i < recipes.size(); i++)
+    {
+      if (itemName == recipes[i].getProductName())
+      {
+        recipes[i].display();
+        cout << endl;
+        return;
+      }
+    }
+    throw InventoryException(9);
+  }
+  else 
+  {
+    throw InventoryException(4);
+  }
+}

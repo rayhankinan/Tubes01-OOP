@@ -30,6 +30,7 @@ public:
   void EXPORT(Inventory&, string);
   void GIVE(Inventory&, string, int);
   void PEEK(Inventory&, string);
+  void PEEK(Inventory&, int);
   void INVALID_COMMAND(string);
 };
 
