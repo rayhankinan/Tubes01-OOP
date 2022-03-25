@@ -343,6 +343,7 @@ void Inventory::peek(string itemName)
     if (itemName == tools[i].getName())
     {
       tools[i].display();
+      cout << "TOOL" << endl;
       cout << endl;
       itemFound = true;
     }
@@ -354,6 +355,7 @@ void Inventory::peek(string itemName)
     if (itemName == nonTools[i].getName())
     {
       nonTools[i].display();
+      cout << "NON-TOOL" << endl;
       cout << endl;
       itemFound = true;
     }
@@ -395,6 +397,7 @@ void Inventory::peek(int id)
     if (id == tools[i].getID())
     {
       tools[i].display();
+      cout << "TOOL" << endl;
       cout << endl;
       itemName = tools[i].getName();
       itemFound = true;
@@ -407,6 +410,7 @@ void Inventory::peek(int id)
     if (id == nonTools[i].getID())
     {
       nonTools[i].display();
+      cout << "NON-TOOL" << endl;
       cout << endl;
       itemName = nonTools[i].getName();
       itemFound = true;
