@@ -476,3 +476,19 @@ bool CraftingTable::isTool(Item* i){
         return false;
     }
 }
+
+// get recipe configuration
+void CraftingTable::peek(string item) const {
+    Recipe* r = this->recipes;
+
+    for (int i = 0; i < this->getNumOfRecipes(); i++)
+    {
+        if (r[i].getProductName() == item) {
+            r[i].display();
+            cout << endl;
+            return;
+        }
+    }
+    cout << "RECIPE NOT FOUND" << endl << endl;
+    return;
+}

@@ -30,6 +30,7 @@ public:
   void EXPORT(Inventory&, string);
   void GIVE(Inventory&, string, int);
   void INVALID_COMMAND(string);
+  void PEEK(CraftingTable&, string);
 };
 
 #endif

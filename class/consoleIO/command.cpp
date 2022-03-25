@@ -72,3 +72,8 @@ void Command::INVALID_COMMAND(string command)
 {
   throw CommandException(command);
 }
+
+void Command::PEEK(CraftingTable &table, string item) {
+  Command::numOfCommand++;
+  table.peek(item);
+}
