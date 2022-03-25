@@ -46,13 +46,13 @@ void Inventory::show() const{
             }
             else {
                 if (this->table(i,j)->isTool()){
-                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]";
+                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getDurability() << "]";
                     if (j == 8) {
                         cout << endl;
                     }
                 }
                 else{
-                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]";
+                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getQuantity() << "]";
                     if (j == 8) {
                         cout << endl;
                     }
