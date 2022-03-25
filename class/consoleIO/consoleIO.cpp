@@ -96,9 +96,16 @@ void ConsoleIO::start()
           }
           else
           {
-            /* Move item inventory to crafting (1 item) */
-            vector<string> slots = {slotDest};
-            this->MOVE(table, inventory, slotSrc, slotQty, slots);
+            if (slotSrc[0] == 'I')
+            {
+              /* Move item inventory to crafting (1 item) */
+              vector<string> slots = {slotDest};
+              this->MOVE(table, inventory, slotSrc, slotQty, slots);
+            }
+            else 
+            {
+              this->INVALID_COMMAND(this->command + " tidak bisa untuk mendindahkan dari Crafting ke Crafting");
+            }
           }
         }
         else
