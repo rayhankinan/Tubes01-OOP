@@ -272,6 +272,7 @@ void CraftingTable::craft(Inventory& inv) {
 // show crafting table
 void CraftingTable::show() const {
     for (int i = 0; i < this->row; i++) {
+        cout << "\t\t\t\t\t\t";
         for (int j = 0; j < this->col; j++) {
             if (this->table(i, j) == NULL) {
                 cout << "[C" << i*3+j << "|0]\t\t";
