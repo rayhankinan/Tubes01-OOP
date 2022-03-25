@@ -138,9 +138,8 @@ void ConsoleIO::start()
       else if (this->command == "PEEK")
       {
         string item;
-        
         cin >> item;
-        this->Command::PEEK(table, item);
+        this->Command::PEEK(inventory, item);
       }
       /* Invalid command */
       else

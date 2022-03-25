@@ -31,7 +31,6 @@ public:
   void GIVE(Inventory&, string, int);
   void PEEK(Inventory&, string);
   void INVALID_COMMAND(string);
-  void PEEK(CraftingTable&, string);
 };
 
 #endif

@@ -53,8 +53,6 @@ public:
     // check tool/nontool of an item
     bool isTool(Item*);
 
-    void peek(string) const; // display recipe
-
 };
 
 
