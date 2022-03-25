@@ -45,20 +45,20 @@ void Inventory::show() const{
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
             if (this->table(i, j) == NULL) {
-                cout << "\t[I" << i*9+j << "|0]\t";
+                cout << "[I" << i*9+j << "|0]\t\t";
                 if (j == 8) {
                     cout << endl;
                 }
             }
             else {
                 if (this->table(i,j)->isTool()){
-                    cout << BOLDMAGENTA << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]" << RESET;
+                    cout << BOLDMAGENTA << "[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]\t" << RESET;
                     if (j == 8) {
                         cout << endl;
                     }
                 }
                 else{
-                    cout << BOLDCYAN << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]" << RESET;
+                    cout << BOLDCYAN << "[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]\t" << RESET;
                     if (j == 8) {
                         cout << endl;
                     }
@@ -145,18 +145,22 @@ void Inventory::give(string name, int dur, int qty){
     }
 }
 
-void Inventory::discard(string slotID,  int qty){
+void Inventory::discard(string slotID, int qty){
     if(table[slotID] == NULL){
         throw InventoryException(5);
     }
-    if(qty > 1){
+    if(qty < 1){
         throw InventoryException(8);
     }
     if((this->table[slotID])->isTool()){
-        delete table[slotID];
-        this->table[slotID] = NULL;
+        if (qty == 1) {
+            delete table[slotID];
+            this->table[slotID] = NULL;
+        } else {
+            throw InventoryException(10);
+        }
     }
-    else if(!(this->table[slotID])->isTool()){
+    else {
         try{
             *(this->table[slotID])-= qty;
             if (this->table[slotID]->getQuantity() == 0) {
