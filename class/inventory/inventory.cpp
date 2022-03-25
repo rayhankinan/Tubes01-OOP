@@ -1,6 +1,25 @@
 #include "inventoryInterface.hpp"
 #include <iostream>
 
+//the following are UBUNTU/LINUX, and MacOS ONLY terminal color codes.
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"      /* Black */
+#define RED     "\033[31m"      /* Red */
+#define GREEN   "\033[32m"      /* Green */
+#define YELLOW  "\033[33m"      /* Yellow */
+#define BLUE    "\033[34m"      /* Blue */
+#define MAGENTA "\033[35m"      /* Magenta */
+#define CYAN    "\033[36m"      /* Cyan */
+#define WHITE   "\033[37m"      /* White */
+#define BOLDBLACK   "\033[1m\033[30m"      /* Bold Black */
+#define BOLDRED     "\033[1m\033[31m"      /* Bold Red */
+#define BOLDGREEN   "\033[1m\033[32m"      /* Bold Green */
+#define BOLDYELLOW  "\033[1m\033[33m"      /* Bold Yellow */
+#define BOLDBLUE    "\033[1m\033[34m"      /* Bold Blue */
+#define BOLDMAGENTA "\033[1m\033[35m"      /* Bold Magenta */
+#define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
+#define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
+
 using namespace std;
 
 // default ctor and fill with default item constructor
@@ -39,20 +58,20 @@ void Inventory::show() const{
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
             if (this->table(i, j) == NULL) {
-                cout << "\t[I" << i*9+j << "|0]\t";
+                cout << "\t\t[I" << i*9+j << "|0]\t\t";
                 if (j == 8) {
                     cout << endl;
                 }
             }
             else {
                 if (this->table(i,j)->isTool()){
-                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getDurability() << "]";
+                    cout << BOLDMAGENTA << "\t\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getDurability() << "]" << RESET;
                     if (j == 8) {
                         cout << endl;
                     }
                 }
                 else{
-                    cout << "\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getQuantity() << "]";
+                    cout << BOLDCYAN << "\t\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getQuantity() << "]" << RESET;
                     if (j == 8) {
                         cout << endl;
                     }
