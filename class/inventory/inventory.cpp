@@ -45,20 +45,20 @@ void Inventory::show() const{
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < width; j++) {
             if (this->table(i, j) == NULL) {
-                cout << "\t\t[I" << i*9+j << "|0]\t\t";
+                cout << "\t[I" << i*9+j << "|0]\t";
                 if (j == 8) {
                     cout << endl;
                 }
             }
             else {
                 if (this->table(i,j)->isTool()){
-                    cout << BOLDMAGENTA << "\t\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getDurability() << "]" << RESET;
+                    cout << BOLDMAGENTA << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]" << RESET;
                     if (j == 8) {
                         cout << endl;
                     }
                 }
                 else{
-                    cout << BOLDCYAN << "\t\t[I" << i*9+j << "|" << this->table(i, j)->getName() << "|" << this->table(i, j)->getQuantity() << "]" << RESET;
+                    cout << BOLDCYAN << "\t[I" << i*9+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]" << RESET;
                     if (j == 8) {
                         cout << endl;
                     }

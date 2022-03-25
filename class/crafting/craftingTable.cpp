@@ -1,5 +1,9 @@
 #include "craftingTableInterface.hpp"
 
+//the following are UBUNTU/LINUX, and MacOS ONLY terminal color codes.
+#define RESET   "\033[0m"
+#define BOLDMAGENTA "\033[1m\033[35m"      /* Bold Magenta */
+#define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 
 // default ctor
 CraftingTable::CraftingTable() {
@@ -278,13 +282,13 @@ void CraftingTable::show() const {
             }
             else {
                 if (this->table(i,j)->isTool()){
-                    cout << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]";
+                    cout << BOLDMAGENTA << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]" << RESET;
                     if (j == 2) {
                         cout << endl;
                     }
                 }
                 else{
-                    cout << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]";
+                    cout << BOLDCYAN << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]" << RESET;
                     if (j == 2) {
                         cout << endl;
                     }
