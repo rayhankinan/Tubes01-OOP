@@ -41,7 +41,10 @@ class Inventory {
 
         // EXPORT
         void EXPORT(string);
-        
+
+        // peek item and recipes
+        void peek(string);
+
         // get table element based on slotID
         Item*& getElmt(string);
             

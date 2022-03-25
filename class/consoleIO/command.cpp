@@ -68,6 +68,11 @@ void Command::GIVE(Inventory &inv, string name, int qty)
   inv.give(name, qty);
 }
 
+void Command::PEEK(Inventory &inv, string fileName){
+  Command::numOfCommand++;
+  inv.peek(fileName);
+}
+
 void Command::INVALID_COMMAND(string command)
 {
   throw CommandException(command);

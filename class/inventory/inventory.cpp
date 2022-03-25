@@ -321,3 +321,54 @@ void Inventory::EXPORT(string FileName){
 
   outputFile.close();
 }
+
+void Inventory::peek(string itemName)
+{
+  FileIO FIO;
+  vector<Tool> tools = FIO.listOfTool();
+  vector<NonTool> nonTools = FIO.listOfNonTool();
+  vector<Recipe> recipes = FIO.listOfRecipe();
+  bool itemFound = false;
+
+  // check for tool
+  cout << "Item: " << endl;
+  for (int i = 0; i < tools.size() && !itemFound; i++)
+  {
+    if (itemName == tools[i].getName())
+    {
+      tools[i].display();
+      cout << endl;
+      itemFound = true;
+    }
+  }
+
+  // check for nontool
+    for (int i = 0; i < nonTools.size() && !itemFound; i++)
+  {
+    if (itemName == nonTools[i].getName())
+    {
+      nonTools[i].display();
+      cout << endl;
+      itemFound = true;
+    }
+  }
+
+  // check if item is found
+  if (itemFound)
+  {
+    for (int i = 0; i < recipes.size(); i++)
+    {
+      if (itemName == recipes[i].getProductName())
+      {
+        recipes[i].display();
+        cout << endl;
+        return;
+      }
+    }
+    throw InventoryException(9);
+  }
+  else 
+  {
+    throw InventoryException(4);
+  }
+}

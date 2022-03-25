@@ -29,6 +29,7 @@ public:
   void CRAFT(CraftingTable&, Inventory&);
   void EXPORT(Inventory&, string);
   void GIVE(Inventory&, string, int);
+  void PEEK(Inventory&, string);
   void INVALID_COMMAND(string);
 };
 
