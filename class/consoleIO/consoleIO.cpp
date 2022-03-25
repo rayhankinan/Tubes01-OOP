@@ -134,13 +134,6 @@ void ConsoleIO::start()
         cin >> fileName;
         this->EXPORT(inventory, fileName);
       }
-      /* Peek item and recipe */
-      else if (this->command == "PEEK")
-      {
-        string itemName;
-        cin >> itemName;
-        this->PEEK(inventory, itemName);
-      }
       /* Invalid command */
       else
       {
