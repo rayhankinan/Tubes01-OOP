@@ -272,23 +272,22 @@ void CraftingTable::craft(Inventory& inv) {
 // show crafting table
 void CraftingTable::show() const {
     for (int i = 0; i < this->row; i++) {
-        cout << "\t\t\t\t\t";
         for (int j = 0; j < this->col; j++) {
             if (this->table(i, j) == NULL) {
-                cout << "\t[C" << i*3+j << "|0]\t";
+                cout << "[C" << i*3+j << "|0]\t\t";
                 if (j == 2) {
                     cout << endl;
                 }
             }
             else {
                 if (this->table(i,j)->isTool()){
-                    cout << BOLDMAGENTA << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]" << RESET;
+                    cout << BOLDMAGENTA << "[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getDurability() << "]\t" << RESET;
                     if (j == 2) {
                         cout << endl;
                     }
                 }
                 else{
-                    cout << BOLDCYAN << "\t[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]" << RESET;
+                    cout << BOLDCYAN << "[C" << i*3+j << "|" << this->table(i, j)->getID() << "|" << this->table(i, j)->getQuantity() << "]\t" << RESET;
                     if (j == 2) {
                         cout << endl;
                     }
