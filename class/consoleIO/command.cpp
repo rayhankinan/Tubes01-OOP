@@ -12,7 +12,7 @@ int Command::getNumOfCommand()
   return Command::numOfCommand;
 }
 
-void Command::SHOW(Inventory &inv, CraftingTable& table)
+void Command::SHOW(Inventory &inv, CraftingTable &table)
 {
   Command::numOfCommand++;
   table.show();
@@ -49,7 +49,7 @@ void Command::USE(Inventory &inv, string slotID)
   inv.use(slotID);
 }
 
-void Command::CRAFT(CraftingTable &table, Inventory& inv)
+void Command::CRAFT(CraftingTable &table, Inventory &inv)
 {
   Command::numOfCommand++;
   table.craft(inv);
@@ -61,20 +61,25 @@ void Command::EXPORT(Inventory &inv, string fileName)
   inv.EXPORT(fileName);
 }
 
-
 void Command::GIVE(Inventory &inv, string name, int qty)
 {
   Command::numOfCommand++;
   inv.give(name, qty);
 }
 
-void Command::PEEK(Inventory &inv, string fileName){
+void Command::PEEK(Inventory &inv, string fileName)
+{
   Command::numOfCommand++;
   inv.peek(fileName);
+}
+
+void Command::PEEK(Inventory &inv, int ID)
+{
+  Command::numOfCommand++;
+  inv.peek(ID);
 }
 
 void Command::INVALID_COMMAND(string command)
 {
   throw CommandException(command);
 }
-

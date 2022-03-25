@@ -139,7 +139,15 @@ void ConsoleIO::start()
       {
         string item;
         cin >> item;
-        this->Command::PEEK(inventory, item);
+        try 
+        {
+          int itemInt = stoi(item);
+          this->PEEK(inventory, itemInt);
+        } 
+        catch (invalid_argument &e)
+        {
+          this->PEEK(inventory, item);
+        }
       }
       /* Invalid command */
       else

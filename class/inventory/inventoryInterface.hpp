@@ -44,6 +44,7 @@ class Inventory {
 
         // peek item and recipes
         void peek(string);
+        void peek(int);
 
         // get table element based on slotID
         Item*& getElmt(string);
