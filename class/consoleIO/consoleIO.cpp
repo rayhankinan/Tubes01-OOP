@@ -39,6 +39,15 @@ void ConsoleIO::start()
   Inventory inventory = Inventory();
   CraftingTable table = CraftingTable();
 
+  cout << endl;
+  cout << "\t\t\t\t    █████╗ ███████╗ █████╗ ██╗  ██╗██████╗  █████╗ ███████╗████████╗" << endl;
+  cout << "\t\t\t\t   ██╔══██╗██╔════╝██╔══██╗██║ ██╔╝██╔══██╗██╔══██╗██╔════╝╚══██╔══╝" << endl;
+  cout << "\t\t\t\t   ███████║█████╗  ███████║█████╔╝ ██████╔╝███████║█████╗     ██║   " << endl;
+  cout << "\t\t\t\t   ██╔══██║██╔══╝  ██╔══██║██╔═██╗ ██╔══██╗██╔══██║██╔══╝     ██║   " << endl;
+  cout << "\t\t\t\t   ██║  ██║██║     ██║  ██║██║  ██╗██║  ██║██║  ██║██║        ██║   " << endl;
+  cout << "\t\t\t\t   ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝   " << endl;
+  cout << endl;
+
   /* loop until command EXIT or reach an EOF*/
   while (!(this->command == "" || this->command == "EXIT"))
   {
